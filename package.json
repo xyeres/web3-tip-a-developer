@@ -1,0 +1,28 @@
+{
+  "name": "eth-buy-me-a-coffee",
+  "version": "1.0.0",
+  "description": "buy me a coffee w crypto! This web3 project implements a smart contract that allows anyone with metamask to send a specific wallet a tip  💰",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xyeres/eth-buy-me-a-coffee.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/xyeres/eth-buy-me-a-coffee/issues"
+  },
+  "homepage": "https://github.com/xyeres/eth-buy-me-a-coffee#readme",
+  "devDependencies": {
+    "@nomiclabs/hardhat-ethers": "^2.0.6",
+    "@nomiclabs/hardhat-waffle": "^2.0.3",
+    "chai": "^4.3.6",
+    "ethereum-waffle": "^3.4.4",
+    "ethers": "^5.6.9",
+    "hardhat": "^2.9.9"
+  }
+}
