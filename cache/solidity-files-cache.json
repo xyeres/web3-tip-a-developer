@@ -1,0 +1,40 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "/Users/michaelcarr/Developer/eth-buy-me-a-coffee/contracts/BuyMeACoffee.sol": {
+      "lastModificationDate": 1656623045558,
+      "contentHash": "fcd5c218d12a621559933332e15ebdd5",
+      "sourceName": "contracts/BuyMeACoffee.sol",
+      "solcConfig": {
+        "version": "0.8.4",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "BuyMeACoffee"
+      ]
+    }
+  }
+}
