@@ -10,7 +10,7 @@ async function getBalance(provider, address) {
 
 async function main() {
   // Get contract that has been deployed:
-  const contractAddress = '0xb8eFC509968689f06568d606F927003CDA4cc811'
+  const contractAddress = '0x59b013582fBc9089604349e2040406Fd52B44eeC'
   const contractABI = contractJSON.abi
 
   // get the node connection to blockchain
@@ -31,7 +31,11 @@ async function main() {
   const contractBalance = await getBalance(provider, buyMeACoffee.address)
   console.log("Current contract balance: ", contractBalance, " ETH")
 
-  console.log('owner', await buyMeACoffee.owner())
+
+
+  // const tx = await buyMeACoffee.updateWithdrawAddr('0x0702f85EC828861C37821Ed5557c702BaA1a490c')
+  // await tx.wait()
+  // console.log('transfered', tx)
 
   // Ensure there is balance before withdrawing
   if (contractBalance !== "0.0") {
