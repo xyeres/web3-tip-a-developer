@@ -45,12 +45,17 @@ contract BuyMeACoffee {
         // Emit a log event when a new memo is created
         emit NewMemo(msg.sender, block.timestamp, _name, _message);
     }
+
     /**
      * @dev send balance stored in contract to owner
      */
     function withdrawTips() public {
-        address(this).balance;
         require(owner.send(address(this).balance));
+    }
+
+    function updateWithdrawAddr(address _newOwnerAddr) public {
+        require(msg.sender == owner, 'you must be owner of contract to transfer ownership');
+        owner = payable(_newOwnerAddr);
     }
 
     /**

@@ -37,22 +37,22 @@ async function main() {
   console.log(`BuyMeACoffee deployed to `, buyMeACoffee.address)
 
   // check balances before coffee purchase
-  const addresses = [owner.address, tipper.address, buyMeACoffee.address]
+  const addresses = [owner.address, tipper3.address, tipper2.address, buyMeACoffee.address]
   console.log('==== start ===')
   await printBalances(addresses)
 
   // buy the owner a few coffees
-  const tip = { value: hre.ethers.utils.parseEther('1') }
+  const tip = { value: hre.ethers.utils.parseEther('2') }
   await buyMeACoffee.connect(tipper3).buyCoffee("Bobby", "Love it", tip)
   await buyMeACoffee.connect(tipper2).buyCoffee("Tallbutt", "Cool!", tip)
   console.log('==== bought coffee ===')
   await printBalances(addresses)
 
   // withdraw funds
-  await buyMeACoffee.connect(owner).withdrawTips();
+  // await buyMeACoffee.connect(owner).withdrawTips();
 
   // check balance after withdraw
-  console.log('==== withdraw tips ===')
+  console.log('==== did not withdraw tips ===')
   await printBalances(addresses)
 
   //read all the memos left for the owner
