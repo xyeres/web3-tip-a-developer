@@ -5,7 +5,6 @@ import matic from "../public/imgs/matic.svg";
 type Props = {
   amount: string;
   conversion: string;
-  isWallet: boolean;
 };
 
 const PriceChoice = (props: Props) => {
@@ -17,7 +16,7 @@ const PriceChoice = (props: Props) => {
         <Image src={matic} width={32} height={32} alt="$MATIC Polygon" />
         <span className="text-[1.5rem] font-bold">{props.amount}</span>
       </div>
-      <span className="justify-self-stretchtext-gray-400">
+      <span className="pt-2 text-gray-400">
         ABOUT {props.conversion}
       </span>
     </div>
