@@ -1,16 +1,17 @@
+import { ethers } from "ethers";
 import type { NextPage } from "next";
-import abi from "../utils/BuyMeACoffee.json";
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+import ConnectWalletBtn from "../components/ConnectWalletBtn";
 import type { Memo } from "../components/Memos";
 import Memos from "../components/Memos";
 import Pill from "../components/Pill";
+import PriceChoice from "../components/PriceChoice";
+import connectMetaMask from "../helpers/connectMetaMask";
 import github from "../public/imgs/github.svg";
 import linkedin from "../public/imgs/linkedin.svg";
-import metamask from "../public/imgs/metamask.svg";
 import twitter from "../public/imgs/twitter.svg";
-import { ethers } from "ethers";
-import PriceChoice from "../components/priceChoice";
+import abi from "../utils/BuyMeACoffee.json";
 
 const Profile: NextPage = () => {
   var memosInitialState: Memo[] = [
@@ -32,10 +33,10 @@ const Profile: NextPage = () => {
 
   // Component state
   const [memos, setMemos] = useState(memosInitialState);
-  const [currentAccount, setCurrentAccount] = useState("");
+  const [currentAccount, setCurrentAccount] = useState();
+  const [error, setError] = useState<Error | null>(null);
   const [name, setName] = useState("");
   const [message, setMessage] = useState("");
-  const [isWallet, setIsWallet] = useState(false);
 
   const options = [
     { amount: "3", conversion: "$2.4" },
@@ -58,38 +59,35 @@ const Profile: NextPage = () => {
       const { ethereum } = window;
 
       const accounts = await ethereum.request({ method: "eth_accounts" });
+
       console.log("accounts: ", accounts);
 
       if (accounts.length > 0) {
         const account = accounts[0];
         console.log("wallet is connected! " + account);
+
         return true;
       } else {
         console.log("make sure MetaMask is connected");
+
         return false;
       }
     } catch (error) {
-      console.log("error: ", error);
+      console.error("Error, wallet is not connected: ", error);
     }
   };
 
-  const connectWallet = async () => {
-    try {
-      // @ts-ignore
-      const { ethereum } = window;
+  const onConnectMetaMask = async () => {
+    setError(null);
 
-      if (!ethereum) {
-        console.log("please install MetaMask");
-      }
+    const [account, error] = await connectMetaMask();
 
-      const accounts = await ethereum.request({
-        method: "eth_requestAccounts",
-      });
-
-      setCurrentAccount(accounts[0]);
-    } catch (error) {
-      console.log(error);
+    if (error) {
+      setError(error);
+      return;
     }
+
+    setCurrentAccount(account);
   };
 
   const buyCoffee = async () => {
@@ -129,31 +127,30 @@ const Profile: NextPage = () => {
 
   // Function to fetch all memos stored on-chain.
   const getMemos = async () => {
-    try {
-      const { ethereum } = window;
-      if (ethereum) {
-        const provider = new ethers.providers.Web3Provider(ethereum);
-        const signer = provider.getSigner();
-        const buyMeACoffee = new ethers.Contract(
-          contractAddress,
-          contractABI,
-          signer
-        );
-
-        console.log("fetching memos from the blockchain..");
-        const memos = await buyMeACoffee.getMemos();
-        console.log("fetched!");
-        setMemos(memos);
-      } else {
-        console.log("Metamask is not connected");
-      }
-    } catch (error) {
-      console.log(error);
-    }
+    // try {
+    //   const { ethereum } = window;
+    //   if (ethereum) {
+    //     const provider = new ethers.providers.Web3Provider(ethereum);
+    //     const signer = provider.getSigner();
+    //     const buyMeACoffee = new ethers.Contract(
+    //       contractAddress,
+    //       contractABI,
+    //       signer
+    //     );
+    //     console.log("fetching memos from the blockchain..");
+    //     const memos = await buyMeACoffee.getMemos();
+    //     console.log("fetched!");
+    //     setMemos(memos);
+    //   } else {
+    //     console.log("Metamask is not connected");
+    //   }
+    // } catch (error) {
+    //   console.log(error);
+    // }
   };
 
   useEffect(() => {
-    let buyMeACoffee;
+    var buyMeACoffee;
     isWalletConnected();
     getMemos();
 
@@ -245,38 +242,33 @@ const Profile: NextPage = () => {
           </div>
         </section>
 
-        <section className="relative mx-auto my-0 mt-[96px] text-center items-center justify-center flex flex-col ">
+        <section className="relative mx-auto h-full my-0 mt-[96px] text-center items-center justify-center flex flex-col ">
           <h2 className="text-[1.75rem] font-semibold">Want to cheers too?</h2>
           <p className="text-[#AAAAAA]">Connect wallet to send a crypto tip*</p>
 
           <div
-            className={`mt-5 transition-all duration-500 w-[600px]  ${
-              isWallet ? "font-light h-[110px]" : "h-[0px] overflow-hidden"
-            }`}
+            className={`mt-5 transition-all origin-bottom duration-500 w-[600px] h-[120px]`}
+          // ${
+          //   isWallet ? "scale-100" : "scale-0 h-0 overflow-hidden"
+          // }
           >
             <div
-              className={`flex delay-500 transition-all flex-row flex-wrap items-center justify-center gap-4  ${
-                isWallet ? "h-[110px]" : "h-[40px] overflow-hidden"
-              }`}
+              className={`flex h-full flex-row flex-wrap items-center justify-center gap-4`}
             >
               {options.map((option) => (
                 <PriceChoice
                   key={option.amount}
                   amount={option.amount}
                   conversion={option.conversion}
-                  isWallet={isWallet}
                 />
               ))}
             </div>
           </div>
 
-          <button
-            onClick={() => setIsWallet(!isWallet)}
-            className="mt-[43px] font-bold flex flex-row items-center gap-[19px] bg-[#222222] hover:bg-[#2f2f2f] py-3 px-5 rounded-[10px] border-b-[3px] active:translate-y-[3px] hover:translate-y-[1px] hover:mt-[44px] hover:border-b-[2px] border-white transition-all active:border-b-0 active:mb-[2px]"
-          >
-            <Image alt="Metamask logo" src={metamask} width={35} height={33} />
-            Connect with Metamask
-          </button>
+          <ConnectWalletBtn title="Connect with MetaMask" connectWallet={onConnectMetaMask} />
+
+          {error && <p className="mt-3 text-red-700">Error: {error.message}</p>}
+
         </section>
       </div>
 
