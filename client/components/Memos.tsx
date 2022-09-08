@@ -11,9 +11,9 @@ type Props = {
 const Memos = (props: Props) => {
   return (
     <>
-      {props.memos.map((memo: Memo) => (
+      {props.memos.map((memo: Memo, i:number) => (
         <div
-          key={memo.amount + memo.author}
+          key={i}
           className="opacity-80 w-full rounded-xl border border-neutral-300 mt-[43px] p-6 flex flex-col"
         >
           <p className="text-xl font-extralight">{memo.msg}</p>
