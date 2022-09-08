@@ -29,6 +29,7 @@ const Home: NextPage = () => {
   // Wallet connection logic
   const isWalletConnected = async () => {
     try {
+      // @ts-ignore
       const { ethereum } = window;
 
       const accounts = await ethereum.request({ method: 'eth_accounts' })
@@ -37,8 +38,10 @@ const Home: NextPage = () => {
       if (accounts.length > 0) {
         const account = accounts[0];
         console.log("wallet is connected! " + account);
+        return true
       } else {
         console.log("make sure MetaMask is connected");
+        return false
       }
     } catch (error) {
       console.log("error: ", error);
@@ -47,6 +50,7 @@ const Home: NextPage = () => {
 
   const connectWallet = async () => {
     try {
+      // @ts-ignore
       const { ethereum } = window;
 
       if (!ethereum) {
@@ -228,7 +232,7 @@ const Home: NextPage = () => {
 
       {currentAccount && (<h1>Memos received</h1>)}
 
-      {currentAccount && (memos.map((memo: string, idx: number) => {
+      {(memos.map((memo: string, idx: number) => {
         return (
           <div key={idx} style={{ border: "2px solid", "borderRadius": "5px", padding: "5px", margin: "5px" }}>
             <p style={{ "fontWeight": "bold" }}>&quot;{memo.message}&quot;</p>
