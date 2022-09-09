@@ -1,13 +1,14 @@
 import { ethers } from "ethers";
 import type { NextPage } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import ConnectWalletBtn from "../components/ConnectWalletBtn";
+import Web3Start from "../components/Web3Start";
 import type { Memo } from "../components/Memos";
 import Memos from "../components/Memos";
 import Pill from "../components/Pill";
-import PriceChoice from "../components/PriceChoice";
-import connectMetaMask from "../helpers/connectMetaMask";
+import useMetamask from "../hooks/useMetamask";
 import github from "../public/imgs/github.svg";
 import linkedin from "../public/imgs/linkedin.svg";
 import twitter from "../public/imgs/twitter.svg";
@@ -31,18 +32,14 @@ const Profile: NextPage = () => {
   const contractAddress = "0x928514150f5914625CfBb6De11E432De4674c785";
   const contractABI = abi.abi;
 
+  // MetaMask
+  const { metaState } = useMetamask()
+
   // Component state
   const [memos, setMemos] = useState(memosInitialState);
-  const [currentAccount, setCurrentAccount] = useState();
-  const [error, setError] = useState<Error | null>(null);
   const [name, setName] = useState("");
   const [message, setMessage] = useState("");
 
-  const options = [
-    { amount: "3", conversion: "$2.4" },
-    { amount: "5", conversion: "$4" },
-    { amount: "10", conversion: "$8" },
-  ];
 
   const onNameChange = (event) => {
     setName(event.target.value);
@@ -50,44 +47,6 @@ const Profile: NextPage = () => {
 
   const onMessageChange = (event) => {
     setMessage(event.target.value);
-  };
-
-  // Wallet connection logic
-  const isWalletConnected = async () => {
-    try {
-      // @ts-ignore
-      const { ethereum } = window;
-
-      const accounts = await ethereum.request({ method: "eth_accounts" });
-
-      console.log("accounts: ", accounts);
-
-      if (accounts.length > 0) {
-        const account = accounts[0];
-        console.log("wallet is connected! " + account);
-
-        return true;
-      } else {
-        console.log("make sure MetaMask is connected");
-
-        return false;
-      }
-    } catch (error) {
-      console.error("Error, wallet is not connected: ", error);
-    }
-  };
-
-  const onConnectMetaMask = async () => {
-    setError(null);
-
-    const [account, error] = await connectMetaMask();
-
-    if (error) {
-      setError(error);
-      return;
-    }
-
-    setCurrentAccount(account);
   };
 
   const buyCoffee = async () => {
@@ -149,9 +108,10 @@ const Profile: NextPage = () => {
     // }
   };
 
+  /* useEffects: */
+
   useEffect(() => {
     var buyMeACoffee;
-    isWalletConnected();
     getMemos();
 
     // Create an event handler function for when someone sends
@@ -244,30 +204,19 @@ const Profile: NextPage = () => {
 
         <section className="relative mx-auto h-full my-0 mt-[96px] text-center items-center justify-center flex flex-col ">
           <h2 className="text-[1.75rem] font-semibold">Want to cheers too?</h2>
-          <p className="text-[#AAAAAA]">Connect wallet to send a crypto tip*</p>
+          <p className="text-[#AAAAAA]">need message</p>
 
-          <div
-            className={`mt-5 transition-all origin-bottom duration-500 w-[600px] h-[120px]`}
-          // ${
-          //   isWallet ? "scale-100" : "scale-0 h-0 overflow-hidden"
-          // }
-          >
-            <div
-              className={`flex h-full flex-row flex-wrap items-center justify-center gap-4`}
-            >
-              {options.map((option) => (
-                <PriceChoice
-                  key={option.amount}
-                  amount={option.amount}
-                  conversion={option.conversion}
-                />
-              ))}
+          {metaState.isAvailable ? (
+            <Web3Start />
+          ) : (
+            <div className="flex items-center flex-col">
+              <ConnectWalletBtn connectWallet={() => null} isLoading={false} disabled title="Connect MetaMask" />
+              <div className="mt-3 text-xs">
+                <p>Looks like you don&apos;t have Metamask installed</p>
+                <p>But wait, what is Metamask? <Link href="https://metamask.io/"><a className="underline text-orange-500">Learn about it here</a></Link></p>
+              </div>
             </div>
-          </div>
-
-          <ConnectWalletBtn title="Connect with MetaMask" connectWallet={onConnectMetaMask} />
-
-          {error && <p className="mt-3 text-red-700">Error: {error.message}</p>}
+          )}
 
         </section>
       </div>

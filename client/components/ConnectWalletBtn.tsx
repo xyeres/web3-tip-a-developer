@@ -7,6 +7,7 @@ type Props = {
   connectWallet: MouseEventHandler<HTMLButtonElement>;
   title: string;
   isLoading: boolean;
+  disabled?: boolean;
 };
 
 const ConnectWalletBtn = (props: Props) => {
@@ -14,8 +15,9 @@ const ConnectWalletBtn = (props: Props) => {
 
   return (
     <button
+      disabled={props.disabled}
       onClick={props.connectWallet}
-      className="mt-[43px] font-bold flex flex-row items-center gap-[19px] bg-[#222222] hover:bg-[#2f2f2f] py-3 px-5 rounded-[10px] border-b-[3px] active:translate-y-[3px] hover:translate-y-[1px] hover:mt-[44px] hover:border-b-[2px] border-white transition-all active:border-b-0 active:mb-[2px]"
+      className="disabled:cursor-not-allowed disabled:grayscale mt-[23px] font-bold flex flex-row items-center gap-[19px] bg-[#222222] hover:bg-[#2f2f2f] py-3 px-5 rounded-[10px] border-b-[3px] active:translate-y-[3px] hover:translate-y-[1px] hover:mt-[24px] hover:border-b-[2px] border-white transition-all active:border-b-0 active:mb-[2px]"
     >
       {
         props.isLoading ? <Spinner /> :
