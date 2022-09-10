@@ -37,7 +37,7 @@ const reducer = (state, action: ReducerAction) => {
 }
 
 const MetaStateContext = createContext(initialState);
-const MetaDispatchContext = createContext();
+const MetaDispatchContext = createContext({});
 
 const MetamaskStateProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
