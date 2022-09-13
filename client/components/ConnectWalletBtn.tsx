@@ -1,5 +1,6 @@
 import Image from "next/image";
-import { MouseEventHandler } from "react";
+import { MouseEventHandler, useEffect } from "react";
+import useMetamask from "../hooks/useMetamask";
 import metamask from "../public/imgs/metamask.svg";
 import Spinner from "./Spinner";
 
@@ -12,6 +13,13 @@ type Props = {
 
 const ConnectWalletBtn = (props: Props) => {
 
+  const {setMessage } = useMetamask()
+
+  useEffect(() => {
+    setMessage("Login with MetaMask to send a tip*")
+  }, [])
+
+  
 
   return (
     <button

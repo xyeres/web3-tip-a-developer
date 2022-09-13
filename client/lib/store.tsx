@@ -1,18 +1,22 @@
-import React, { createContext, Reducer, ReducerAction, ReducerState, ReducerWithoutAction, useReducer } from "react";
-import { ActionType, EthereumProvider } from "hardhat/types"
+import React, { createContext, useReducer } from "react";
+import { EthereumProvider } from "hardhat/types"
 
 const typeStateMap = {
   SET_ACCOUNT: "account",
   SET_CHAIN: "chain",
   SET_CONNECTED: "isConnected",
   SET_WEB3: "web3",
+  SET_MSG: "msg",
+  SET_STEP: "step",
 };
 
 export type MetaMaskState = {
   account: string[];
   chain: { id: string | null, name: string | null };
   isConnected: boolean;
-  web3: null | EthereumProvider
+  web3: null | EthereumProvider,
+  msg: string,
+  step: string,
 }
 
 type ReducerAction = {
@@ -25,10 +29,12 @@ export const initialState: MetaMaskState = {
   chain: { id: null, name: "" },
   isConnected: false,
   web3: null,
+  msg: "",
+  step: "STEP1",
 };
 
 const reducer = (state, action: ReducerAction) => {
-  const stateName = typeStateMap[action.type];
+  const stateName = typeStateMap[action.type as keyof typeof typeStateMap];
   if (!stateName) {
     console.warn(`Unkown action type: ${action.type}`);
     return state;
@@ -37,7 +43,7 @@ const reducer = (state, action: ReducerAction) => {
 }
 
 const MetaStateContext = createContext(initialState);
-const MetaDispatchContext = createContext({});
+const MetaDispatchContext = createContext();
 
 const MetamaskStateProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);

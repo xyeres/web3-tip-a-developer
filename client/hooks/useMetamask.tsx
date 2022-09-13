@@ -115,7 +115,33 @@ const useMetamask = () => {
     }
   }
 
+  function getMessage() {
+    return state.msg
+  }
+
+  function setMessage(message: string) {
+    dispatch({
+      type: "SET_MSG",
+      payload: message
+    })
+  }
+
+  function getStep() {
+    return state.step
+  }
+
+  function setStep(step: string) {
+    dispatch({
+      type: "SET_STEP",
+      payload: step
+    })
+  }
+
   return {
+    getMessage,
+    setMessage,
+    getStep,
+    setStep,
     connect,
     getAccounts,
     getChain,

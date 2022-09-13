@@ -3,19 +3,26 @@ import React, { useCallback, useEffect, useState } from "react";
 import useMetamask from "../hooks/useMetamask";
 import ConnectWalletBtn from "./ConnectWalletBtn";
 import PickTip from "./PickTip";
+import ThankYou from "./ThankYou";
 
-type Props = {
-
-}
+type Props = {};
 
 const Web3Start = (props: Props) => {
   // Hooks
-  const { connect, metaState } = useMetamask();
+  const { connect, metaState, getStep } = useMetamask();
 
   // State
-  const [error, setError] = useState<Error | unknown | null>(null);
+  const [error, setError] = useState<Error | any>();
   const [isWalletLoading, setIsWalletLoading] = useState(false);
-  const currentWalletAcc = metaState.account[0] || "";
+
+  function getStepElement(step: string): JSX.Element {
+    const STEPS = {
+      STEP1: <PickTip state={metaState} />,
+      STEP2: <ThankYou />,
+    }
+
+    return STEPS[step]
+  }
 
   // Wallet Connect
   const connectWithPermission = useCallback(
@@ -47,7 +54,7 @@ const Web3Start = (props: Props) => {
         try {
           setIsWalletLoading(true);
           await connectWithPermission(true);
-        } catch (err) {
+        } catch (err: any) {
           setError(err);
         } finally {
           setIsWalletLoading(false);
@@ -68,14 +75,7 @@ const Web3Start = (props: Props) => {
             />
           )
         ) : (
-          <>
-            <PickTip state={metaState} />
-            {currentWalletAcc && (
-              <p className="mt-5 text-xs text-gray-500">
-                Logged in as {currentWalletAcc}
-              </p>
-            )}
-          </>
+          getStepElement(getStep())
         )}
 
         {error?.message && (

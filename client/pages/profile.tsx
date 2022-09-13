@@ -33,7 +33,7 @@ const Profile: NextPage = () => {
   const contractABI = abi.abi;
 
   // MetaMask
-  const { metaState } = useMetamask()
+  const { metaState, getMessage } = useMetamask()
 
   // Component state
   const [memos, setMemos] = useState(memosInitialState);
@@ -204,7 +204,7 @@ const Profile: NextPage = () => {
 
         <section className="relative mx-auto h-full my-0 mt-[96px] text-center items-center justify-center flex flex-col ">
           <h2 className="text-[1.75rem] font-semibold">Want to cheers too?</h2>
-          <p className="text-[#AAAAAA]">need message</p>
+          <p className="text-[#AAAAAA]">{metaState.msg}</p>
 
           {metaState.isAvailable ? (
             <Web3Start />

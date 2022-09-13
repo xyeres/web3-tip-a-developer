@@ -1,17 +1,21 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import useMetamask from "../hooks/useMetamask";
 import { MetaMaskState } from "../lib/store";
 import PriceChoice from "./PriceChoice";
 
-type Props = {
-  state: MetaMaskState;
-};
 
-const PickTip = ({ state }: Props) => {
-  const currentWalletAcc = state.account[0];
+
+const PickTip = () => {
+  const { metaState, setMessage, setStep } = useMetamask()
+  const currentWalletAcc = metaState.account[0];
+
+  useEffect(() => {
+    setMessage("Pick a tip amount")
+  }, [])
 
   // Handlers
   const onPriceChoiceClick = (amount: number) => {
-    console.log('Tip amount:', amount)
+    setStep("STEP2")
   };
 
   const OPTIONS = [
