@@ -1,27 +1,42 @@
 import { ethers } from "ethers";
-import React, { useCallback, useEffect, useState } from "react";
+import React, {
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 import useMetamask from "../hooks/useMetamask";
+import ChainCheck from "./ChainCheck";
 import ConnectWalletBtn from "./ConnectWalletBtn";
 import PickTip from "./PickTip";
 import ThankYou from "./ThankYou";
 
-type Props = {};
+export type StepProps = {
+  step: string;
+  setStep: Dispatch<SetStateAction<string>>;
+  tipmessage: string;
+  setTipmessage: Dispatch<SetStateAction<string>>;
+};
 
-const Web3Start = (props: Props) => {
+const Web3Start = ({ step, setStep, tipmessage, setTipmessage }: StepProps) => {
   // Hooks
-  const { connect, metaState, getStep } = useMetamask();
+  const { connect, metaState } = useMetamask();
 
   // State
   const [error, setError] = useState<Error | any>();
   const [isWalletLoading, setIsWalletLoading] = useState(false);
 
-  function getStepElement(step: string): JSX.Element {
-    const STEPS = {
-      STEP1: <PickTip state={metaState} />,
-      STEP2: <ThankYou />,
-    }
+  const isAcceptableChain = metaState.chain.id === '137' || metaState.chain.id === '80001'
 
-    return STEPS[step]
+
+  function getStepElement(pickedStep: string): JSX.Element {
+    const STEPS = {
+      STEP1: <PickTip step={step} setStep={setStep} tipmessage={tipmessage} setTipmessage={setTipmessage} />,
+      STEP2: <ThankYou step={step} setStep={setStep} tipmessage={tipmessage} setTipmessage={setTipmessage} />,
+    };
+
+    return STEPS[pickedStep as keyof typeof STEPS];
   }
 
   // Wallet Connect
@@ -37,6 +52,7 @@ const Web3Start = (props: Props) => {
   );
 
   useEffect(() => {
+    console.log('ran')
     if (metaState.isAvailable) {
       (async () => {
         try {
@@ -66,17 +82,16 @@ const Web3Start = (props: Props) => {
   return (
     <div className="flex flex-col items-center">
       <>
-        {!metaState.isConnected ? (
-          metaState.isAvailable && (
+        {!metaState.isConnected
+          ? metaState.isAvailable && (
             <ConnectWalletBtn
               isLoading={isWalletLoading}
               title="Connect with MetaMask"
               connectWallet={handleConnectMetaMask}
+              setTipmessage={setTipmessage}
             />
-          )
-        ) : (
-          getStepElement(getStep())
-        )}
+          ) : isAcceptableChain ? getStepElement(step) : <ChainCheck setTipmessage={setTipmessage} />
+        }
 
         {error?.message && (
           <p className="mt-3 text-red-700">Error: {error?.message}</p>

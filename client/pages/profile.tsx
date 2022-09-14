@@ -14,6 +14,7 @@ import linkedin from "../public/imgs/linkedin.svg";
 import twitter from "../public/imgs/twitter.svg";
 import abi from "../utils/BuyMeACoffee.json";
 
+
 const Profile: NextPage = () => {
   var memosInitialState: Memo[] = [
     {
@@ -32,21 +33,24 @@ const Profile: NextPage = () => {
   const contractAddress = "0x928514150f5914625CfBb6De11E432De4674c785";
   const contractABI = abi.abi;
 
-  // MetaMask
-  const { metaState, getMessage } = useMetamask()
+  // Hooks
+  const { metaState } = useMetamask();
+
 
   // Component state
   const [memos, setMemos] = useState(memosInitialState);
-  const [name, setName] = useState("");
-  const [message, setMessage] = useState("");
+  const [userName, setUserName] = useState("");
+  const [userMessage, setUserMessage] = useState("");
+  const [tipmessage, setTipmessage] = useState("")
+  const [step, setStep] = useState("STEP1")
 
 
   const onNameChange = (event) => {
-    setName(event.target.value);
+    setUserName(event.target.value);
   };
 
   const onMessageChange = (event) => {
-    setMessage(event.target.value);
+    setUserMessage(event.target.value);
   };
 
   const buyCoffee = async () => {
@@ -64,8 +68,8 @@ const Profile: NextPage = () => {
 
         console.log("buying coffee..");
         const coffeeTxn = await buyMeACoffee.buyCoffee(
-          name ? name : "anon",
-          message ? message : "Enjoy your coffee!",
+          userName ? userName : "anon",
+          userMessage ? userMessage : "Enjoy your coffee!",
           { value: ethers.utils.parseEther("0.001") }
         );
 
@@ -76,8 +80,8 @@ const Profile: NextPage = () => {
         console.log("coffee purchased!");
 
         // Clear the form fields.
-        setName("");
-        setMessage("");
+        setUserName("");
+        setUserMessage("");
       }
     } catch (error) {
       console.log(error);
@@ -111,7 +115,7 @@ const Profile: NextPage = () => {
   /* useEffects: */
 
   useEffect(() => {
-    var buyMeACoffee;
+    var buyMeACoffee: any;
     getMemos();
 
     // Create an event handler function for when someone sends
@@ -204,20 +208,32 @@ const Profile: NextPage = () => {
 
         <section className="relative mx-auto h-full my-0 mt-[96px] text-center items-center justify-center flex flex-col ">
           <h2 className="text-[1.75rem] font-semibold">Want to cheers too?</h2>
-          <p className="text-[#AAAAAA]">{metaState.msg}</p>
+          <p className="text-[#AAAAAA]">{tipmessage}</p>
 
           {metaState.isAvailable ? (
-            <Web3Start />
+            <Web3Start step={step} setStep={setStep} tipmessage={tipmessage} setTipmessage={setTipmessage} />
           ) : (
             <div className="flex items-center flex-col">
-              <ConnectWalletBtn connectWallet={() => null} isLoading={false} disabled title="Connect MetaMask" />
+              <ConnectWalletBtn
+                connectWallet={() => null}
+                isLoading={false}
+                disabled
+                title="Connect MetaMask"
+                setTipmessage={() => null}
+              />
               <div className="mt-3 text-xs">
-                <p>Looks like you don&apos;t have Metamask installed</p>
-                <p>But wait, what is Metamask? <Link href="https://metamask.io/"><a className="underline text-orange-500">Learn about it here</a></Link></p>
+                <p>Looks like you don&apos;t have Metamask installed :(</p>
+                <p className="mt-1">
+                  But wait, what is a MetaMask you say?{" "}
+                  <Link href="https://metamask.io/">
+                    <a className="underline text-orange-500">
+                      Learn about it here
+                    </a>
+                  </Link>
+                </p>
               </div>
             </div>
           )}
-
         </section>
       </div>
 

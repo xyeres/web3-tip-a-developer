@@ -6,13 +6,11 @@ export type MetaMaskState = {
   chain: { id: string | null, name: string | null };
   isConnected: boolean;
   web3: null | EthereumProvider,
-  msg: string,
-  step: string,
 }
 
 type ReducerAction = {
   type: string,
-  payload: number | string | object
+  payload: number | string | object | boolean
 }
 
 const typeStateMap = {
@@ -29,8 +27,6 @@ export const initialState: MetaMaskState = {
   chain: { id: null, name: "" },
   isConnected: false,
   web3: null,
-  msg: "",
-  step: "STEP1",
 };
 
 const reducer = (state: any, action: ReducerAction) => {
@@ -46,25 +42,25 @@ const MetaStateContext = createContext(initialState);
 const MetaDispatchContext = createContext<React.Dispatch<ReducerAction>>(() => null);
 
 
-  type Props = {
-    children ?: ReactNode
-  }
+type Props = {
+  children?: ReactNode
+}
 
 
-  const MetamaskStateProvider: React.FC<Props> = ({children}) => {
+const MetamaskStateProvider: React.FC<Props> = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
-    return (
+  return (
     <MetaDispatchContext.Provider value={dispatch}>
       <MetaStateContext.Provider value={state}>
         {children}
       </MetaStateContext.Provider>
     </MetaDispatchContext.Provider>
-    );
+  );
 };
 
-    export {
-      typeStateMap,
-      MetaStateContext,
-      MetaDispatchContext,
-      MetamaskStateProvider
-    }
+export {
+  typeStateMap,
+  MetaStateContext,
+  MetaDispatchContext,
+  MetamaskStateProvider
+}

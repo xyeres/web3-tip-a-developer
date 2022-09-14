@@ -1,21 +1,15 @@
 import React, { useEffect, useState } from "react";
-import useMetamask from "../hooks/useMetamask";
-import { MetaMaskState } from "../lib/store";
 import PriceChoice from "./PriceChoice";
+import { StepProps } from "./Web3Start";
 
-
-
-const PickTip = () => {
-  const { metaState, setMessage, setStep } = useMetamask()
-  const currentWalletAcc = metaState.account[0];
-
+const PickTip = ({ setTipmessage, setStep }: StepProps) => {
   useEffect(() => {
-    setMessage("Pick a tip amount")
-  }, [])
+    setTipmessage("Pick tip amount");
+  }, [setTipmessage]);
 
   // Handlers
   const onPriceChoiceClick = (amount: number) => {
-    setStep("STEP2")
+    setStep("STEP2");
   };
 
   const OPTIONS = [
@@ -26,9 +20,7 @@ const PickTip = () => {
 
   return (
     <div
-      className={`mt-5 transition-all origin-bottom duration-500 w-[600px] h-[120px] 
-            ${currentWalletAcc ? "scale-100" : "scale-0 h-0 overflow-hidden"}
-            `}
+      className={`mt-5 transition-all origin-bottom duration-500 w-[600px] h-[120px]`}
     >
       <div
         className={`flex h-full flex-row flex-wrap items-center justify-center gap-4`}

@@ -1,21 +1,19 @@
-import { EthereumProvider } from "hardhat/types";
+import { ExternalProvider } from "@ethersproject/providers";
 import { useContext, useEffect, useState, useRef } from "react";
 import { MetaDispatchContext, MetaStateContext } from "../lib/store";
 
-
-
-const chains = (chainId) => {
+const chains = (chainId: string) => {
   if (!!Number(chainId) && chainId.length > 9) {
     return "local";
   }
   switch (chainId) {
-    case "1": return "mainnet";
-    case "3": return "ropsten";
-    case "4": return "rinkeby";
-    case "5": return "goerli";
-    case "42": return "kovan";
-    case "137": return "maticmainnet";
-    case "80001": return "polygon-mumbai";
+    case "1": return "Ethereum mainnet";
+    case "3": return "Ethereum testnet ropsten";
+    case "4": return "Ethereum testnet rinkeby";
+    case "5": return "Ethereum testnet goerli";
+    case "42": return "Ethereum testnet kovan";
+    case "137": return "Matic mainnet";
+    case "80001": return "Matic testnet (mumbai)";
     default: return `unknown`;
   }
 };
@@ -24,7 +22,7 @@ const useMetamask = () => {
   const state = useContext(MetaStateContext);
   const dispatch = useContext(MetaDispatchContext);
   const _isMounted = useRef(true);
-  const [provider, setProvider] = useState<EthereumProvider | undefined>();
+  const [provider, setProvider] = useState<ExternalProvider>();
 
   // Set provider in browser only (NextJS)
   useEffect(() => {
@@ -38,8 +36,8 @@ const useMetamask = () => {
   }, []);
 
 
-  const connect = async (Web3Interface, settings = {}, requestPermission: boolean = false) => {
-    if (!provider) throw Error("Metamask is not available.");
+  const connect = async (Web3Interface: any, settings = {}, requestPermission: boolean = false) => {
+    if (!provider) throw Error("MetaMask is not available.");
     if (state.account[0]) return;
     if (!Web3Interface)
       throw Error("Web3 Provider is required. You can use ethers.js");
@@ -55,19 +53,21 @@ const useMetamask = () => {
       dispatch({ type: "SET_WEB3", payload: _web3 });
     }
 
-    function chainChangedHandler(chainId) {
+    function chainChangedHandler(chainId: string) {
       const _chainId = parseInt(chainId, 16).toString();
       const _chainInfo = { id: _chainId, name: chains(_chainId) };
       dispatch({ type: "SET_CHAIN", payload: _chainInfo });
       window.location.reload();
     }
 
-    function accountsChangedHandler(accounts) {
+    function accountsChangedHandler(accounts: []) {
       if (!accounts.length) dispatch({ type: "SET_CONNECTED", payload: false });
       dispatch({ type: "SET_ACCOUNT", payload: accounts });
     }
 
+    //@ts-ignore
     provider.on("accountsChanged", accountsChangedHandler);
+    //@ts-ignore
     provider.on("chainChanged", chainChangedHandler);
 
     await getAccounts({ requestPermission });
@@ -80,6 +80,7 @@ const useMetamask = () => {
       return;
     }
     try {
+      //@ts-ignore
       const accounts = await provider.request({
         method: requestPermission ? "eth_requestAccounts" : "eth_accounts",
         params: []
@@ -100,6 +101,7 @@ const useMetamask = () => {
       return;
     }
     try {
+      //@ts-ignore
       const chainId = await provider.request({
         method: "net_version",
         params: []
@@ -115,33 +117,8 @@ const useMetamask = () => {
     }
   }
 
-  function getMessage() {
-    return state.msg
-  }
-
-  function setMessage(message: string) {
-    dispatch({
-      type: "SET_MSG",
-      payload: message
-    })
-  }
-
-  function getStep() {
-    return state.step
-  }
-
-  function setStep(step: string) {
-    dispatch({
-      type: "SET_STEP",
-      payload: step
-    })
-  }
 
   return {
-    getMessage,
-    setMessage,
-    getStep,
-    setStep,
     connect,
     getAccounts,
     getChain,

@@ -1,15 +1,14 @@
 import React, { useEffect } from 'react'
 import useMetamask from '../hooks/useMetamask';
+import { StepProps } from './Web3Start';
 
-const ThankYou = () => {
-  const { setMessage } = useMetamask()
-
+const ThankYou = ({ setTipmessage }: StepProps) => {
   useEffect(() => {
-    setMessage("Thank You for your cheers!")
-  }, [])
+    setTipmessage("");
+  }, [setTipmessage]);
 
   return (
-    <></>
+    <>Thank you</>
   )
 }
 
