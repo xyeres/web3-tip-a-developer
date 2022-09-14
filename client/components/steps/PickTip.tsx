@@ -3,11 +3,11 @@ import PriceChoice from "../PriceChoice";
 import { StepProps } from "../Web3Start";
 
 const PickTip = ({ setTipmessage, setTipAmount, setStep }: StepProps) => {
-  useEffect(() => setTipmessage("Pick tip amount"), [setTipmessage]);
+  useEffect(() => setTipmessage("Pick tip amount*"), [setTipmessage]);
 
   // Handlers
-  const onPriceChoiceClick = (amount: number) => {
-    setStep("writeMemo");
+  const onPriceChoiceClick = (amount: string) => {
+    setStep("writeMessage");
     setTipAmount(amount)
     console.log(amount);
   };
@@ -30,7 +30,7 @@ const PickTip = ({ setTipmessage, setTipAmount, setStep }: StepProps) => {
             key={option.amount}
             amount={option.amount}
             conversion={option.conversion}
-            onClick={() => onPriceChoiceClick(parseInt(option.amount))}
+            onClick={() => onPriceChoiceClick(option.amount)}
           />
         ))}
       </div>

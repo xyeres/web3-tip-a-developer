@@ -5,7 +5,7 @@ import React, {
 } from "react";
 import { StepProps } from "../Web3Start";
 
-const WriteMemo = ({
+const WriteMessage = ({
   userName,
   userMessage,
   setUserName,
@@ -50,7 +50,7 @@ const WriteMemo = ({
           </label>
           <input
             required
-            className="text-gray-700 p-2 w-full focus:ring ring-purple-500 outline-none"
+            className="bg-neutral-800 text-gray-200 p-2 pl-3 w-full focus:ring ring-purple-500 outline-none"
             value={userName}
             placeholder="Your name is cool"
             id="name"
@@ -68,9 +68,9 @@ const WriteMemo = ({
           </label>
           <textarea
             required
-            className="text-gray-700 w-full p-2 focus:ring ring-purple-500 outline-none"
+            className="bg-neutral-800 text-gray-200 w-full p-2 pl-3 focus:ring ring-purple-500 outline-none"
             maxLength={120}
-            placeholder="A a little note... you know you want to (it's required, lol)"
+            placeholder="A little note... you know you want to (it's required, lol)"
             value={userMessage}
             id="message"
             rows={5}
@@ -95,4 +95,4 @@ const WriteMemo = ({
   );
 };
 
-export default WriteMemo;
+export default WriteMessage;

@@ -9,10 +9,10 @@ import Memos from "../components/Memos";
 import Pill from "../components/Pill";
 import Web3Start from "../components/Web3Start";
 import useMetamask from "../hooks/useMetamask";
+import { CONTRACT_ABI, CONTRACT_ADDRESS } from "../lib/constants";
 import github from "../public/imgs/github.svg";
 import linkedin from "../public/imgs/linkedin.svg";
 import twitter from "../public/imgs/twitter.svg";
-import abi from "../utils/BuyMeACoffee.json";
 
 const Profile: NextPage = () => {
   var memosInitialState: Memo[] = [
@@ -28,10 +28,6 @@ const Profile: NextPage = () => {
     },
   ];
 
-  // Contract Address & ABI
-  const contractAddress = "0x928514150f5914625CfBb6De11E432De4674c785";
-  const contractABI = abi.abi;
-
   // Hooks
   const { metaState } = useMetamask();
 
@@ -43,40 +39,7 @@ const Profile: NextPage = () => {
   const [userMessage, setUserMessage] = useState("");
   const [step, setStep] = useState("pickTip");
 
-  const buyCoffee = async () => {
-    try {
-      const { ethereum } = window;
 
-      if (ethereum) {
-        const provider = new ethers.providers.Web3Provider(ethereum, "any");
-        const signer = provider.getSigner();
-        const buyMeACoffee = new ethers.Contract(
-          contractAddress,
-          contractABI,
-          signer
-        );
-
-        console.log("buying coffee..");
-        const coffeeTxn = await buyMeACoffee.buyCoffee(
-          userName ? userName : "anon",
-          userMessage ? userMessage : "Enjoy your coffee!",
-          { value: ethers.utils.parseEther("0.001") }
-        );
-
-        await coffeeTxn.wait();
-
-        console.log("mined ", coffeeTxn.hash);
-
-        console.log("coffee purchased!");
-
-        // Clear the form fields.
-        setUserName("");
-        setUserMessage("");
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   // Function to fetch all memos stored on-chain.
   const getMemos = async () => {
@@ -86,8 +49,8 @@ const Profile: NextPage = () => {
         const provider = new ethers.providers.Web3Provider(ethereum);
         const signer = provider.getSigner();
         const buyMeACoffee = new ethers.Contract(
-          contractAddress,
-          contractABI,
+          CONTRACT_ADDRESS,
+          CONTRACT_ABI,
           signer
         );
         console.log("fetching memos from the blockchain..");
@@ -129,7 +92,7 @@ const Profile: NextPage = () => {
     if (ethereum) {
       const provider = new ethers.providers.Web3Provider(ethereum, "any");
       const signer = provider.getSigner();
-      buyMeACoffee = new ethers.Contract(contractAddress, contractABI, signer);
+      buyMeACoffee = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
 
       buyMeACoffee.on("NewMemo", onNewMemo);
     }
@@ -240,7 +203,7 @@ const Profile: NextPage = () => {
 
       <footer className="min-h-[30vh] footer-bg">
         <p className="text-xs pt-14 px-4 text-center text-[#8a8a8a]">
-          * (Send $MATIC on Polygon only). By sending crypto to my address using
+          *By sending crypto to me using
           this form, you agree that this is a free-will donation with no
           promised return in goods or services. No refunds.
         </p>

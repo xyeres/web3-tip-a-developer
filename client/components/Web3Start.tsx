@@ -12,18 +12,18 @@ import ConnectWalletBtn from "./ConnectWalletBtn";
 import PickTip from "./steps/PickTip";
 import ReviewTip from "./steps/ReviewTip";
 import ThankYou from "./steps/ThankYou";
-import WriteMemo from "./steps/WriteMemo";
+import WriteMessage from "./steps/WriteMessage";
 
 export type StepProps = {
   step: string;
-  setStep: Dispatch<SetStateAction<string>>;
   tipmessage: string;
-  setTipmessage: Dispatch<SetStateAction<string>>;
   tipAmount: string;
-  setTipAmount: Dispatch<SetStateAction<string>>;
   userName: string;
-  setUserName: Dispatch<SetStateAction<string>>;
   userMessage: string;
+  setStep: Dispatch<SetStateAction<string>>;
+  setTipmessage: Dispatch<SetStateAction<string>>;
+  setTipAmount: Dispatch<SetStateAction<string>>;
+  setUserName: Dispatch<SetStateAction<string>>;
   setUserMessage: Dispatch<SetStateAction<string>>;
 };
 
@@ -37,7 +37,7 @@ const Web3Start = ({
   tipmessage,
   setTipmessage,
   tipAmount,
-  setTipAmount
+  setTipAmount,
 }: StepProps) => {
   // Hooks
   const { connect, metaState } = useMetamask();
@@ -70,10 +70,10 @@ const Web3Start = ({
       },
     },
     {
-      key: "writeMemo",
+      key: "writeMessage",
       render: () => {
         return (
-          <WriteMemo
+          <WriteMessage
             setUserName={setUserName}
             userName={userName}
             step={step}
@@ -180,11 +180,8 @@ const Web3Start = ({
               setTipmessage={setTipmessage}
             />
           )
-        ) : isAcceptableChain ? (
-          stepList.find((s) => s.key === step)?.render()
-        ) : (
-          <ChainCheck setTipmessage={setTipmessage} />
-        )}
+        ) : stepList.find((s) => s.key === step)?.render()
+        }
 
         {error?.message && (
           <p className="mt-3 text-red-700">Error: {error?.message}</p>
@@ -195,3 +192,10 @@ const Web3Start = ({
 };
 
 export default Web3Start;
+
+
+// : isAcceptableChain ? (
+  // stepList.find((s) => s.key === step)?.render()
+  // ) : (
+  //   <ChainCheck setTipmessage={setTipmessage} />
+  // )
