@@ -1,14 +1,5 @@
-import React, { createContext, useReducer } from "react";
+import React, { createContext, ReactNode, useReducer } from "react";
 import { EthereumProvider } from "hardhat/types"
-
-const typeStateMap = {
-  SET_ACCOUNT: "account",
-  SET_CHAIN: "chain",
-  SET_CONNECTED: "isConnected",
-  SET_WEB3: "web3",
-  SET_MSG: "msg",
-  SET_STEP: "step",
-};
 
 export type MetaMaskState = {
   account: string[];
@@ -24,6 +15,15 @@ type ReducerAction = {
   payload: number | string | object
 }
 
+const typeStateMap = {
+  SET_ACCOUNT: "account",
+  SET_CHAIN: "chain",
+  SET_CONNECTED: "isConnected",
+  SET_WEB3: "web3",
+  SET_MSG: "msg",
+  SET_STEP: "step",
+};
+
 export const initialState: MetaMaskState = {
   account: [],
   chain: { id: null, name: "" },
@@ -33,7 +33,7 @@ export const initialState: MetaMaskState = {
   step: "STEP1",
 };
 
-const reducer = (state, action: ReducerAction) => {
+const reducer = (state: any, action: ReducerAction) => {
   const stateName = typeStateMap[action.type as keyof typeof typeStateMap];
   if (!stateName) {
     console.warn(`Unkown action type: ${action.type}`);
@@ -43,22 +43,28 @@ const reducer = (state, action: ReducerAction) => {
 }
 
 const MetaStateContext = createContext(initialState);
-const MetaDispatchContext = createContext();
+const MetaDispatchContext = createContext<React.Dispatch<ReducerAction>>(() => null);
 
-const MetamaskStateProvider = ({ children }) => {
+
+  type Props = {
+    children ?: ReactNode
+  }
+
+
+  const MetamaskStateProvider: React.FC<Props> = ({children}) => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  return (
+    return (
     <MetaDispatchContext.Provider value={dispatch}>
       <MetaStateContext.Provider value={state}>
         {children}
       </MetaStateContext.Provider>
     </MetaDispatchContext.Provider>
-  );
+    );
 };
 
-export {
-  typeStateMap,
-  MetaStateContext,
-  MetaDispatchContext,
-  MetamaskStateProvider
-}
+    export {
+      typeStateMap,
+      MetaStateContext,
+      MetaDispatchContext,
+      MetamaskStateProvider
+    }
