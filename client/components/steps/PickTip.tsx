@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from "react";
-import PriceChoice from "./PriceChoice";
-import { StepProps } from "./Web3Start";
+import React, { useEffect } from "react";
+import PriceChoice from "../PriceChoice";
+import { StepProps } from "../Web3Start";
 
-const PickTip = ({ setTipmessage, setStep }: StepProps) => {
-  useEffect(() => {
-    setTipmessage("Pick tip amount");
-  }, [setTipmessage]);
+const PickTip = ({ setTipmessage, setTipAmount, setStep }: StepProps) => {
+  useEffect(() => setTipmessage("Pick tip amount"), [setTipmessage]);
 
   // Handlers
   const onPriceChoiceClick = (amount: number) => {
-    setStep("STEP2");
+    setStep("writeMemo");
+    setTipAmount(amount)
+    console.log(amount);
   };
 
   const OPTIONS = [

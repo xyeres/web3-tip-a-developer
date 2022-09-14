@@ -4,16 +4,15 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import ConnectWalletBtn from "../components/ConnectWalletBtn";
-import Web3Start from "../components/Web3Start";
 import type { Memo } from "../components/Memos";
 import Memos from "../components/Memos";
 import Pill from "../components/Pill";
+import Web3Start from "../components/Web3Start";
 import useMetamask from "../hooks/useMetamask";
 import github from "../public/imgs/github.svg";
 import linkedin from "../public/imgs/linkedin.svg";
 import twitter from "../public/imgs/twitter.svg";
 import abi from "../utils/BuyMeACoffee.json";
-
 
 const Profile: NextPage = () => {
   var memosInitialState: Memo[] = [
@@ -36,22 +35,13 @@ const Profile: NextPage = () => {
   // Hooks
   const { metaState } = useMetamask();
 
-
   // Component state
   const [memos, setMemos] = useState(memosInitialState);
+  const [tipmessage, setTipmessage] = useState("");
+  const [tipAmount, setTipAmount] = useState("");
   const [userName, setUserName] = useState("");
   const [userMessage, setUserMessage] = useState("");
-  const [tipmessage, setTipmessage] = useState("")
-  const [step, setStep] = useState("STEP1")
-
-
-  const onNameChange = (event) => {
-    setUserName(event.target.value);
-  };
-
-  const onMessageChange = (event) => {
-    setUserMessage(event.target.value);
-  };
+  const [step, setStep] = useState("pickTip");
 
   const buyCoffee = async () => {
     try {
@@ -90,26 +80,26 @@ const Profile: NextPage = () => {
 
   // Function to fetch all memos stored on-chain.
   const getMemos = async () => {
-    // try {
-    //   const { ethereum } = window;
-    //   if (ethereum) {
-    //     const provider = new ethers.providers.Web3Provider(ethereum);
-    //     const signer = provider.getSigner();
-    //     const buyMeACoffee = new ethers.Contract(
-    //       contractAddress,
-    //       contractABI,
-    //       signer
-    //     );
-    //     console.log("fetching memos from the blockchain..");
-    //     const memos = await buyMeACoffee.getMemos();
-    //     console.log("fetched!");
-    //     setMemos(memos);
-    //   } else {
-    //     console.log("Metamask is not connected");
-    //   }
-    // } catch (error) {
-    //   console.log(error);
-    // }
+    try {
+      const { ethereum } = window;
+      if (ethereum) {
+        const provider = new ethers.providers.Web3Provider(ethereum);
+        const signer = provider.getSigner();
+        const buyMeACoffee = new ethers.Contract(
+          contractAddress,
+          contractABI,
+          signer
+        );
+        console.log("fetching memos from the blockchain..");
+        const memos = await buyMeACoffee.getMemos();
+        console.log("fetched!");
+        setMemos(memos);
+      } else {
+        console.log("Metamask is not connected");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   /* useEffects: */
@@ -211,7 +201,18 @@ const Profile: NextPage = () => {
           <p className="text-[#AAAAAA]">{tipmessage}</p>
 
           {metaState.isAvailable ? (
-            <Web3Start step={step} setStep={setStep} tipmessage={tipmessage} setTipmessage={setTipmessage} />
+            <Web3Start
+              setUserName={setUserName}
+              userName={userName}
+              step={step}
+              setStep={setStep}
+              tipmessage={tipmessage}
+              setTipmessage={setTipmessage}
+              setTipAmount={setTipAmount}
+              tipAmount={tipAmount}
+              userMessage={userMessage}
+              setUserMessage={setUserMessage}
+            />
           ) : (
             <div className="flex items-center flex-col">
               <ConnectWalletBtn

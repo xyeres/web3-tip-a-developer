@@ -18,8 +18,6 @@ const typeStateMap = {
   SET_CHAIN: "chain",
   SET_CONNECTED: "isConnected",
   SET_WEB3: "web3",
-  SET_MSG: "msg",
-  SET_STEP: "step",
 };
 
 export const initialState: MetaMaskState = {
