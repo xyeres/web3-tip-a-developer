@@ -2,6 +2,7 @@ import React, { ChangeEvent, FormEvent, useEffect, useContext } from "react";
 import useStepMessage from "../../hooks/useStepMessage";
 import { StepsContext } from "../../lib/StepsProvider";
 import { TipContext } from "../../lib/TipProvider";
+import StepButton from "./StepButton";
 
 const Message = () => {
   // Set display message
@@ -71,18 +72,14 @@ const Message = () => {
         </div>
 
         <div className="flex flex-col w-full gap-2">
-          <button
+          <StepButton
+            title="Next"
             type="submit"
-            className="bg-blue-700 py-2 text-sm px-6 disabled:opacity-50"
-          >
-            Next
-          </button>
-          <button
+          />
+          <StepButton
+            title="Prev"
             onClick={() => getPrevStep()}
-            className="bg-gray-700 py-1 text-sm px-6 disabled:opacity-50"
-          >
-            Prev
-          </button>
+          />
         </div>
       </form>
     </div>

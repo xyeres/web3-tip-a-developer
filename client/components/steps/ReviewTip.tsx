@@ -2,6 +2,7 @@ import { ethers } from "ethers";
 import React, { useContext, useEffect, useState } from "react";
 import useStepMessage from "../../hooks/useStepMessage";
 import { CONTRACT_ABI, CONTRACT_ADDRESS } from "../../lib/constants";
+import { StepsContext } from "../../lib/StepsProvider";
 import { TipContext } from "../../lib/TipProvider";
 import Spinner from "../Spinner";
 import StepButton from "./StepButton";
@@ -12,6 +13,7 @@ const ReviewTip = () => {
   useEffect(() => setStepMessage("Review & sign"), [setStepMessage]);
 
   const { tip, config: tipConfig } = useContext(TipContext);
+  const { getPrevStep } = useContext(StepsContext)
 
   const [txLoading, setTxLoading] = useState(false);
   const [txMessage, setTxMessage] = useState(
@@ -100,13 +102,15 @@ const ReviewTip = () => {
             <p>{parseInt(tip.amount).toFixed(2)} $MATIC</p>
           </div>
           <FinalStepButtons
-            className="p-2 mb-2 text-[.9rem] hover:bg-purple-400 active:bg-purple-400 bg-purple-700 w-full focus:ring ring-purple-100 outline-none"
             title="Yupp. Sign Transaction!"
             onClick={handleConfirmTransaction}
           />
+          <StepButton
+            title="Prev"
+            onClick={() => getPrevStep()} />
         </>
       }
-    </div>
+    </div >
   );
 };
 
@@ -116,7 +120,7 @@ const FinalStepButtons = ({
   className,
 }: {
   title: string;
-  className: string;
+  className?: string;
   onClick: () => void;
 }) => {
   return <StepButton title={title} onClick={onClick} className={className} />;

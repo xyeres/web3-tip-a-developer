@@ -49,7 +49,6 @@ export default function DefaultButtons() {
         title="Prev"
         disabled={isPrevDisabled}
         onClick={() => handleStepBtn("PREV")}
-        className="bg-gray-700 py-1 text-sm px-6 disabled:opacity-50"
       />}
     </div>
   );
