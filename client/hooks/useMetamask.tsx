@@ -1,6 +1,6 @@
 import { ExternalProvider } from "@ethersproject/providers";
 import { useContext, useEffect, useState, useRef } from "react";
-import { MetaDispatchContext, MetaStateContext } from "../lib/store";
+import { MetaDispatchContext, MetaStateContext } from "../lib/MetamaskStateProvider";
 
 const chains = (chainId: string) => {
   if (!!Number(chainId) && chainId.length > 9) {

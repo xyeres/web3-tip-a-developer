@@ -1,42 +1,33 @@
-import React, {
-  ChangeEvent,
-  FormEvent,
-  useEffect,
-} from "react";
-import { StepProps } from "../Web3Start";
+import React, { ChangeEvent, FormEvent, useEffect, useContext } from "react";
+import useStepMessage from "../../hooks/useStepMessage";
+import { StepsContext } from "../../lib/StepsProvider";
+import { TipContext } from "../../lib/TipProvider";
 
-const WriteMessage = ({
-  userName,
-  userMessage,
-  setUserName,
-  setUserMessage,
-  setStep,
-  setTipmessage,
-}: StepProps) => {
+const Message = () => {
+  // Set display message
+  const { setStepMessage } = useStepMessage();
+  useEffect(() => setStepMessage("Leave your mark"), [setStepMessage]);
+
+  // Context
+  const { tip, config: tipConfig } = useContext(TipContext);
+  const { getPrevStep, getNextStep } = useContext(StepsContext);
+
   const onNameChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setUserName(e.target.value);
+    tipConfig.setUser(e.target.value);
   };
 
   const onMessageChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const cleanMsg = e.target.value.substring(0, 121);
-    setUserMessage(cleanMsg);
+    tipConfig.setMessage(cleanMsg);
   };
 
   const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setStep("review");
+    getNextStep();
   };
 
-  function handleBackBtn() {
-    setStep("pickTip");
-  }
-
-  useEffect(() => {
-    setTipmessage("Write a note and give yourself a name");
-  }, [setTipmessage]);
-
   return (
-    <div className="w-[270px]">
+    <div className="">
       <form
         onSubmit={handleFormSubmit}
         className="mt-4 flex flex-col items-start"
@@ -51,7 +42,7 @@ const WriteMessage = ({
           <input
             required
             className="bg-neutral-800 text-gray-200 p-2 pl-3 w-full focus:ring ring-purple-500 outline-none"
-            value={userName}
+            value={tip.user}
             placeholder="Your name is cool"
             id="name"
             name="name"
@@ -71,28 +62,31 @@ const WriteMessage = ({
             className="bg-neutral-800 text-gray-200 w-full p-2 pl-3 focus:ring ring-purple-500 outline-none"
             maxLength={120}
             placeholder="A little note... you know you want to (it's required, lol)"
-            value={userMessage}
+            value={tip.message}
             id="message"
             rows={5}
             name="message"
             onChange={onMessageChange}
           />
         </div>
-        <button
-          className="p-2 text-[.9rem] mb-2 hover:bg-purple-400 active:bg-purple-400 bg-purple-700 w-full focus:ring ring-purple-100 outline-none"
-          type="submit"
-        >
-          Next
-        </button>
-        <button
-          className="p-2 text-[.9rem] hover:bg-gray-400 active:bg-gray-600 bg-gray-500 w-full focus:ring ring-purple-100 outline-none"
-          onClick={handleBackBtn}
-        >
-          Back
-        </button>
+
+        <div className="flex flex-col w-full gap-2">
+          <button
+            type="submit"
+            className="bg-blue-700 py-2 text-sm px-6 disabled:opacity-50"
+          >
+            Next
+          </button>
+          <button
+            onClick={() => getPrevStep()}
+            className="bg-gray-700 py-1 text-sm px-6 disabled:opacity-50"
+          >
+            Prev
+          </button>
+        </div>
       </form>
     </div>
   );
 };
 
-export default WriteMessage;
+export default Message;

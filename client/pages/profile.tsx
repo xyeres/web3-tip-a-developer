@@ -9,6 +9,7 @@ import Memos from "../components/Memos";
 import Pill from "../components/Pill";
 import Web3Start from "../components/Web3Start";
 import useMetamask from "../hooks/useMetamask";
+import useStepMessage from "../hooks/useStepMessage";
 import { CONTRACT_ABI, CONTRACT_ADDRESS } from "../lib/constants";
 import github from "../public/imgs/github.svg";
 import linkedin from "../public/imgs/linkedin.svg";
@@ -30,16 +31,10 @@ const Profile: NextPage = () => {
 
   // Hooks
   const { metaState } = useMetamask();
+  const { stepMessage } = useStepMessage();
 
   // Component state
   const [memos, setMemos] = useState(memosInitialState);
-  const [tipmessage, setTipmessage] = useState("");
-  const [tipAmount, setTipAmount] = useState("");
-  const [userName, setUserName] = useState("");
-  const [userMessage, setUserMessage] = useState("");
-  const [step, setStep] = useState("pickTip");
-
-
 
   // Function to fetch all memos stored on-chain.
   const getMemos = async () => {
@@ -67,42 +62,42 @@ const Profile: NextPage = () => {
 
   /* useEffects: */
 
-  useEffect(() => {
-    var buyMeACoffee: any;
-    getMemos();
+  // useEffect(() => {
+  //   var buyMeACoffee: any;
+  //   getMemos();
 
-    // Create an event handler function for when someone sends
-    // us a new memo.
-    const onNewMemo = (from, timestamp, name, message) => {
-      console.log("Memo received: ", from, timestamp, name, message);
-      setMemos((prevState) => [
-        ...prevState,
-        {
-          address: from,
-          timestamp: new Date(timestamp * 1000),
-          message,
-          name,
-        },
-      ]);
-    };
+  //   // Create an event handler function for when someone sends
+  //   // us a new memo.
+  //   const onNewMemo = (from, timestamp, name, message) => {
+  //     console.log("Memo received: ", from, timestamp, name, message);
+  //     setMemos((prevState) => [
+  //       ...prevState,
+  //       {
+  //         address: from,
+  //         timestamp: new Date(timestamp * 1000),
+  //         message,
+  //         name,
+  //       },
+  //     ]);
+  //   };
 
-    const { ethereum } = window;
+  //   const { ethereum } = window;
 
-    // Listen for new memo events.
-    if (ethereum) {
-      const provider = new ethers.providers.Web3Provider(ethereum, "any");
-      const signer = provider.getSigner();
-      buyMeACoffee = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
+  //   // Listen for new memo events.
+  //   if (ethereum) {
+  //     const provider = new ethers.providers.Web3Provider(ethereum, "any");
+  //     const signer = provider.getSigner();
+  //     buyMeACoffee = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
 
-      buyMeACoffee.on("NewMemo", onNewMemo);
-    }
+  //     buyMeACoffee.on("NewMemo", onNewMemo);
+  //   }
 
-    return () => {
-      if (buyMeACoffee) {
-        buyMeACoffee.off("NewMemo", onNewMemo);
-      }
-    };
-  }, []);
+  //   return () => {
+  //     if (buyMeACoffee) {
+  //       buyMeACoffee.off("NewMemo", onNewMemo);
+  //     }
+  //   };
+  // }, []);
 
   return (
     <>
@@ -161,21 +156,10 @@ const Profile: NextPage = () => {
 
         <section className="relative mx-auto h-full my-0 mt-[96px] text-center items-center justify-center flex flex-col ">
           <h2 className="text-[1.75rem] font-semibold">Want to cheers too?</h2>
-          <p className="text-[#AAAAAA]">{tipmessage}</p>
+          <p className="text-[#AAAAAA]">{stepMessage}</p>
 
           {metaState.isAvailable ? (
-            <Web3Start
-              setUserName={setUserName}
-              userName={userName}
-              step={step}
-              setStep={setStep}
-              tipmessage={tipmessage}
-              setTipmessage={setTipmessage}
-              setTipAmount={setTipAmount}
-              tipAmount={tipAmount}
-              userMessage={userMessage}
-              setUserMessage={setUserMessage}
-            />
+            <Web3Start />
           ) : (
             <div className="flex items-center flex-col">
               <ConnectWalletBtn
@@ -183,7 +167,6 @@ const Profile: NextPage = () => {
                 isLoading={false}
                 disabled
                 title="Connect MetaMask"
-                setTipmessage={() => null}
               />
               <div className="mt-3 text-xs">
                 <p>Looks like you don&apos;t have Metamask installed :(</p>
@@ -203,9 +186,9 @@ const Profile: NextPage = () => {
 
       <footer className="min-h-[30vh] footer-bg">
         <p className="text-xs pt-14 px-4 text-center text-[#8a8a8a]">
-          *By sending crypto to me using
-          this form, you agree that this is a free-will donation with no
-          promised return in goods or services. No refunds.
+          *By sending crypto to me using this form, you agree that this is a
+          free-will donation with no promised return in goods or services. No
+          refunds.
         </p>
       </footer>
     </>

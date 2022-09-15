@@ -11,7 +11,7 @@ type Props = {
 const PriceChoice = (props: Props) => {
   return (
     <div onClick={props.onClick}
-      className={`cursor-pointer relative w-[110px] active:translate-y-[3px] h-full border border-white hover:border-purple-400 transition-colors flex flex-col items-center justify-center gap-1}`}
+      className={`cursor-pointer relative w-[110px] h-[120px] active:translate-y-[3px] border border-white hover:border-purple-400 transition-colors flex flex-col items-center justify-center gap-1}`}
     >
       <div className="flex flex-row items-center justify-center gap-1">
         <Image src={matic} width={32} height={32} alt="$MATIC Polygon" />

@@ -9,14 +9,9 @@ type Props = {
   title: string;
   isLoading: boolean;
   disabled?: boolean;
-  setTipmessage: Dispatch<SetStateAction<string>>;
 };
 
-const ConnectWalletBtn = ({ setTipmessage, title, isLoading, disabled, connectWallet }: Props) => {
-  useEffect(() => {
-    setTipmessage("Login with MetaMask to send tip*");
-  }, [setTipmessage])
-
+const ConnectWalletBtn = ({ title, isLoading, disabled, connectWallet }: Props) => {
   return (
     <button
       disabled={disabled}

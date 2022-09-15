@@ -3,42 +3,18 @@ import React, {
   Dispatch,
   SetStateAction,
   useCallback,
+  useContext,
   useEffect,
   useState,
 } from "react";
 import useMetamask from "../hooks/useMetamask";
-import ChainCheck from "./ChainCheck";
+import { StepsContext } from "../lib/StepsProvider";
 import ConnectWalletBtn from "./ConnectWalletBtn";
-import PickTip from "./steps/PickTip";
-import ReviewTip from "./steps/ReviewTip";
-import ThankYou from "./steps/ThankYou";
-import WriteMessage from "./steps/WriteMessage";
 
-export type StepProps = {
-  step: string;
-  tipmessage: string;
-  tipAmount: string;
-  userName: string;
-  userMessage: string;
-  setStep: Dispatch<SetStateAction<string>>;
-  setTipmessage: Dispatch<SetStateAction<string>>;
-  setTipAmount: Dispatch<SetStateAction<string>>;
-  setUserName: Dispatch<SetStateAction<string>>;
-  setUserMessage: Dispatch<SetStateAction<string>>;
-};
+const Web3Start = () => {
+  // Context
+  const stepsContext = useContext(StepsContext);
 
-const Web3Start = ({
-  userName,
-  userMessage,
-  setUserName,
-  setUserMessage,
-  step,
-  setStep,
-  tipmessage,
-  setTipmessage,
-  tipAmount,
-  setTipAmount,
-}: StepProps) => {
   // Hooks
   const { connect, metaState } = useMetamask();
 
@@ -48,85 +24,6 @@ const Web3Start = ({
 
   const isAcceptableChain =
     metaState.chain.id === "137" || metaState.chain.id === "80001";
-
-  const stepList = [
-    {
-      key: "pickTip",
-      render: () => {
-        return (
-          <PickTip
-            setUserName={setUserName}
-            userName={userName}
-            step={step}
-            setStep={setStep}
-            tipmessage={tipmessage}
-            setTipmessage={setTipmessage}
-            setTipAmount={setTipAmount}
-            tipAmount={tipAmount}
-            userMessage={userMessage}
-            setUserMessage={setUserMessage}
-          />
-        );
-      },
-    },
-    {
-      key: "writeMessage",
-      render: () => {
-        return (
-          <WriteMessage
-            setUserName={setUserName}
-            userName={userName}
-            step={step}
-            setStep={setStep}
-            tipmessage={tipmessage}
-            setTipmessage={setTipmessage}
-            setTipAmount={setTipAmount}
-            tipAmount={tipAmount}
-            userMessage={userMessage}
-            setUserMessage={setUserMessage}
-          />
-        );
-      },
-    },
-    {
-      key: "review",
-      render: () => {
-        return (
-          <ReviewTip
-            setUserName={setUserName}
-            userName={userName}
-            step={step}
-            setStep={setStep}
-            tipmessage={tipmessage}
-            setTipmessage={setTipmessage}
-            setTipAmount={setTipAmount}
-            tipAmount={tipAmount}
-            userMessage={userMessage}
-            setUserMessage={setUserMessage}
-          />
-        );
-      },
-    },
-    {
-      key: "thankyou",
-      render: () => {
-        return (
-          <ThankYou
-            setUserName={setUserName}
-            userName={userName}
-            step={step}
-            setStep={setStep}
-            tipmessage={tipmessage}
-            setTipmessage={setTipmessage}
-            setTipAmount={setTipAmount}
-            tipAmount={tipAmount}
-            userMessage={userMessage}
-            setUserMessage={setUserMessage}
-          />
-        );
-      },
-    },
-  ];
 
   // Wallet Connect
   const connectWithPermission = useCallback(
@@ -141,7 +38,6 @@ const Web3Start = ({
   );
 
   useEffect(() => {
-    console.log("ran");
     if (metaState.isAvailable) {
       (async () => {
         try {
@@ -151,9 +47,10 @@ const Web3Start = ({
         }
       })();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [metaState.isAvailable, metaState.isConnected]);
 
-  function handleConnectMetaMask() {
+  function handleConnectMetaMask(): void {
     if (!metaState.isConnected) {
       (async () => {
         try {
@@ -171,20 +68,18 @@ const Web3Start = ({
   return (
     <div className="flex flex-col items-center">
       <>
-        {!metaState.isConnected ? (
-          metaState.isAvailable && (
+        {!metaState.isConnected
+          ? metaState.isAvailable && (
             <ConnectWalletBtn
               isLoading={isWalletLoading}
               title="Connect with MetaMask"
               connectWallet={handleConnectMetaMask}
-              setTipmessage={setTipmessage}
             />
           )
-        ) : stepList.find((s) => s.key === step)?.render()
-        }
+          : stepsContext.getCurrentStep().render()}
 
         {error?.message && (
-          <p className="mt-3 text-red-700">Error: {error?.message}</p>
+          <p className="mt-3 text-red-700">Error: {error.message}</p>
         )}
       </>
     </div>
@@ -193,9 +88,8 @@ const Web3Start = ({
 
 export default Web3Start;
 
-
 // : isAcceptableChain ? (
-  // stepList.find((s) => s.key === step)?.render()
-  // ) : (
-  //   <ChainCheck setTipmessage={setTipmessage} />
-  // )
+// stepList.find((s) => s.key === step)?.render()
+// ) : (
+//   <ChainCheck setTipmessage={setTipmessage} />
+// )

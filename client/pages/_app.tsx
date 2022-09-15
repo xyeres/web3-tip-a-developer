@@ -1,11 +1,17 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
-import { MetamaskStateProvider } from '../lib/store'
+import { MetamaskStateProvider } from '../lib/MetamaskStateProvider'
+import { StepsProvider } from '../lib/StepsProvider'
+import { TipProvider } from '../lib/TipProvider'
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <MetamaskStateProvider>
-      <Component {...pageProps} />
+      <StepsProvider>
+        <TipProvider>
+          <Component {...pageProps} />
+        </TipProvider>
+      </StepsProvider>
     </MetamaskStateProvider>
   )
 }

@@ -53,7 +53,7 @@ const Metatest: NextPage = () => {
         </button>
       )}
       {metaState.isAvailable ? (
-        <Web3Start />
+        "You're in!"
       ) : (
         <div>
           <p>You dont have Metamask installed</p>
