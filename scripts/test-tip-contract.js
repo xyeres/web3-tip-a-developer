@@ -2,7 +2,7 @@ const hre = require("hardhat");
 
 // Returns the Ether balance of a given address
 async function getBalance(address) {
-  const balanceBigInt = await hre.waffle.provider.getBalance(address);
+  const balanceBigInt = await hre.ethers.provider.getBalance(address);
   return hre.ethers.utils.formatEther(balanceBigInt);
 }
 
