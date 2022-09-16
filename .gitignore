@@ -1,6 +1,7 @@
 #hardhat
 artifacts
 cache
+artifacts/contracts/BuyMeACoffee.sol/*
 
 # Logs
 logs
