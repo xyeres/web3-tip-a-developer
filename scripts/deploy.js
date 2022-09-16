@@ -5,10 +5,10 @@ const hre = require('hardhat')
 
 async function main() {
   // get the contract and deploy 
-  const BuyMeACoffee = await hre.ethers.getContractFactory("BuyMeACoffee");
-  const buyMeACoffee = await BuyMeACoffee.deploy();
-  await buyMeACoffee.deployed()
-  console.log(`BuyMeACoffee deployed to `, buyMeACoffee.address)
+  const TipADeveloper = await hre.ethers.getContractFactory("TipADeveloper");
+  const tipADeveloper = await TipADeveloper.deploy();
+  await tipADeveloper.deployed()
+  console.log(`TipADeveloper deployed to `, tipADeveloper.address)
 }
 
 main()

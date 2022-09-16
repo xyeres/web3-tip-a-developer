@@ -1,5 +1,5 @@
 const hre = require('hardhat');
-const contractJSON = require("../artifacts/contracts/BuyMeACoffee.sol/BuyMeACoffee.json")
+const contractJSON = require("../artifacts/contracts/TipADeveloper.sol/TipADeveloper.json")
 
 
 async function getBalance(provider, address) {
@@ -22,18 +22,18 @@ async function main() {
   const signer = new hre.ethers.Wallet(process.env.PRIVATE_KEY, provider)
 
   // instantiate connected contract
-  const buyMeACoffee = new hre.ethers.Contract(contractAddress, contractABI, signer)
+  const tipADeveloper = new hre.ethers.Contract(contractAddress, contractABI, signer)
 
   // Check starting balances
   const signerBalance = await getBalance(provider, signer.address)
   console.log("Initial Acccount Balances:")
   console.log('Current owner balance: ', signerBalance, " ETH")
-  const contractBalance = await getBalance(provider, buyMeACoffee.address)
+  const contractBalance = await getBalance(provider, tipADeveloper.address)
   console.log("Current contract balance: ", contractBalance, " ETH")
 
 
 
-  // const tx = await buyMeACoffee.updateWithdrawAddr('0x0702f85EC828861C37821Ed5557c702BaA1a490c')
+  // const tx = await tipADeveloper.transferOwner('0x0702f85EC828861C37821Ed5557c702BaA1a490c')
   // await tx.wait()
   // console.log('transfered', tx)
 
@@ -41,14 +41,14 @@ async function main() {
   if (contractBalance !== "0.0") {
     // Withdraw funds to owner
     console.log("Withdrawing", contractBalance, "ETH")
-    const withdrawTxn = await buyMeACoffee.withdrawTips()
+    const withdrawTxn = await tipADeveloper.withdrawTips()
     await withdrawTxn.wait()
     console.log("Withdraw successful")
   } else {
     console.log("No balance to withdraw")
   }
   console.log("Current balance of owner:", await getBalance(provider, signer.address), "ETH")
-  console.log("Current balance of contract:", await getBalance(provider, buyMeACoffee.address), "ETH")
+  console.log("Current balance of contract:", await getBalance(provider, tipADeveloper.address), "ETH")
 }
 
 // ensure error handling 

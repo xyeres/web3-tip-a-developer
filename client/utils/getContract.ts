@@ -3,7 +3,7 @@ function getContract() {
   /**
    *    const provider = new ethers.providers.Web3Provider(ethereum);
         const signer = provider.getSigner();
-        const buyMeACoffee = new ethers.Contract(
+        const tipADeveloper = new ethers.Contract(
           contractAddress,
           contractABI,
           signer

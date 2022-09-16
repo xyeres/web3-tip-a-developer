@@ -42,7 +42,7 @@ const ReviewTip = () => {
         console.log("Sending tip...");
 
         let reducedAmount = `${parseInt(amount) * 0.01}`;
-        const contractTx = await contract.buyCoffee(name, message, {
+        const contractTx = await contract.tip(name, message, {
           value: ethers.utils.parseEther(reducedAmount),
         });
         setTxMessage("Tip sent! Waiting for network confirmation...");

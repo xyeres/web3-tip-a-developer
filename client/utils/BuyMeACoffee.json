@@ -1,7 +1,7 @@
 {
   "_format": "hh-sol-artifact-1",
-  "contractName": "BuyMeACoffee",
-  "sourceName": "contracts/BuyMeACoffee.sol",
+  "contractName": "TipADeveloper",
+  "sourceName": "contracts/TipADeveloper.sol",
   "abi": [
     {
       "inputs": [],
@@ -52,7 +52,7 @@
           "type": "string"
         }
       ],
-      "name": "buyCoffee",
+      "name": "tip",
       "outputs": [],
       "stateMutability": "payable",
       "type": "function"
@@ -84,7 +84,7 @@
               "type": "string"
             }
           ],
-          "internalType": "struct BuyMeACoffee.Memo[]",
+          "internalType": "struct TipADeveloper.Memo[]",
           "name": "",
           "type": "tuple[]"
         }

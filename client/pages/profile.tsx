@@ -43,13 +43,13 @@ const Profile: NextPage = () => {
       if (ethereum) {
         const provider = new ethers.providers.Web3Provider(ethereum);
         const signer = provider.getSigner();
-        const buyMeACoffee = new ethers.Contract(
+        const tipADeveloper = new ethers.Contract(
           CONTRACT_ADDRESS,
           CONTRACT_ABI,
           signer
         );
         console.log("fetching memos from the blockchain..");
-        const memos = await buyMeACoffee.getMemos();
+        const memos = await tipADeveloper.getMemos();
         console.log("fetched!");
         setMemos(memos);
       } else {
@@ -63,7 +63,7 @@ const Profile: NextPage = () => {
   /* useEffects: */
 
   // useEffect(() => {
-  //   var buyMeACoffee: any;
+  //   var tipADeveloper: any;
   //   getMemos();
 
   //   // Create an event handler function for when someone sends
@@ -87,14 +87,14 @@ const Profile: NextPage = () => {
   //   if (ethereum) {
   //     const provider = new ethers.providers.Web3Provider(ethereum, "any");
   //     const signer = provider.getSigner();
-  //     buyMeACoffee = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
+  //     tipADeveloper = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
 
-  //     buyMeACoffee.on("NewMemo", onNewMemo);
+  //     tipADeveloper.on("NewMemo", onNewMemo);
   //   }
 
   //   return () => {
-  //     if (buyMeACoffee) {
-  //       buyMeACoffee.off("NewMemo", onNewMemo);
+  //     if (tipADeveloper) {
+  //       tipADeveloper.off("NewMemo", onNewMemo);
   //     }
   //   };
   // }, []);

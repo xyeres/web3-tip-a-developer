@@ -1,7 +1,7 @@
 //SPDX-License-Identifier: Unlicense
 pragma solidity ^0.8.0;
 
-contract BuyMeACoffee {
+contract TipADeveloper {
     // Emit when Memo is created
     event NewMemo(
         address indexed from,
@@ -28,12 +28,12 @@ contract BuyMeACoffee {
     }
 
     /**
-     * @dev buy a coffee for contract owner
-     * @param _name name of the coffee buyer
-     * @param _message a nice message from the coffee buyer
+     * @dev Sends tip to contract owner
+     * @param _name name of the tip sender
+     * @param _message a nice message from the tip sender
      */
-    function buyCoffee(string memory _name, string memory _message) public payable { 
-        require(msg.value > 0, "Can't buy coffee with 0 eth");
+    function tip(string memory _name, string memory _message) public payable { 
+        require(msg.value > 0, "Tip must be greater than 0");
 
         // add memo to storage
         memos.push(Memo(
@@ -53,8 +53,8 @@ contract BuyMeACoffee {
         require(owner.send(address(this).balance));
     }
 
-    function updateWithdrawAddr(address _newOwnerAddr) public {
-        require(msg.sender == owner, 'you must be owner of contract to transfer ownership');
+    function transferOwner(address _newOwnerAddr) public {
+        require(msg.sender == owner, 'You must be owner of contract to transfer ownership');
         owner = payable(_newOwnerAddr);
     }
 

@@ -15,7 +15,7 @@ async function printBalances(addresses) {
   }
 }
 
-// Logs memos stored on-chain from coffee purchases
+// Logs memos stored on-chain from tips
 async function printMemos(memos) {
   for (const memo of memos) {
     const timestamp = memo.timestamp
@@ -31,25 +31,25 @@ async function main() {
   const [owner, tipper, tipper2, tipper3] = await hre.ethers.getSigners();
 
   // get the contract and deploy 
-  const BuyMeACoffee = await hre.ethers.getContractFactory("BuyMeACoffee");
-  const buyMeACoffee = await BuyMeACoffee.deploy();
-  await buyMeACoffee.deployed()
-  console.log(`BuyMeACoffee deployed to `, buyMeACoffee.address)
+  const TipADeveloper = await hre.ethers.getContractFactory("TipADeveloper");
+  const tipADeveloper = await TipADeveloper.deploy();
+  await tipADeveloper.deployed()
+  console.log(`TipADeveloper deployed to `, tipADeveloper.address)
 
-  // check balances before coffee purchase
-  const addresses = [owner.address, tipper3.address, tipper2.address, buyMeACoffee.address]
+  // check balances before sending tip
+  const addresses = [owner.address, tipper3.address, tipper2.address, tipADeveloper.address]
   console.log('==== start ===')
   await printBalances(addresses)
 
-  // buy the owner a few coffees
+  // tip the contract owner a few coins
   const tip = { value: hre.ethers.utils.parseEther('2') }
-  await buyMeACoffee.connect(tipper3).buyCoffee("Bobby", "Love it", tip)
-  await buyMeACoffee.connect(tipper2).buyCoffee("Tallbutt", "Cool!", tip)
-  console.log('==== bought coffee ===')
+  await tipADeveloper.connect(tipper3).tip("Bobby", "Love it", tip)
+  await tipADeveloper.connect(tipper2).tip("Tallbutt", "Cool!", tip)
+  console.log('==== tip sent ===')
   await printBalances(addresses)
 
   // withdraw funds
-  // await buyMeACoffee.connect(owner).withdrawTips();
+  // await tipADeveloper.connect(owner).withdrawTips();
 
   // check balance after withdraw
   console.log('==== did not withdraw tips ===')
@@ -57,7 +57,7 @@ async function main() {
 
   //read all the memos left for the owner
   console.log('==== memos ===')
-  const memos = await buyMeACoffee.getMemos()
+  const memos = await tipADeveloper.getMemos()
   printMemos(memos)
 }
 

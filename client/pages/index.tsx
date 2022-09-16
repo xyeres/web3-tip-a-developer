@@ -1,5 +1,5 @@
 import type { NextPage } from 'next'
-import abi from '../utils/BuyMeACoffee.json';
+import abi from '../utils/TipADeveloper.json';
 import { ethers } from "ethers";
 import Head from 'next/head'
 import Image from 'next/image'
@@ -56,7 +56,7 @@ const Home: NextPage = () => {
       if (!ethereum) {
         console.log("please install MetaMask");
       }
-
+      // @ts-ignore
       const accounts = await ethereum.request({
         method: 'eth_requestAccounts'
       });
@@ -67,31 +67,31 @@ const Home: NextPage = () => {
     }
   }
 
-  const buyCoffee = async () => {
+  const tip = async () => {
     try {
       const { ethereum } = window;
 
       if (ethereum) {
         const provider = new ethers.providers.Web3Provider(ethereum, "any");
         const signer = provider.getSigner();
-        const buyMeACoffee = new ethers.Contract(
+        const tipADeveloper = new ethers.Contract(
           contractAddress,
           contractABI,
           signer
         );
 
-        console.log("buying coffee..")
-        const coffeeTxn = await buyMeACoffee.buyCoffee(
+        console.log("sending tip...")
+        const tipTx = await tipADeveloper.tip(
           name ? name : "anon",
-          message ? message : "Enjoy your coffee!",
+          message ? message : "Enjoy your tip!",
           { value: ethers.utils.parseEther("0.001") }
         );
 
-        await coffeeTxn.wait();
+        await tipTx.wait();
 
-        console.log("mined ", coffeeTxn.hash);
+        console.log("mined ", tipTx.hash);
 
-        console.log("coffee purchased!");
+        console.log("tip sent!");
 
         // Clear the form fields.
         setName("");
@@ -109,14 +109,14 @@ const Home: NextPage = () => {
       if (ethereum) {
         const provider = new ethers.providers.Web3Provider(ethereum);
         const signer = provider.getSigner();
-        const buyMeACoffee = new ethers.Contract(
+        const tipADeveloper = new ethers.Contract(
           contractAddress,
           contractABI,
           signer
         );
 
         console.log("fetching memos from the blockchain..");
-        const memos = await buyMeACoffee.getMemos();
+        const memos = await tipADeveloper.getMemos();
         console.log("fetched!");
         setMemos(memos);
       } else {
@@ -129,7 +129,7 @@ const Home: NextPage = () => {
   };
 
   useEffect(() => {
-    let buyMeACoffee;
+    let tipADeveloper;
     isWalletConnected();
     getMemos();
 
@@ -154,18 +154,18 @@ const Home: NextPage = () => {
     if (ethereum) {
       const provider = new ethers.providers.Web3Provider(ethereum, "any");
       const signer = provider.getSigner();
-      buyMeACoffee = new ethers.Contract(
+      tipADeveloper = new ethers.Contract(
         contractAddress,
         contractABI,
         signer
       );
 
-      buyMeACoffee.on("NewMemo", onNewMemo);
+      tipADeveloper.on("NewMemo", onNewMemo);
     }
 
     return () => {
-      if (buyMeACoffee) {
-        buyMeACoffee.off("NewMemo", onNewMemo);
+      if (tipADeveloper) {
+        tipADeveloper.off("NewMemo", onNewMemo);
       }
     }
   }, []);
@@ -208,7 +208,7 @@ const Home: NextPage = () => {
 
                 <textarea
                   rows={3}
-                  placeholder="Enjoy your coffee!"
+                  placeholder="Enjoy your tip!"
                   id="message"
                   onChange={onMessageChange}
                   required
@@ -218,7 +218,7 @@ const Home: NextPage = () => {
               <div>
                 <button
                   type="button"
-                  onClick={buyCoffee}
+                  onClick={tip}
                 >
                   Send 1 Coffee for 0.001ETH
                 </button>
