@@ -1,19 +1,33 @@
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
 
-describe("Greeter", function () {
-  it("Should return the new greeting once it's changed", async function () {
-    const Greeter = await ethers.getContractFactory("Greeter");
-    const greeter = await Greeter.deploy("Hello, world!");
-    await greeter.deployed();
+describe("Tip A Developer Contract", async function () {
+  it("tips should be added to contract balance", async function () {
+    // get example accounts
+    const [owner, newOwner, tipper2, tipper3] = await hre.ethers.getSigners();
 
-    expect(await greeter.greet()).to.equal("Hello, world!");
+    // setup contract
+    const TipADeveloper = await ethers.getContractFactory("TipADeveloper");
+    const tipADeveloper = await TipADeveloper.deploy();
+    await tipADeveloper.deployed();
 
-    const setGreetingTx = await greeter.setGreeting("Hola, mundo!");
+    // expect memos to be empty at deployment
+    expect(await tipADeveloper.getMemos()).to.have.lengthOf(0);
 
-    // wait until the transaction is mined
-    await setGreetingTx.wait();
+    // test making a tip
+    const tip = { value: hre.ethers.utils.parseEther("2") };
 
-    expect(await greeter.greet()).to.equal("Hola, mundo!");
+    // ensure contract balance changed
+    await expect(() =>
+      tipADeveloper.connect(tipper3).tip("Bobby", "Love it", tip)
+    ).to.changeEtherBalance(tipADeveloper.address, "2000000000000000000");
+
+    // expect memos length now to be 1
+    expect(await tipADeveloper.getMemos()).to.have.lengthOf(1);
+
+    // anyone can call withDrawTips,
+    await expect(() =>
+      tipADeveloper.connect(tipper3).withdrawTips()
+    ).to.changeEtherBalance(owner, "2000000000000000000");
   });
 });
