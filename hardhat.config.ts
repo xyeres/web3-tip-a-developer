@@ -1,9 +1,9 @@
 import { HardhatUserConfig } from "hardhat/config";
 require("dotenv").config();
 
-require("@nomiclabs/hardhat-waffle");
-require("@nomiclabs/hardhat-ethers");
+require("@nomicfoundation/hardhat-chai-matchers")
 require("@nomiclabs/hardhat-etherscan");
+require("@nomiclabs/hardhat-ethers");
 
 const {
   ALCHEMY_POLYGON_TESTNET_RPC,
@@ -13,16 +13,16 @@ const {
 
 const config: HardhatUserConfig = {
   solidity: "0.8.9",
-  networks: {
-    mumbai: {
-      url: ALCHEMY_POLYGON_TESTNET_RPC,
-      // @ts-ignore
-      accounts: [WALLET_PRIVATE_KEY],
-    },
-  },
-  etherscan: {
-    apiKey: POLYGONSCAN_API_KEY,
-  },
+  // networks: {
+  //   mumbai: {
+  //     url: ALCHEMY_POLYGON_TESTNET_RPC,
+  //     // @ts-ignore
+  //     accounts: [WALLET_PRIVATE_KEY],
+  //   },
+  // },
+  // etherscan: {
+  //   apiKey: POLYGONSCAN_API_KEY,
+  // },
 };
 
 export default config;
