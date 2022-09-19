@@ -10,7 +10,7 @@ async function getBalance(provider, address) {
 
 async function main() {
   // Get contract that has been deployed:
-  const contractAddress = '0x59b013582fBc9089604349e2040406Fd52B44eeC'
+  const contractAddress = '0x928514150f5914625CfBb6De11E432De4674c785'
   const contractABI = contractJSON.abi
 
   // get the node connection to blockchain
@@ -19,7 +19,7 @@ async function main() {
   // and wallet connection
   // (ensure wallet address is same as original deployer address
   // or else this script will throw an error)
-  const signer = new hre.ethers.Wallet(process.env.PRIVATE_KEY, provider)
+  const signer = new hre.ethers.Wallet(process.env.GOERLI_WALLET_PRIVATE_KEY, provider)
 
   // instantiate connected contract
   const tipADeveloper = new hre.ethers.Contract(contractAddress, contractABI, signer)
