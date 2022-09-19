@@ -5,7 +5,7 @@ import { CONTRACT_ABI, CONTRACT_ADDRESS } from "../../lib/constants";
 import { StepsContext } from "../../lib/StepsProvider";
 import { TipContext } from "../../lib/TipProvider";
 import Spinner from "../Spinner";
-import StepButton from "./StepButton";
+import StepButton, { StepButtonProps } from "./StepButton";
 
 const ReviewTip = () => {
   // Set display message
@@ -13,7 +13,7 @@ const ReviewTip = () => {
   useEffect(() => setStepMessage("Review & sign"), [setStepMessage]);
 
   const { tip, config: tipConfig } = useContext(TipContext);
-  const { getPrevStep } = useContext(StepsContext)
+  const { getPrevStep, getNextStep } = useContext(StepsContext)
 
   const [txLoading, setTxLoading] = useState(false);
   const [txMessage, setTxMessage] = useState(
@@ -48,6 +48,7 @@ const ReviewTip = () => {
         setTxMessage("Tip sent! Waiting for network confirmation...");
         await contractTx.wait();
         console.log("Transaction mined at: ", contractTx.hash);
+        getNextStep()
       }
     } catch (error) {
       console.log(error);
@@ -101,7 +102,7 @@ const ReviewTip = () => {
             <p>Tip amount:</p>
             <p>{parseInt(tip.amount).toFixed(2)} $MATIC</p>
           </div>
-          <FinalStepButtons
+          <CustomButton
             title="Yupp. Sign Transaction!"
             onClick={handleConfirmTransaction}
           />
@@ -114,15 +115,11 @@ const ReviewTip = () => {
   );
 };
 
-const FinalStepButtons = ({
+const CustomButton = ({
   onClick,
   title,
   className,
-}: {
-  title: string;
-  className?: string;
-  onClick: () => void;
-}) => {
+}: StepButtonProps) => {
   return <StepButton title={title} onClick={onClick} className={className} />;
 };
 

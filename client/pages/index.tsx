@@ -1,5 +1,5 @@
 import type { NextPage } from 'next'
-import abi from '../utils/TipADeveloper.json';
+// import abi from '../utils/TipADeveloper.json';
 import { ethers } from "ethers";
 import Head from 'next/head'
 import Image from 'next/image'
@@ -7,7 +7,9 @@ import React, { useEffect, useState } from "react";
 import styles from '../styles/Home.module.css'
 
 
+
 const Home: NextPage = () => {
+  const abi = { abi: () => { } }
   // Contract Address & ABI
   const contractAddress = "0x928514150f5914625CfBb6De11E432De4674c785";
   const contractABI = abi.abi;
