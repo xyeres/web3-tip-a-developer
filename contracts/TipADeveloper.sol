@@ -20,7 +20,7 @@ contract TipADeveloper {
     Memo[] memos;
 
     // address of contract deployer
-    address payable owner;
+    address payable public owner;
 
     // Deploy logic
     constructor() {
@@ -32,16 +32,11 @@ contract TipADeveloper {
      * @param _name name of the tip sender
      * @param _message a nice message from the tip sender
      */
-    function tip(string memory _name, string memory _message) public payable { 
+    function tip(string memory _name, string memory _message) public payable {
         require(msg.value > 0, "Tip must be greater than 0");
 
         // add memo to storage
-        memos.push(Memo(
-            msg.sender,
-            block.timestamp,
-            _name,
-            _message
-        ));
+        memos.push(Memo(msg.sender, block.timestamp, _name, _message));
         // Emit a log event when a new memo is created
         emit NewMemo(msg.sender, block.timestamp, _name, _message);
     }
@@ -54,14 +49,17 @@ contract TipADeveloper {
     }
 
     function transferOwner(address _newOwnerAddr) public {
-        require(msg.sender == owner, 'You must be owner of contract to transfer ownership');
+        require(
+            msg.sender == owner,
+            "You must be owner of contract to transfer ownership"
+        );
         owner = payable(_newOwnerAddr);
     }
 
     /**
      * @dev retrieve all memos on blockchain
      */
-    function getMemos() public view returns(Memo[] memory) {
+    function getMemos() public view returns (Memo[] memory) {
         return memos;
     }
 }
