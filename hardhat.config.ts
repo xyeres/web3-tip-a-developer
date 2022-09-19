@@ -1,9 +1,9 @@
 import { HardhatUserConfig } from "hardhat/config";
 require("dotenv").config();
 
-require("@nomicfoundation/hardhat-chai-matchers")
-require("@nomiclabs/hardhat-etherscan");
-require("@nomiclabs/hardhat-ethers");
+import "@nomicfoundation/hardhat-chai-matchers"
+import "@nomiclabs/hardhat-etherscan"
+import "@nomiclabs/hardhat-ethers"
 
 const {
   ALCHEMY_POLYGON_TESTNET_RPC,
