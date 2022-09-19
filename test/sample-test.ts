@@ -37,7 +37,7 @@ describe("TipADeveloper", function () {
 
   describe("Tipping", function testTipping() {
     describe("Validations", function testValidations() {
-      it("Should revert with the right error if called with wrong value", async function revertWhenValueZero() {
+      it("Should revert with the right error if called with zero value", async function revertWhenValueZero() {
         const { tipADeveloper, createTip, tipper2 } = await loadFixture(
           deployTipADevFixture
         );
@@ -54,7 +54,7 @@ describe("TipADeveloper", function () {
         const { tipADeveloper, createTip, tipper3 } = await loadFixture(
           deployTipADevFixture
         );
-        
+
         let tip = createTip("0.005");
 
         await expect(
@@ -74,7 +74,10 @@ describe("TipADeveloper", function () {
         // SUT
         await expect(() =>
           tipADeveloper.connect(tipper3).withdrawTips()
-        ).to.changeEtherBalance(owner, "2000000000000000000");
+        ).to.changeEtherBalances(
+          [owner, tipADeveloper],
+          ["2000000000000000000", "-2000000000000000000"]
+        );
 
         await expect(tipADeveloper.withdrawTips()).not.to.be.reverted;
       });
@@ -99,48 +102,45 @@ describe("TipADeveloper", function () {
   });
 
   describe("Protected", function testProtected() {
-    it("Should revert with correct error when called by non-owner", async function revertWhenNotOwner() {
-      const { tipADeveloper, tipper3 } = await loadFixture(
-        deployTipADevFixture
-      );
-      await expect(
-        tipADeveloper.connect(tipper3).transferOwner(tipper3.address)
-      ).to.be.revertedWith(
-        "You must be owner of contract to transfer ownership"
-      );
+    describe("Ownership", function testOwnership() {
+      it("Should revert with correct error when called by non-owner", async function revertWhenNotOwner() {
+        const { tipADeveloper, tipper3 } = await loadFixture(
+          deployTipADevFixture
+        );
+        await expect(
+          tipADeveloper.connect(tipper3).transferOwner(tipper3.address)
+        ).to.be.revertedWith(
+          "You must be owner of contract to transfer ownership"
+        );
+      });
+
+      it("Should transfer ownership to new owner and shouldn't revert", async function shouldTransferOwner() {
+        const { tipADeveloper, owner, newOwner } = await loadFixture(
+          deployTipADevFixture
+        );
+
+        // Check initial expected state
+        expect(await tipADeveloper.owner()).to.equal(owner.address);
+
+        // Call SUT correctly
+        await expect(
+          tipADeveloper.connect(owner).transferOwner(newOwner.address)
+        ).to.not.be.reverted;
+
+        expect(await tipADeveloper.owner()).to.equal(newOwner.address);
+      });
     });
-
-    it("Should transfer ownership to new owner and shouldn't revert", async function shouldTransferOwner() {
-      const { tipADeveloper, owner, newOwner } = await loadFixture(
-        deployTipADevFixture
-      );
-
-      // Check initial expected state
-      expect(await tipADeveloper.owner()).to.equal(owner.address);
-
-      // Call SUT correctly
-      await expect(tipADeveloper.connect(owner).transferOwner(newOwner.address))
-        .to.not.be.reverted;
-
-      expect(await tipADeveloper.owner()).to.equal(newOwner.address);
-    });
-
-    // TODO Test VIEWS // getMemos()
   });
-
-  // it("tips should be added to contract balance", async function () {
-  //   // expect memos to be empty at deployment
-  //   expect(await tipADeveloper.getMemos()).to.have.lengthOf(0);
-
-  //   // test making a tip
-  //   const tip = { value: ethers.utils.parseEther("2") };
-
-  //   // ensure contract balance changed
-  //   await expect(() =>
-  //     tipADeveloper.connect(tipper3).tip("Bobby", "Love it", tip)
-  //   ).to.changeEtherBalance(tipADeveloper.address, "2000000000000000000");
-
-  //   // expect memos length now to be 1
-  //   expect(await tipADeveloper.getMemos()).to.have.lengthOf(1);
-  // });
+  describe("Views", function testProtected() {
+    it("Should return an array of Memos", async function returnArrayOfMemos() {
+      const { tipADeveloper, createTip, tipper2, tipper3 } = await loadFixture(
+        deployTipADevFixture
+      );
+      let tip = createTip("0.0005");
+      let tip2 = createTip("0.0005");
+      await tipADeveloper.connect(tipper2).tip("Test name", "test memo", tip);
+      await tipADeveloper.connect(tipper3).tip("Test name", "test memo", tip2);
+      expect(await tipADeveloper.getMemos()).to.have.lengthOf(2);
+    });
+  });
 });
