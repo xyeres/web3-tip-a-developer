@@ -78,7 +78,7 @@ const Profile: NextPage = () => {
   return (
     <>
       <div className="blob min-h-[90vh]">
-        <div className="header-bg min-h-[62px] md:min-h-[32px] bgAnimation"></div>
+        <div className="header-bg min-h-[62px] md:min-h-[52px] bgAnimation"></div>
         <main className="max-w-lg mx-auto my-0 mt-[60px] md:mt-[100px] flex flex-col md:flex-row gap-8 items-center">
           <div className="flex-shrink-0 aspect-square max-w-[170px] rounded-full grid place-content-center border-4 border-white">
             <Image

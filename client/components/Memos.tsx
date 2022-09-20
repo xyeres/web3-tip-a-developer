@@ -15,7 +15,7 @@ const Memos = (props: Props) => {
       {props.memos.map((memo: Memo, i: number) => (
         <div
           key={memo.timestamp.toString()}
-          className="hover:opacity-100 transition-opacity duration-200 opacity-80 w-full border border-neutral-700 mt-[43px] p-6 flex flex-col"
+          className="hover:opacity-100 hover:bg-neutral-800 bg-[#121212] transition-all duration-150 opacity-80 w-full mt-[43px] p-6 flex flex-col"
         >
           <p className="text-xl font-extralight">{memo.message}</p>
           <span className="self-end mt-3 text-[.675rem]">

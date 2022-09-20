@@ -6,7 +6,7 @@
 
 body {
   font-family: "Nunito Sans", sans-serif;
-  background-color: black;
+  background-color: #000000;
   color: #fafafa;
   height: 100%;
   overscroll-behavior-y: none;
@@ -14,11 +14,16 @@ body {
 
 /* Custom Classes */
 
+.hard-shadow:hover {
+  box-shadow: 6px 6px #673c8a;
+}
+
 .blob::after {
   content: "";
   min-width: 70vw;
   min-height: 30vh;
-  background-color: white;
+  background-color: rgb(166, 166, 166);
+
   position: absolute;
   top: 0;
   left: 50%;
@@ -99,6 +104,6 @@ body {
 
 .scaleInAnimation {
   animation: scaleAni 1s;
-   /* animation-delay: 7s; */
-   animation-fill-mode: both;
+  /* animation-delay: 7s; */
+  animation-fill-mode: both;
 }
