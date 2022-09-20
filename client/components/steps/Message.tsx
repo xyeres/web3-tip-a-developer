@@ -28,10 +28,10 @@ const Message = () => {
   };
 
   return (
-    <div className="">
+    <div className="w-full">
       <form
         onSubmit={handleFormSubmit}
-        className="mt-4 flex flex-col items-start"
+        className="mt-4 flex w-full flex-col items-start"
       >
         <div className="flex flex-col w-full items-start gap-2">
           <label
