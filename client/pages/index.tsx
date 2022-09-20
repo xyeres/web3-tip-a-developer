@@ -1,253 +1,178 @@
-import type { NextPage } from 'next'
-// import abi from '../utils/TipADeveloper.json';
-import { ethers } from "ethers";
-import Head from 'next/head'
-import Image from 'next/image'
-import React, { useEffect, useState } from "react";
-import styles from '../styles/Home.module.css'
+/* eslint-disable react-hooks/exhaustive-deps */
+import type { NextPage } from "next";
+import Head from "next/head";
+import Image from "next/image";
+import Link from "next/link";
+import { useCallback, useEffect, useState } from "react";
+import ConnectWalletBtn from "../components/ConnectWalletBtn";
+import type { Memo } from "../components/Memos";
+import Memos from "../components/Memos";
+import Pill from "../components/Pill";
+import Web3Start from "../components/Web3Start";
+import useMetamask from "../hooks/useMetamask";
+import useStepMessage from "../hooks/useStepMessage";
+import { useTipContract } from "../hooks/useTipContract";
+import github from "../public/imgs/github.svg";
+import linkedin from "../public/imgs/linkedin.svg";
+import twitter from "../public/imgs/twitter.svg";
 
+const Profile: NextPage = () => {
+  var memosInitialState: Memo[] = [
+    {
+      address: "",
+      timestamp: new Date().getSeconds() * Math.random(),
+      name: "Tommy",
+      message: "Another great website you did for us, thanks!",
+    },
+    {
+      address: "",
+      timestamp: new Date().getSeconds() * Math.random(),
+      name: "Matthew",
+      message: "What a standup on Friday! lol",
+    },
+    {
+      address: "",
+      timestamp: new Date().getSeconds() * Math.random(),
+      name: "Ashley",
+      message: "What a standup on Friday! lol",
+    },
+  ];
 
-
-const Home: NextPage = () => {
-  const abi = { abi: () => { } }
-  // Contract Address & ABI
-  const contractAddress = "0x928514150f5914625CfBb6De11E432De4674c785";
-  const contractABI = abi.abi;
+  // Hooks
+  const { metaState } = useMetamask();
+  const { stepMessage } = useStepMessage();
+  const tipADeveloper = useTipContract();
 
   // Component state
-  const [currentAccount, setCurrentAccount] = useState("");
-  const [name, setName] = useState("");
-  const [message, setMessage] = useState("");
-  const [memos, setMemos] = useState([]);
+  const [memos, setMemos] = useState(memosInitialState);
 
-  const onNameChange = (event) => {
-    setName(event.target.value);
-  }
-
-  const onMessageChange = (event) => {
-    setMessage(event.target.value);
-  }
-
-  // Wallet connection logic
-  const isWalletConnected = async () => {
+  const getMemos = useCallback(async () => {
     try {
-      // @ts-ignore
-      const { ethereum } = window;
-
-      const accounts = await ethereum.request({ method: 'eth_accounts' })
-      console.log("accounts: ", accounts);
-
-      if (accounts.length > 0) {
-        const account = accounts[0];
-        console.log("wallet is connected! " + account);
-        return true
-      } else {
-        console.log("make sure MetaMask is connected");
-        return false
-      }
-    } catch (error) {
-      console.log("error: ", error);
-    }
-  }
-
-  const connectWallet = async () => {
-    try {
-      // @ts-ignore
-      const { ethereum } = window;
-
-      if (!ethereum) {
-        console.log("please install MetaMask");
-      }
-      // @ts-ignore
-      const accounts = await ethereum.request({
-        method: 'eth_requestAccounts'
-      });
-
-      setCurrentAccount(accounts[0]);
+      const memos: Memo[] = await tipADeveloper.getMemos();
+      setMemos(memos.slice(-3));
+      console.log("Memos fetched!");
     } catch (error) {
       console.log(error);
-    }
-  }
-
-  const tip = async () => {
-    try {
-      const { ethereum } = window;
-
-      if (ethereum) {
-        const provider = new ethers.providers.Web3Provider(ethereum, "any");
-        const signer = provider.getSigner();
-        const tipADeveloper = new ethers.Contract(
-          contractAddress,
-          contractABI,
-          signer
-        );
-
-        console.log("sending tip...")
-        const tipTx = await tipADeveloper.tip(
-          name ? name : "anon",
-          message ? message : "Enjoy your tip!",
-          { value: ethers.utils.parseEther("0.001") }
-        );
-
-        await tipTx.wait();
-
-        console.log("mined ", tipTx.hash);
-
-        console.log("tip sent!");
-
-        // Clear the form fields.
-        setName("");
-        setMessage("");
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  // Function to fetch all memos stored on-chain.
-  const getMemos = async () => {
-    try {
-      const { ethereum } = window;
-      if (ethereum) {
-        const provider = new ethers.providers.Web3Provider(ethereum);
-        const signer = provider.getSigner();
-        const tipADeveloper = new ethers.Contract(
-          contractAddress,
-          contractABI,
-          signer
-        );
-
-        console.log("fetching memos from the blockchain..");
-        const memos = await tipADeveloper.getMemos();
-        console.log("fetched!");
-        setMemos(memos);
-      } else {
-        console.log("Metamask is not connected");
-      }
-
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    let tipADeveloper;
-    isWalletConnected();
-    getMemos();
-
-    // Create an event handler function for when someone sends
-    // us a new memo.
-    const onNewMemo = (from, timestamp, name, message) => {
-      console.log("Memo received: ", from, timestamp, name, message);
-      setMemos((prevState) => [
-        ...prevState,
-        {
-          address: from,
-          timestamp: new Date(timestamp * 1000),
-          message,
-          name
-        }
-      ]);
-    };
-
-    const { ethereum } = window;
-
-    // Listen for new memo events.
-    if (ethereum) {
-      const provider = new ethers.providers.Web3Provider(ethereum, "any");
-      const signer = provider.getSigner();
-      tipADeveloper = new ethers.Contract(
-        contractAddress,
-        contractABI,
-        signer
-      );
-
-      tipADeveloper.on("NewMemo", onNewMemo);
-    }
-
-    return () => {
-      if (tipADeveloper) {
-        tipADeveloper.off("NewMemo", onNewMemo);
-      }
     }
   }, []);
 
+  /* useEffects: */
+
+  useEffect(() => {
+    getMemos();
+  }, []);
+
+  // new memo event handler
+  function handleonNewMemo() {
+    getMemos();
+  }
+
+  useEffect(() => {
+    tipADeveloper.on("NewMemo", handleonNewMemo);
+    return () => {
+      if (tipADeveloper) {
+        tipADeveloper.off("NewMemo", handleonNewMemo);
+      }
+    };
+  }, []);
+
   return (
-    <div className={styles.container}>
+    <>
       <Head>
-        <title>Buy michael a Coffee!</title>
-        <meta name="description" content="Tipping site" />
+        <title>Michael Carr | Tip A Developer</title>
+        <meta name="description" content="Michael Carr Contact Profile" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Buy michael a Coffee!
-        </h1>
-
-        {currentAccount ? (
-          <div>
-            <form>
-              <div>
-                <label>
-                  Name
-                </label>
-                <br />
-
-                <input
-                  id="name"
-                  type="text"
-                  placeholder="anon"
-                  onChange={onNameChange}
-                />
-              </div>
-              <br />
-              <div>
-                <label>
-                  Send michael a message
-                </label>
-                <br />
-
-                <textarea
-                  rows={3}
-                  placeholder="Enjoy your tip!"
-                  id="message"
-                  onChange={onMessageChange}
-                  required
-                >
-                </textarea>
-              </div>
-              <div>
-                <button
-                  type="button"
-                  onClick={tip}
-                >
-                  Send 1 Coffee for 0.001ETH
-                </button>
-              </div>
-            </form>
+      <div className="blob min-h-[90vh]">
+        <div className="header-bg min-h-[62px] md:min-h-[52px] bgAnimation"></div>
+        <main className="max-w-lg mx-auto my-0 mt-[60px] md:mt-[100px] flex flex-col md:flex-row gap-8 items-center">
+          <Image
+            className="rounded-full"
+            alt="michael carr"
+            src="/imgs/profile.jpg"
+            width={180}
+            height={180}
+          />
+          <div className="flex flex-col items-center md:block text-center md:text-left">
+            <h1 className="text-[2rem] font-semibold">Michael Carr</h1>
+            <h3 className="mx-1 font-extralight text-[.95rem]">
+              Front end developer building web3
+            </h3>
+            <h2 className="mt-5 mx-1 text-sm max-w-[390px]">
+              Got a project you want to chat about? Let&apos;s talk. Reach out
+              with one of the following:
+            </h2>
+            <div className="mt-4 md:mt-2 flex flex-row gap-2 flex-wrap justify-center md:justify-start">
+              <Pill
+                platform="github"
+                link="https://github.com/xyeres"
+                icon={github}
+                title="xyeres"
+              />
+              <Pill
+                platform="linkedin"
+                link="https://linkedin.com/mxcarr"
+                icon={linkedin}
+                title="mxcarr"
+              />
+              <Pill
+                platform="twitter"
+                link="https://twitter.com/xyeres"
+                icon={twitter}
+                title="xyeres"
+              />
+            </div>
           </div>
-        ) : (
-          <button onClick={connectWallet}> Connect your wallet </button>
-        )}
-      </main>
+        </main>
 
-      {currentAccount && (<h1>Memos received</h1>)}
-
-      {(memos.map((memo: string, idx: number) => {
-        return (
-          <div key={idx} style={{ border: "2px solid", "borderRadius": "5px", padding: "5px", margin: "5px" }}>
-            <p style={{ "fontWeight": "bold" }}>&quot;{memo.message}&quot;</p>
-            <p>From: {memo.name} at {memo.timestamp.toString()}</p>
+        <section className="max-w-lg mx-auto my-0 mt-[84px]">
+          <p className="text-center text-sm">
+            Some friend&apos;s are cheering...
+          </p>
+          <div className="mx-4 md:mx-0">
+            <Memos memos={memos} />
           </div>
-        )
-      }))}
+        </section>
 
-      <footer className={styles.footer}>
-        <p>Sending to contract {contractAddress}</p>
+        <section className="relative mx-auto h-full my-0 mt-[66px] text-center items-center justify-center flex flex-col ">
+          <h2 className="text-[1.75rem] font-semibold">Want to cheers too?</h2>
+          <p className="text-[#AAAAAA]">{stepMessage}</p>
+
+          {metaState.isAvailable ? (
+            <Web3Start />
+          ) : (
+            <div className="flex items-center flex-col">
+              <ConnectWalletBtn
+                connectWallet={() => null}
+                isLoading={false}
+                disabled
+                title="Connect MetaMask"
+              />
+              <div className="mt-3 text-xs">
+                <p>Looks like you don&apos;t have Metamask installed :(</p>
+                <p className="mt-1">
+                  But wait, what is a MetaMask you say?{" "}
+                  <Link href="https://metamask.io/">
+                    <a className="underline text-orange-500">
+                      Learn about it here
+                    </a>
+                  </Link>
+                </p>
+              </div>
+            </div>
+          )}
+        </section>
+      </div>
+
+      <footer className="min-h-[30vh] footer-bg">
+        <p className="text-xs pt-14 px-4 text-center text-[#8a8a8a]">
+          *By sending crypto to me using this form, you agree that this is a
+          free-will donation with no promised return in goods or services. No
+          refunds.
+        </p>
       </footer>
-    </div>
-  )
-}
+    </>
+  );
+};
 
-export default Home
+export default Profile;
