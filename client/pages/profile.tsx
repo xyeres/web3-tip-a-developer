@@ -1,8 +1,8 @@
-import { BaseContract, Contract, ethers } from "ethers";
+/* eslint-disable react-hooks/exhaustive-deps */
 import type { NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import ConnectWalletBtn from "../components/ConnectWalletBtn";
 import type { Memo } from "../components/Memos";
 import Memos from "../components/Memos";
@@ -10,7 +10,7 @@ import Pill from "../components/Pill";
 import Web3Start from "../components/Web3Start";
 import useMetamask from "../hooks/useMetamask";
 import useStepMessage from "../hooks/useStepMessage";
-import { CONTRACT_ABI, CONTRACT_ADDRESS } from "../lib/constants";
+import { useTipContract } from "../hooks/useTipContract";
 import github from "../public/imgs/github.svg";
 import linkedin from "../public/imgs/linkedin.svg";
 import twitter from "../public/imgs/twitter.svg";
@@ -19,14 +19,20 @@ const Profile: NextPage = () => {
   var memosInitialState: Memo[] = [
     {
       address: "",
-      timestamp: new Date().getSeconds(),
-      name: "Tommy Bahama",
+      timestamp: new Date().getSeconds() * Math.random(),
+      name: "Tommy",
       message: "Another great website you did for us, thanks!",
     },
     {
       address: "",
-      timestamp: new Date().getSeconds(),
-      name: "Ding Dong",
+      timestamp: new Date().getSeconds() * Math.random(),
+      name: "Matthew",
+      message: "What a standup on Friday! lol",
+    },
+    {
+      address: "",
+      timestamp: new Date().getSeconds() * Math.random(),
+      name: "Ashley",
       message: "What a standup on Friday! lol",
     },
   ];
@@ -34,83 +40,37 @@ const Profile: NextPage = () => {
   // Hooks
   const { metaState } = useMetamask();
   const { stepMessage } = useStepMessage();
+  const tipADeveloper = useTipContract();
 
   // Component state
   const [memos, setMemos] = useState(memosInitialState);
 
-  // Function to fetch all memos stored on-chain.
-  const getMemos = async () => {
+  const getMemos = useCallback(async () => {
     try {
-      console.log("Key", process.env.NEXT_PUBLIC_ALCHEMY_API_KEY);
-
-      const provider = ethers.providers.getDefaultProvider(
-        process.env.NEXT_PUBLIC_ALCHEMY_POLYGON_TESTNET_RPC,
-        {
-          alchemy: process.env.NEXT_PUBLIC_ALCHEMY_API_KEY,
-        }
-      );
-      const signer = new ethers.VoidSigner(CONTRACT_ADDRESS, provider);
-
-      const tipADeveloper = new ethers.Contract(
-        CONTRACT_ADDRESS,
-        CONTRACT_ABI,
-        signer
-      );
-
-      console.log("fetching memos from the blockchain..");
-      const memos: [] = await tipADeveloper.getMemos();
-      console.log("fetched!");
+      const memos: Memo[] = await tipADeveloper.getMemos();
       setMemos(memos.slice(-3));
+      console.log("Memos fetched!");
     } catch (error) {
       console.log(error);
     }
-  };
+  }, []);
 
   /* useEffects: */
 
   useEffect(() => {
-    var tipADeveloper: BaseContract;
-
     getMemos();
+  }, []);
 
-    // new memo event handler
-    const onNewMemo = (
-      from: string,
-      timestamp: number,
-      name: string,
-      message: string
-    ) => {
-      console.log("Memo received: ", from, timestamp, name, message);
-      setMemos((prevState) => [
-        ...prevState,
-        {
-          date: new Date(timestamp * 1000),
-          timestamp,
-          address: from,
-          name,
-          message,
-        },
-      ]);
-    };
+  // new memo event handler
+  function handleonNewMemo() {
+    getMemos();
+  }
 
-    const { ethereum } = window;
-
-    // Listen for new memo events.
-    if (ethereum) {
-      const provider = new ethers.providers.Web3Provider(ethereum, "any");
-      const signer = provider.getSigner();
-      tipADeveloper = new ethers.Contract(
-        CONTRACT_ADDRESS,
-        CONTRACT_ABI,
-        signer
-      );
-
-      tipADeveloper.on("NewMemo", onNewMemo);
-    }
-
+  useEffect(() => {
+    tipADeveloper.on("NewMemo", handleonNewMemo);
     return () => {
       if (tipADeveloper) {
-        tipADeveloper.off("NewMemo", onNewMemo);
+        tipADeveloper.off("NewMemo", handleonNewMemo);
       }
     };
   }, []);
@@ -170,7 +130,7 @@ const Profile: NextPage = () => {
           </div>
         </section>
 
-        <section className="relative mx-auto h-full my-0 mt-[96px] text-center items-center justify-center flex flex-col ">
+        <section className="relative mx-auto h-full my-0 mt-[66px] text-center items-center justify-center flex flex-col ">
           <h2 className="text-[1.75rem] font-semibold">Want to cheers too?</h2>
           <p className="text-[#AAAAAA]">{stepMessage}</p>
 
