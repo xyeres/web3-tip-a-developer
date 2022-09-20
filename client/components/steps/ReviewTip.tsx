@@ -10,10 +10,11 @@ import StepButton, { StepButtonProps } from "./StepButton";
 const ReviewTip = () => {
   // Set display message
   const { setStepMessage } = useStepMessage();
-  useEffect(() => setStepMessage("Review & sign"), [setStepMessage]);
+  const STEP_MESSAGE = "Review & sign"
+  useEffect(() => setStepMessage(STEP_MESSAGE), [setStepMessage]);
 
   const { tip, config: tipConfig } = useContext(TipContext);
-  const { getPrevStep, getNextStep } = useContext(StepsContext)
+  const { getPrevStep, getNextStep, getCurrentStep, getStep } = useContext(StepsContext)
 
   const [txLoading, setTxLoading] = useState(false);
   const [txMessage, setTxMessage] = useState(
@@ -58,8 +59,9 @@ const ReviewTip = () => {
   }
 
   if (txError) {
+    setStepMessage("Uh oh")
     let message = "";
-    if (txError?.code === "ACTION_REJECTED") {
+    if (txError?.code === "ACTION_REJECTED" || txError?.code === 4001) {
       message = "User rejected transaction";
     } else {
       message = "Unknown error occurred";
@@ -69,7 +71,10 @@ const ReviewTip = () => {
         {message}
         <button
           className="p-2 mt-3 text-gray-50 text-[.9rem] hover:bg-gray-400 active:bg-gray-600 bg-gray-500 w-full focus:ring ring-purple-100 outline-none"
-          onClick={() => setTxError(null)}
+          onClick={() => {
+            setTxError(null)
+            setStepMessage(STEP_MESSAGE)
+          }}
         >
           Back
         </button>
@@ -87,7 +92,7 @@ const ReviewTip = () => {
   }
 
   return (
-    <div className="text-left mt-4 text-[0.85rem] gap-2 flex w-[270px] flex-col items-start justify-between">
+    <div className="text-left mt-4 text-[0.85rem] gap-2 flex w-full flex-col items-start justify-between">
       {
         <>
           <div className="flex self-stretch justify-between">
@@ -108,7 +113,7 @@ const ReviewTip = () => {
           />
           <StepButton
             title="Prev"
-            onClick={() => getPrevStep()} />
+            onClick={getPrevStep} />
         </>
       }
     </div >
