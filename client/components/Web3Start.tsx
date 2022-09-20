@@ -47,12 +47,12 @@ const Web3Start = () => {
         }
       })();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [metaState.isAvailable, metaState.isConnected]);
 
   function handleConnectMetaMask(): void {
     if (!metaState.isConnected) {
-      (async () => {
+      (async function connectMetaMaskWallet() {
         try {
           setIsWalletLoading(true);
           await connectWithPermission(true);
@@ -66,7 +66,7 @@ const Web3Start = () => {
   }
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center w-2/3 md:w-1/2 lg:w-1/3">
       <>
         {!metaState.isConnected
           ? metaState.isAvailable && (
