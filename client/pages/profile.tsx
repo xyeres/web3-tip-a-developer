@@ -1,4 +1,4 @@
-import { ethers } from "ethers";
+import { BaseContract, Contract, ethers } from "ethers";
 import type { NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -18,14 +18,16 @@ import twitter from "../public/imgs/twitter.svg";
 const Profile: NextPage = () => {
   var memosInitialState: Memo[] = [
     {
-      msg: "Another great website you did for us, thanks!",
-      author: "Tommy Bahama",
-      amount: "4 MATIC",
+      address: "",
+      timestamp: new Date().getSeconds(),
+      name: "Tommy Bahama",
+      message: "Another great website you did for us, thanks!",
     },
     {
-      msg: "What a standup on Friday! lol",
-      author: "Ding Dong",
-      amount: "2 MATIC",
+      address: "",
+      timestamp: new Date().getSeconds(),
+      name: "Ding Dong",
+      message: "What a standup on Friday! lol",
     },
   ];
 
@@ -39,22 +41,26 @@ const Profile: NextPage = () => {
   // Function to fetch all memos stored on-chain.
   const getMemos = async () => {
     try {
-      const { ethereum } = window;
-      if (ethereum) {
-        const provider = new ethers.providers.Web3Provider(ethereum);
-        const signer = provider.getSigner();
-        const tipADeveloper = new ethers.Contract(
-          CONTRACT_ADDRESS,
-          CONTRACT_ABI,
-          signer
-        );
-        console.log("fetching memos from the blockchain..");
-        const memos = await tipADeveloper.getMemos();
-        console.log("fetched!");
-        setMemos(memos);
-      } else {
-        console.log("Metamask is not connected");
-      }
+      console.log("Key", process.env.NEXT_PUBLIC_ALCHEMY_API_KEY);
+
+      const provider = ethers.providers.getDefaultProvider(
+        process.env.NEXT_PUBLIC_ALCHEMY_POLYGON_TESTNET_RPC,
+        {
+          alchemy: process.env.NEXT_PUBLIC_ALCHEMY_API_KEY,
+        }
+      );
+      const signer = new ethers.VoidSigner(CONTRACT_ADDRESS, provider);
+
+      const tipADeveloper = new ethers.Contract(
+        CONTRACT_ADDRESS,
+        CONTRACT_ABI,
+        signer
+      );
+
+      console.log("fetching memos from the blockchain..");
+      const memos: [] = await tipADeveloper.getMemos();
+      console.log("fetched!");
+      setMemos(memos.slice(-3));
     } catch (error) {
       console.log(error);
     }
@@ -62,42 +68,52 @@ const Profile: NextPage = () => {
 
   /* useEffects: */
 
-  // useEffect(() => {
-  //   var tipADeveloper: any;
-  //   getMemos();
+  useEffect(() => {
+    var tipADeveloper: BaseContract;
 
-  //   // Create an event handler function for when someone sends
-  //   // us a new memo.
-  //   const onNewMemo = (from, timestamp, name, message) => {
-  //     console.log("Memo received: ", from, timestamp, name, message);
-  //     setMemos((prevState) => [
-  //       ...prevState,
-  //       {
-  //         address: from,
-  //         timestamp: new Date(timestamp * 1000),
-  //         message,
-  //         name,
-  //       },
-  //     ]);
-  //   };
+    getMemos();
 
-  //   const { ethereum } = window;
+    // new memo event handler
+    const onNewMemo = (
+      from: string,
+      timestamp: number,
+      name: string,
+      message: string
+    ) => {
+      console.log("Memo received: ", from, timestamp, name, message);
+      setMemos((prevState) => [
+        ...prevState,
+        {
+          date: new Date(timestamp * 1000),
+          timestamp,
+          address: from,
+          name,
+          message,
+        },
+      ]);
+    };
 
-  //   // Listen for new memo events.
-  //   if (ethereum) {
-  //     const provider = new ethers.providers.Web3Provider(ethereum, "any");
-  //     const signer = provider.getSigner();
-  //     tipADeveloper = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
+    const { ethereum } = window;
 
-  //     tipADeveloper.on("NewMemo", onNewMemo);
-  //   }
+    // Listen for new memo events.
+    if (ethereum) {
+      const provider = new ethers.providers.Web3Provider(ethereum, "any");
+      const signer = provider.getSigner();
+      tipADeveloper = new ethers.Contract(
+        CONTRACT_ADDRESS,
+        CONTRACT_ABI,
+        signer
+      );
 
-  //   return () => {
-  //     if (tipADeveloper) {
-  //       tipADeveloper.off("NewMemo", onNewMemo);
-  //     }
-  //   };
-  // }, []);
+      tipADeveloper.on("NewMemo", onNewMemo);
+    }
+
+    return () => {
+      if (tipADeveloper) {
+        tipADeveloper.off("NewMemo", onNewMemo);
+      }
+    };
+  }, []);
 
   return (
     <>
