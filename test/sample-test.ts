@@ -4,7 +4,7 @@ import { anyValue } from "@nomicfoundation/hardhat-chai-matchers/withArgs";
 import { loadFixture } from "@nomicfoundation/hardhat-network-helpers";
 import { BigNumber } from "ethers";
 
-describe("TipADeveloper", function () {
+describe("TipADeveloper", function tipADeveloperSuite() {
   async function deployTipADevFixture() {
     // get example accounts
     const [owner, newOwner, tipper2, tipper3] = await ethers.getSigners();
@@ -12,6 +12,8 @@ describe("TipADeveloper", function () {
     // setup contract
     const TipADeveloper = await ethers.getContractFactory("TipADeveloper");
     const tipADeveloper = await TipADeveloper.deploy();
+
+    await tipADeveloper.deployed();
 
     // Create a tip amount:
     function createTip(amount: string): { value: BigNumber } {
@@ -21,7 +23,7 @@ describe("TipADeveloper", function () {
     return { tipADeveloper, createTip, owner, newOwner, tipper2, tipper3 };
   }
 
-  describe("Deployment", function () {
+  describe("Deployment", function testDeployment() {
     it("Should set the right owner", async function setRightOwner() {
       const { tipADeveloper, owner } = await loadFixture(deployTipADevFixture);
       expect(await tipADeveloper.owner()).to.equal(owner.address);
@@ -104,7 +106,7 @@ describe("TipADeveloper", function () {
   describe("Protected", function testProtected() {
     describe("Ownership", function testOwnership() {
       it("Should revert with correct error when called by non-owner", async function revertWhenNotOwner() {
-        const { tipADeveloper, tipper3 } = await loadFixture(
+        const { tipADeveloper, owner, tipper3 } = await loadFixture(
           deployTipADevFixture
         );
         await expect(
@@ -112,6 +114,8 @@ describe("TipADeveloper", function () {
         ).to.be.revertedWith(
           "You must be owner of contract to transfer ownership"
         );
+        expect(await tipADeveloper.owner()).to.equal(owner.address)
+        expect(await tipADeveloper.owner()).to.not.equal(tipper3.address)
       });
 
       it("Should transfer ownership to new owner and shouldn't revert", async function shouldTransferOwner() {
