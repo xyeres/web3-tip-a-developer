@@ -10,11 +10,12 @@ import StepButton, { StepButtonProps } from "./StepButton";
 const ReviewTip = () => {
   // Set display message
   const { setStepMessage } = useStepMessage();
-  const STEP_MESSAGE = "Review & sign"
+  const STEP_MESSAGE = "Review & sign";
   useEffect(() => setStepMessage(STEP_MESSAGE), [setStepMessage]);
 
   const { tip, config: tipConfig } = useContext(TipContext);
-  const { getPrevStep, getNextStep, getCurrentStep, getStep } = useContext(StepsContext)
+  const { getPrevStep, getNextStep, getCurrentStep, getStep } =
+    useContext(StepsContext);
 
   const [txLoading, setTxLoading] = useState(false);
   const [txMessage, setTxMessage] = useState(
@@ -49,7 +50,7 @@ const ReviewTip = () => {
         setTxMessage("Tip sent! Waiting for network confirmation...");
         await contractTx.wait();
         console.log("Transaction mined at: ", contractTx.hash);
-        getNextStep()
+        getNextStep();
       }
     } catch (error) {
       console.log(error);
@@ -59,10 +60,12 @@ const ReviewTip = () => {
   }
 
   if (txError) {
-    setStepMessage("Uh oh")
+    setStepMessage("Uh-oh");
     let message = "";
     if (txError?.code === "ACTION_REJECTED" || txError?.code === 4001) {
       message = "User rejected transaction";
+    } else if (txError?.code === -32000 || txError?.code === -32603) {
+      message = "Insufficient funds, please use a different MetaMask account"
     } else {
       message = "Unknown error occurred";
     }
@@ -72,8 +75,8 @@ const ReviewTip = () => {
         <button
           className="p-2 mt-3 text-gray-50 text-[.9rem] hover:bg-gray-400 active:bg-gray-600 bg-gray-500 w-full focus:ring ring-gray-100 outline-none"
           onClick={() => {
-            setTxError(null)
-            setStepMessage(STEP_MESSAGE)
+            setTxError(null);
+            setStepMessage(STEP_MESSAGE);
           }}
         >
           Back
@@ -111,20 +114,14 @@ const ReviewTip = () => {
             title="Yupp. Sign Transaction!"
             onClick={handleConfirmTransaction}
           />
-          <StepButton
-            title="Prev"
-            onClick={getPrevStep} />
+          <StepButton title="Prev" onClick={getPrevStep} />
         </>
       }
-    </div >
+    </div>
   );
 };
 
-const CustomButton = ({
-  onClick,
-  title,
-  className,
-}: StepButtonProps) => {
+const CustomButton = ({ onClick, title, className }: StepButtonProps) => {
   return <StepButton title={title} onClick={onClick} className={className} />;
 };
 
