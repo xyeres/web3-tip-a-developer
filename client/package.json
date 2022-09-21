@@ -10,11 +10,16 @@
   },
   "dependencies": {
     "@metamask/detect-provider": "^1.2.0",
+    "@types/lodash": "^4.14.185",
+    "@types/styled-components": "^5.1.26",
     "ethers": "^5.7.1",
     "hardhat": "^2.11.1",
+    "lodash": "^4.17.21",
     "next": "12.2.5",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "react-marquee-slider": "^1.1.5",
+    "styled-components": "^5.3.5"
   },
   "devDependencies": {
     "@types/node": "18.7.15",
