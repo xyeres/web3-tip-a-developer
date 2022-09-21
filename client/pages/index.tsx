@@ -20,21 +20,24 @@ const Profile: NextPage = () => {
   var memosInitialState: Memo[] = [
     {
       address: "",
-      timestamp: new Date().getSeconds() * Math.random(),
+      timestamp: 1663783113800,
       name: "Tommy",
       message: "Another great website you did for us, thanks!",
+      date: "8/20/22",
     },
     {
       address: "",
-      timestamp: new Date().getSeconds() * Math.random(),
+      timestamp: 1663783113400,
       name: "Matthew",
       message: "What a standup on Friday! lol",
+      date: "8/27/22",
     },
     {
       address: "",
-      timestamp: new Date().getSeconds() * Math.random(),
+      timestamp: 1663783113300,
       name: "Ashley",
       message: "What a standup on Friday! lol",
+      date: "9/10/22",
     },
   ];
 
@@ -48,8 +51,24 @@ const Profile: NextPage = () => {
 
   const getMemos = useCallback(async () => {
     try {
-      const memos: Memo[] = await tipADeveloper.getMemos();
-      setMemos(memos.slice(-3));
+      let memos: Memo[] = await tipADeveloper.getMemos();
+
+      // Add formated date to each memo
+      memos = memos.map((memo) => {
+        let memoWithDate = {
+          ...memo,
+          date: new Date(memo.timestamp * 1000).toLocaleDateString(),
+        };
+        return memoWithDate;
+      });
+
+      memos = memos.slice(-6)
+
+      memos.sort((a, b) => b.timestamp - a.timestamp)
+
+      // Set only last 3 memos
+      setMemos(memos);
+
       console.log("Memos fetched!");
     } catch (error) {
       console.log(error);
@@ -111,7 +130,7 @@ const Profile: NextPage = () => {
               />
               <Pill
                 platform="linkedin"
-                link="https://linkedin.com/mxcarr"
+                link="https://www.linkedin.com/in/mxcarr/"
                 icon={linkedin}
                 title="mxcarr"
               />
@@ -125,7 +144,7 @@ const Profile: NextPage = () => {
           </div>
         </main>
 
-        <section className="max-w-lg mx-auto my-0 mt-[84px]">
+        <section className="mx-auto my-0 mt-[84px]">
           <p className="text-center text-sm">
             Some friend&apos;s are cheering...
           </p>

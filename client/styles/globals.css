@@ -14,96 +14,99 @@ body {
 
 /* Custom Classes */
 
-.hard-shadow:hover {
-  box-shadow: 6px 6px #673c8a;
-}
+@layer components {
+  .hard-shadow:hover,
+  .hard-shadow:focus {
+    box-shadow: 6px 6px theme(colors.purple.700);
+  }
 
-.blob::after {
-  content: "";
-  min-width: 70vw;
-  min-height: 30vh;
-  background-color: rgb(166, 166, 166);
-
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  filter: blur(180px);
-  opacity: 0.4;
-  z-index: -1;
-  overflow: hidden;
-}
-
-.footer-bg {
-  background-image: linear-gradient(
-      to bottom,
-      rgba(0, 0, 0, 1),
-      rgba(255, 255, 255, 0)
-    ),
-    url("/imgs/worlds-top.jpg");
-  background-size: cover;
-  background-position: 10% 0;
-}
-
-.header-bg {
-  background-image: linear-gradient(
-      to top,
-      rgba(0, 0, 0, 1),
-      rgba(255, 255, 255, 0)
-    ),
-    url("/imgs/worlds-top.jpg");
-  background-size: cover;
-  background-position: 0% 0;
-  background-repeat: no-repeat;
-}
-
-.bgAnimation {
-  animation: animateBg;
-  animation-timing-function: ease-in-out;
-  animation-duration: 15s;
-  animation-iteration-count: infinite;
-  animation-direction: alternate;
-}
-
-/* Media Queries */
-
-@media screen and (min-width: 485px) {
   .blob::after {
-    opacity: 0.3;
-  }
-}
+    content: "";
+    min-width: 70vw;
+    min-height: 30vh;
+    background-color: rgb(166, 166, 166);
 
-@media screen and (min-width: 770px) {
-  .blob::after {
-    opacity: 0.25;
-  }
-}
-
-/* Animations */
-@keyframes animateBg {
-  0% {
-    background-position: top;
-    /* background-size: 100%; */
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    filter: blur(180px);
+    opacity: 0.4;
+    z-index: -1;
+    overflow: hidden;
   }
 
-  100% {
-    background-position: bottom;
-    /* background-size: 150%; */
+  .footer-bg {
+    background-image: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 1),
+        rgba(255, 255, 255, 0)
+      ),
+      url("/imgs/worlds-top.jpg");
+    background-size: cover;
+    background-position: 10% 0;
   }
-}
 
-@keyframes scaleAni {
-  0% {
-    transform: scale(0);
-    animation-timing-function: ease-out;
+  .header-bg {
+    background-image: linear-gradient(
+        to top,
+        rgba(0, 0, 0, 1),
+        rgba(255, 255, 255, 0)
+      ),
+      url("/imgs/worlds-top.jpg");
+    background-size: cover;
+    background-position: 0% 0;
+    background-repeat: no-repeat;
   }
-  100% {
-    transform: scale(1);
-  }
-}
 
-.scaleInAnimation {
-  animation: scaleAni 1s;
-  /* animation-delay: 7s; */
-  animation-fill-mode: both;
+  .bgAnimation {
+    animation: animateBg;
+    animation-timing-function: ease-in-out;
+    animation-duration: 15s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+  }
+
+  /* Media Queries */
+
+  @media screen and (min-width: 485px) {
+    .blob::after {
+      opacity: 0.3;
+    }
+  }
+
+  @media screen and (min-width: 770px) {
+    .blob::after {
+      opacity: 0.25;
+    }
+  }
+
+  /* Animations */
+  @keyframes animateBg {
+    0% {
+      background-position: top;
+      /* background-size: 100%; */
+    }
+
+    100% {
+      background-position: bottom;
+      /* background-size: 150%; */
+    }
+  }
+
+  @keyframes scaleAni {
+    0% {
+      transform: scale(0);
+      animation-timing-function: ease-out;
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  .scaleInAnimation {
+    animation: scaleAni 1s;
+    /* animation-delay: 7s; */
+    animation-fill-mode: both;
+  }
 }

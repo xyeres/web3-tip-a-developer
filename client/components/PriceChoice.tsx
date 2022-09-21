@@ -10,8 +10,12 @@ type Props = {
 
 const PriceChoice = (props: Props) => {
   return (
-    <div onClick={props.onClick}
-      className={`cursor-pointer relative w-[110px] h-[120px] hover:translate-y-[3px] hard-shadow bg-neutral-800 hover:border-[] transition-all flex flex-col items-center justify-center gap-1}`}
+    <div
+      onClick={props.onClick}
+      tabIndex={0}
+      className={`cursor-pointer relative w-[110px] h-[120px] hover:translate-y-[3px] focus:translate-y-[3px] hard-shadow bg-neutral-800 hover:border-[] transition-all flex flex-col items-center justify-center gap-1}
+      focus:ring-4 outline-none my-2 rounded-xl ring-neutral-700
+      `}
     >
       <div className="flex flex-row items-center justify-center gap-1">
         <Image src={matic} width={32} height={32} alt="$MATIC Polygon" />

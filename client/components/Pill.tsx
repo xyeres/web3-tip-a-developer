@@ -12,8 +12,8 @@ type Props = {
 function Pill({ icon, title, platform, link }: Props): JSX.Element {
   return (
     <Link href={link}>
-      <a>
-        <span className='p-2 py-[6px] pr-4 my-2 rounded-3xl transition-colors duration-200 bg-[#1F1F1F] hover:bg-[#2f2f2f] text-xs inline-flex flex-row gap-2 items-center'>
+      <a className='focus:ring-4 outline-none my-2 rounded-3xl ring-neutral-700'>
+        <span className=' p-2 py-[6px] pr-4  rounded-3xl transition-colors duration-200 bg-[#1F1F1F] hover:bg-[#2f2f2f] text-xs inline-flex flex-row gap-2 items-center'>
           <div className='flex-shrink-0 flex items-center'><Image alt={platform} src={icon} /></div>
           <span className='pointer-events-none'>{title}</span>
         </span>

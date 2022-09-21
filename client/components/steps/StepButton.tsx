@@ -17,10 +17,10 @@ export default function StepButton({
   className,
   type
 }: StepButtonProps) {
-  if (title === "Prev") {
+  if (title === "Prev" || title === "Back") {
     className = 'p-2 mb-2 text-[.9rem] hover:bg-neutral-400 active:bg-neutral-400 bg-neutral-700 w-full focus:ring ring-neutral-100 outline-none'
   } else {
-    className = 'p-2 mb-2 text-[.9rem] hover:bg-[#673c8a] active:bg-[#673c8a] bg-[#512f6c] w-full focus:ring ring-[#673c8a] outline-none'
+    className = 'p-2 mb-2 text-[.9rem] hover:bg-purple-500 active:bg-purple-500 bg-purple-100 w-full focus:ring ring-purple-300 outline-none'
   }
   return (
     <button type={type} disabled={disabled} onClick={onClick} className={className}>
