@@ -13,11 +13,15 @@ const Balance = (props: Props) => {
     if (account.length && web3) {
       (async () => {
         let _balance;
+        //@ts-ignore
         if (web3?.eth) {
+        //@ts-ignore
           _balance = await web3.eth.getBalance(metaState.account[0]);
         } else {
+        //@ts-ignore
           _balance = await web3.getBalance(metaState.account[0]);
         }
+        //@ts-ignore
         setBalance(parseFloat(_balance / 10 ** 18).toFixed(3));
       })();
     }

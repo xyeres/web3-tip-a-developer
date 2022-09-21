@@ -1,7 +1,5 @@
 import { ethers } from "ethers";
 import React, {
-  Dispatch,
-  SetStateAction,
   useCallback,
   useContext,
   useEffect,
