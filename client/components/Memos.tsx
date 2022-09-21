@@ -17,7 +17,7 @@ const Memos = (props: Props) => {
   return (
     <div>
       <Marquee
-        velocity={25}
+        velocity={15}
         scatterRandomly={false}
         onFinish={() => { }}
         onInit={() => { }}
