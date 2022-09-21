@@ -144,8 +144,8 @@ const Profile: NextPage = () => {
           </div>
         </main>
 
-        <section className="mx-auto my-0 mt-[84px]">
-          <p className="text-center text-sm">
+        <section className="mx-auto my-0 mt-28">
+          <p className="text-center font-light text-xl text-gray-400">
             Some friend&apos;s are cheering...
           </p>
           <div className="mx-4 md:mx-0">
@@ -153,7 +153,7 @@ const Profile: NextPage = () => {
           </div>
         </section>
 
-        <section className="relative mx-auto h-full my-0 mt-[66px] text-center items-center justify-center flex flex-col ">
+        <section className="relative mx-auto h-full my-0 mt-28 text-center items-center justify-center flex flex-col ">
           <h2 className="text-[1.75rem] font-semibold">Want to cheers too?</h2>
           <p className="text-[#AAAAAA]">{stepMessage}</p>
 

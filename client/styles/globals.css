@@ -17,7 +17,7 @@ body {
 @layer components {
   .hard-shadow:hover,
   .hard-shadow:focus {
-    box-shadow: 6px 6px theme(colors.purple.700);
+    box-shadow: 6px 6px theme(colors.purple.900);
   }
 
   .blob::after {
