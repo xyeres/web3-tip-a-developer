@@ -20,9 +20,6 @@ const Web3Start = () => {
   const [error, setError] = useState<Error | any>();
   const [isWalletLoading, setIsWalletLoading] = useState(false);
 
-  const isAcceptableChain =
-    metaState.chain.id === "137" || metaState.chain.id === "80001";
-
   // Wallet Connect
   const connectWithPermission = useCallback(
     async (withPermission: boolean = false) => {
@@ -52,6 +49,7 @@ const Web3Start = () => {
     if (!metaState.isConnected) {
       (async function connectMetaMaskWallet() {
         try {
+          setError(null);
           setIsWalletLoading(true);
           await connectWithPermission(true);
         } catch (err: any) {
@@ -85,9 +83,3 @@ const Web3Start = () => {
 };
 
 export default Web3Start;
-
-// : isAcceptableChain ? (
-// stepList.find((s) => s.key === step)?.render()
-// ) : (
-//   <ChainCheck setTipmessage={setTipmessage} />
-// )
