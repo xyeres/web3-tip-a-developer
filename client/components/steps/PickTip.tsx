@@ -1,9 +1,8 @@
-import React, { useContext, useEffect } from "react";
+import { useContext, useEffect } from "react";
 import useStepMessage from "../../hooks/useStepMessage";
 import { StepsContext } from "../../lib/StepsProvider";
 import { TipContext } from "../../lib/TipProvider";
 import PriceChoice from "../PriceChoice";
-import DefaultButtons from "./DefaultButtons";
 
 const PickTip = () => {
   // Set display message
@@ -43,6 +42,7 @@ const PickTip = () => {
           />
         ))}
       </div>
+
     </div>
   );
 };

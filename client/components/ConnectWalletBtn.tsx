@@ -1,6 +1,5 @@
 import Image from "next/image";
-import { Dispatch, MouseEventHandler, SetStateAction, useEffect } from "react";
-import useMetamask from "../hooks/useMetamask";
+import { MouseEventHandler } from "react";
 import metamask from "../public/imgs/metamask.svg";
 import Spinner from "./Spinner";
 
