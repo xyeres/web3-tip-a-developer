@@ -3,7 +3,7 @@ import { ProviderRpcError } from "hardhat/types";
 import { useContext, useEffect, useState } from "react";
 import useMetamask from "../../hooks/useMetamask";
 import useStepMessage from "../../hooks/useStepMessage";
-import { getTipContract } from "../../lib/getTipContract";
+import { CONTRACT_ABI, CONTRACT_ADDRESS } from "../../lib/constants";
 import { StepsContext } from "../../lib/StepsProvider";
 import { TipContext } from "../../lib/TipProvider";
 import ChainCheck from "../ChainCheck";
@@ -37,18 +37,25 @@ const ReviewTip = () => {
     try {
       setTxLoading(true);
       console.log("Sending tip...");
-      const contract = getTipContract(metaState.web3);
-      const sendTipOnChain = withContract(contract);
-      const contractTx = await sendTipOnChain(tip.user, tip.message, tip.amount);
-      setTxMessage("Tip sent! Waiting for network confirmation...");
-      await contractTx.wait();
-      console.log("Transaction mined at: ", contractTx.hash);
-      getNextStep();
+
+      const { ethereum } = window
+
+      if (ethereum) {
+        const externalProvider = new ethers.providers.Web3Provider(ethereum, "any");
+        const signer = externalProvider.getSigner();
+        const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
+        const sendTipOnChain = withContract(contract);
+        const contractTx = await sendTipOnChain(tip.user, tip.message, tip.amount);
+        setTxMessage("Tip sent! Waiting for network confirmation...");
+        await contractTx.wait();
+        console.log("Transaction mined at: ", contractTx.hash);
+        getNextStep();
+      }
     } catch (error) {
       const RpcError = error as ProviderRpcError
       setTxLoading(false);
       setTxError(RpcError);
-      console.log(error);
+      console.log('an error happended', error);
     }
   }
 
@@ -126,7 +133,7 @@ const ReviewTip = () => {
           </div>
           {isAcceptableChain ? (
             <CustomButton
-              title="Yupp. Sign Transaction!"
+              title="Looks good, sign transaction!"
               onClick={handleConfirmTransaction}
             />
           ) : (
