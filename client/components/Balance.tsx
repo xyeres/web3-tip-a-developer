@@ -5,11 +5,13 @@ type Props = {}
 
 const Balance = (props: Props) => {
   const { metaState } = useMetamask()
-  const [balance, setBalance] = useState('0.00')
+  const [balance, setBalance] = useState('loading...')
 
   useEffect(() => {
     const { account, isConnected, web3 } = metaState;
+
     console.log(isConnected, account, web3)
+
     if (account.length && web3) {
       (async () => {
         let _balance;
@@ -30,7 +32,7 @@ const Balance = (props: Props) => {
 
   return (
     <div>
-      And you have {" "} <b><code>{balance}</code></b> eth in your account
+      And you have {" "} <b><code>{balance}</code></b> in your account
     </div>
   )
 }

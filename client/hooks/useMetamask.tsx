@@ -8,10 +8,10 @@ const chains = (chainId: string) => {
   }
   switch (chainId) {
     case "1": return "Ethereum mainnet";
-    case "3": return "Ethereum testnet ropsten";
-    case "4": return "Ethereum testnet rinkeby";
-    case "5": return "Ethereum testnet goerli";
-    case "42": return "Ethereum testnet kovan";
+    case "3": return "Ethereum testnet (ropsten)";
+    case "4": return "Ethereum testnet (rinkeby)";
+    case "5": return "Ethereum testnet (goerli)";
+    case "42": return "Ethereum testnet (kovan)";
     case "137": return "Matic mainnet";
     case "80001": return "Matic testnet (mumbai)";
     default: return `unknown`;
@@ -27,6 +27,7 @@ const useMetamask = () => {
   // Set provider in browser only (NextJS)
   useEffect(() => {
     setProvider(window.ethereum)
+    console.log('provider set...')
   }, [provider])
 
   useEffect(() => {
@@ -57,7 +58,6 @@ const useMetamask = () => {
       const _chainId = parseInt(chainId, 16).toString();
       const _chainInfo = { id: _chainId, name: chains(_chainId) };
       dispatch({ type: "SET_CHAIN", payload: _chainInfo });
-      window.location.reload();
     }
 
     function accountsChangedHandler(accounts: []) {
@@ -74,11 +74,56 @@ const useMetamask = () => {
     await getChain();
   };
 
-  const getAccounts = async ({ requestPermission } = { requestPermission: false }) => {
-    if (!provider) {
+  const changeUserChain = async () => {
+    if (provider == undefined) {
       console.warn("MetaMask is not available.");
       return;
     }
+    try {
+      // @ts-ignore
+      await provider.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId: "0x13881" }],
+      });
+    } catch (error) {
+      // The network has not been added to MetaMask
+      throw error
+    }
+  }
+
+  const addUserChain = async () => {
+    if (provider == undefined) {
+      console.warn("MetaMask is not available.");
+      return;
+    }
+    try {
+      //@ts-ignore
+      await provider.request({
+        method: 'wallet_addEthereumChain',
+        params: [
+          {
+            chainId: '0x89',
+            chainName: 'Polygon Mainnet',
+            rpcUrls: ['https://polygon-rpc.com'],
+            blockExplorerUrls: ['https://polygonscan.com/'],
+            nativeCurrency: {
+              symbol: 'MATIC',
+              decimals: 18,
+            },
+          },
+        ]
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  const getAccounts = async ({ requestPermission } = { requestPermission: false }) => {
+    if (window.ethereum === undefined) {
+      console.warn("MetaMask is not available.");
+      return;
+    }
+
     try {
       //@ts-ignore
       const accounts = await provider.request({
@@ -122,6 +167,8 @@ const useMetamask = () => {
     connect,
     getAccounts,
     getChain,
+    changeUserChain,
+    addUserChain,
     metaState: { ...state, isAvailable: !!provider },
   };
 }

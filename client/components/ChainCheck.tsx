@@ -1,22 +1,36 @@
+import { ProviderRpcError } from 'hardhat/types';
 import Image from 'next/image';
-import React, { Dispatch, SetStateAction, useEffect } from 'react'
 import useMetamask from '../hooks/useMetamask'
+import StepButton from './steps/StepButton';
 
-type Props = {
-  setTipmessage: Dispatch<SetStateAction<string>>;
-}
-const ChainCheck = ({ setTipmessage }: Props) => {
-  const { metaState } = useMetamask()
 
-  useEffect(() => {
-    setTipmessage("Please switch to Matic Mainnet")
-  }, [setTipmessage])
+const ChainCheck = () => {
+  const { metaState, changeUserChain, addUserChain } = useMetamask()
+
+
+  async function handleSwitchChainBtn() {
+    try {
+      await changeUserChain()
+    } catch (err) {
+
+      const RpcError = err as ProviderRpcError
+      
+      if (RpcError.code === 4902) {
+        // network does not exist in users wallet, 
+        // let's add it
+        await addUserChain()
+      }
+      console.warn(err)
+    }
+  }
 
   return (
-    <div className='mt-6'>
-      <Image src="/imgs/bell.png" width={80} height={80} alt="Warning, please select different chain" />
-      <p className='max-w-xs font-bold'>Please use MetaMask to switch to MATIC Mainnet. This message will dissapear once you&apos;re on the correct chain.</p>
-      <p className='text-xs mt-5'>You are currently on {metaState.chain.name}</p>
+    <div className='w-full flex flex-col gap-3'>
+      <div className='flex items-center self-center gap-2 text-sm mt-5'>
+        <Image src="/imgs/bell.png" className='flex-shrink-0 w-full' width={24} height={24} alt="Warning, please select different chain" />
+        <p className='flex-shrink w-full'>Must switch to Polygon network to send transaction. You are currently on {metaState.chain.name}</p>
+      </div>
+      <StepButton onClick={handleSwitchChainBtn} title='Switch to Polygon' />
     </div>
   )
 }

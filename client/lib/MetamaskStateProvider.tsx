@@ -1,11 +1,10 @@
 import React, { createContext, ReactNode, useReducer } from "react";
-import { EthereumProvider } from "hardhat/types"
-
+import { ExternalProvider } from "@ethersproject/providers";
 export type MetaMaskState = {
   account: string[];
   chain: { id: string | null, name: string | null };
   isConnected: boolean;
-  web3: null | EthereumProvider,
+  web3: undefined | ExternalProvider,
 }
 
 type ReducerAction = {
@@ -24,7 +23,7 @@ export const initialState: MetaMaskState = {
   account: [],
   chain: { id: null, name: "" },
   isConnected: false,
-  web3: null,
+  web3: undefined,
 };
 
 const reducer = (state: any, action: ReducerAction) => {

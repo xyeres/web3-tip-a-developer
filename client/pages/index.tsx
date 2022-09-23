@@ -11,7 +11,7 @@ import Pill from "../components/Pill";
 import Web3Start from "../components/Web3Start";
 import useMetamask from "../hooks/useMetamask";
 import useStepMessage from "../hooks/useStepMessage";
-import { useTipContract } from "../hooks/useTipContract";
+import { getTipContract } from "../lib/getTipContract";
 import github from "../public/imgs/github.svg";
 import linkedin from "../public/imgs/linkedin.svg";
 import twitter from "../public/imgs/twitter.svg";
@@ -44,7 +44,7 @@ const Profile: NextPage = () => {
   // Hooks
   const { metaState } = useMetamask();
   const { stepMessage } = useStepMessage();
-  const tipADeveloper = useTipContract();
+  const tipADeveloper = getTipContract();
 
   // Component state
   const [memos, setMemos] = useState(memosInitialState);
@@ -87,9 +87,11 @@ const Profile: NextPage = () => {
   }
 
   useEffect(() => {
+    console.log('event listener on')
     tipADeveloper.on("NewMemo", handleonNewMemo);
     return () => {
       if (tipADeveloper) {
+        console.log('event listener off')
         tipADeveloper.off("NewMemo", handleonNewMemo);
       }
     };
