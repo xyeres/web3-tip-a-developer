@@ -1,4 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
+// /* eslint-disable react-hooks/exhaustive-deps */
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
@@ -73,7 +73,7 @@ const Profile: NextPage = () => {
     } catch (error) {
       console.log(error);
     }
-  }, []);
+  }, [tipADeveloper]);
 
   /* useEffects: */
 
@@ -82,17 +82,17 @@ const Profile: NextPage = () => {
   }, []);
 
   // new memo event handler
-  function handleonNewMemo() {
+  function handleOnNewMemo() {
     getMemos();
   }
 
   useEffect(() => {
     console.log('event listener on')
-    tipADeveloper.on("NewMemo", handleonNewMemo);
+    tipADeveloper.on("NewMemo", handleOnNewMemo);
     return () => {
       if (tipADeveloper) {
         console.log('event listener off')
-        tipADeveloper.off("NewMemo", handleonNewMemo);
+        tipADeveloper.off("NewMemo", handleOnNewMemo);
       }
     };
   }, []);
