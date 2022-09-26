@@ -41,8 +41,8 @@ const ReviewTip = () => {
       const { ethereum } = window
 
       if (ethereum) {
-        const externalProvider = new ethers.providers.Web3Provider(ethereum, "any");
-        const signer = externalProvider.getSigner();
+        const provider = new ethers.providers.Web3Provider(ethereum, "any");
+        const signer = provider.getSigner();
         const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
         const sendTipOnChain = withContract(contract);
         const contractTx = await sendTipOnChain(tip.user, tip.message, tip.amount);
@@ -55,7 +55,6 @@ const ReviewTip = () => {
       const RpcError = error as ProviderRpcError
       setTxLoading(false);
       setTxError(RpcError);
-      console.log('an error happended', error);
     }
   }
 
@@ -85,7 +84,8 @@ const ReviewTip = () => {
   if (txError) {
     setStepMessage("Uh-oh");
     let message = "";
-    if (txError.code === 4001) {
+    //@ts-ignore for some reason the code is a string in this case...
+    if (txError.code === "ACTION_REJECTED") {
       message = "User rejected transaction";
     } else if (txError.code === -32000 || txError.code === -32603) {
       message =
