@@ -1,5 +1,6 @@
 import React, { createContext, ReactNode, useReducer } from "react";
 import { ExternalProvider } from "@ethersproject/providers";
+
 export type MetaMaskState = {
   account: string[];
   chain: { id: string | null, name: string | null };
@@ -10,6 +11,13 @@ export type MetaMaskState = {
 type ReducerAction = {
   type: string,
   payload: number | string | object | boolean
+}
+
+export const ACTION_TYPES = {
+  SET_ACCOUNT: "SET_ACCOUNT",
+  SET_CHAIN: "SET_CHAIN",
+  SET_CONNECTED: "SET_CONNECTED",
+  SET_WEB3: "SET_WEB3",  
 }
 
 const typeStateMap = {
