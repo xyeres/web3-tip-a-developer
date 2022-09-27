@@ -1,14 +1,20 @@
 import { Contract, ethers } from "ethers";
 import { ProviderRpcError } from "hardhat/types";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useReducer, useState } from "react";
 import useMetamask from "../../hooks/useMetamask";
 import useStepMessage from "../../hooks/useStepMessage";
 import { CONTRACT_ABI, CONTRACT_ADDRESS } from "../../lib/constants";
 import { StepsContext } from "../../lib/StepsProvider";
 import { TipContext } from "../../lib/TipProvider";
+import { parseErrorMessage } from "../../utils/parseErrorMessage";
 import ChainCheck from "../ChainCheck";
-import Spinner from "../Spinner";
+import {
+  sendTipReducer,
+  TX_ACTION_TYPES,
+  TX_INITIAL_STATE,
+} from "./sendTipReducer";
 import StepButton, { StepButtonProps } from "./StepButton";
+import TXLoading from "./transaction/TXLoading";
 
 const ReviewTip = () => {
   // Set display message
@@ -16,7 +22,7 @@ const ReviewTip = () => {
   const STEP_MESSAGE = "Review & sign";
   useEffect(() => setStepMessage(STEP_MESSAGE), [setStepMessage]);
 
-  // Get tip context
+  // Context
   const { tip } = useContext(TipContext);
   const { getPrevStep, getNextStep } = useContext(StepsContext);
 
@@ -24,45 +30,59 @@ const ReviewTip = () => {
   const { metaState } = useMetamask();
 
   // State
-  const [txLoading, setTxLoading] = useState(false);
-  const [txError, setTxError] = useState<null | ProviderRpcError>(null);
-  const [txMessage, setTxMessage] = useState(
-    "Waiting for user to sign transaction..."
-  );
+  const [txState, txDispatch] = useReducer(sendTipReducer, TX_INITIAL_STATE);
 
+  // Checks
   const isAcceptableChain =
     metaState.chain.id === "137" || metaState.chain.id === "80001";
 
+  // Handlers
   async function handleConfirmTransaction() {
     try {
-      setTxLoading(true);
+      txDispatch({
+        type: TX_ACTION_TYPES.SEND_START,
+        payload: "Waiting for user to sign transaction...",
+      });
       console.log("Sending tip...");
 
-      const { ethereum } = window
+      const { ethereum } = window;
 
       if (ethereum) {
         const provider = new ethers.providers.Web3Provider(ethereum, "any");
         const signer = provider.getSigner();
-        const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
+        const contract = new ethers.Contract(
+          CONTRACT_ADDRESS,
+          CONTRACT_ABI,
+          signer
+        );
         const sendTipOnChain = withContract(contract);
-        const contractTx = await sendTipOnChain(tip.user, tip.message, tip.amount);
-        setTxMessage("Tip sent! Waiting for network confirmation...");
+        const contractTx = await sendTipOnChain(
+          tip.user,
+          tip.message,
+          tip.amount
+        );
+
+        txDispatch({
+          type: TX_ACTION_TYPES.SEND_SUCCESS,
+          payload: "Tip sent! Waiting for network confirmation...",
+        });
+
         await contractTx.wait();
         console.log("Transaction mined at: ", contractTx.hash);
         getNextStep();
       }
     } catch (error) {
-      const RpcError = error as ProviderRpcError
-      setTxLoading(false);
-      setTxError(RpcError);
+      const RpcError = error as ProviderRpcError;
+      txDispatch({ type: TX_ACTION_TYPES.SEND_ERROR, payload: RpcError });
     }
   }
 
   function handleErrorDismiss() {
-    setTxError(null);
+    txDispatch({ type: TX_ACTION_TYPES.SEND_ERROR, payload: null });
     setStepMessage(STEP_MESSAGE);
   }
 
+  // Contract Wrapper
   function withContract(tipADeveloper: Contract) {
     return async function sendTipOnChain(
       name: string,
@@ -81,18 +101,11 @@ const ReviewTip = () => {
     };
   }
 
-  if (txError) {
+  // Error UI
+  if (txState.error) {
     setStepMessage("Uh-oh");
-    let message = "";
-    //@ts-ignore for some reason the code is a string in this case...
-    if (txError.code === "ACTION_REJECTED") {
-      message = "User rejected transaction";
-    } else if (txError.code === -32000 || txError.code === -32603) {
-      message =
-        "Insufficient funds, please add MATIC to your account or select a different account within MetaMask";
-    } else {
-      message = "Unknown error occurred";
-    }
+    let message = parseErrorMessage(txState.error);
+
     return (
       <div className="mt-5 text-sm text-red-400 flex w-full flex-col items-center">
         {message}
@@ -106,15 +119,10 @@ const ReviewTip = () => {
     );
   }
 
-  if (txLoading) {
-    return (
-      <div className="mt-5 flex w-full flex-col items-center">
-        <Spinner />
-        <p className="mt-4 text-xs font-bold">{txMessage}</p>
-      </div>
-    );
-  }
+  // Loading UI
+  if (txState.loading) return <TXLoading message={txState.message} />;
 
+  // Default UI
   return (
     <div className="text-left mt-4 text-[0.85rem] gap-2 flex w-full flex-col items-start justify-between">
       {
