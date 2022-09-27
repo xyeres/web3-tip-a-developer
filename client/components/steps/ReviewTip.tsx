@@ -104,8 +104,8 @@ const ReviewTip = () => {
   // Error UI
   if (txState.error) {
     setStepMessage("Uh-oh");
+    // Get message based on error code
     let message = parseErrorMessage(txState.error);
-
     return (
       <div className="mt-5 text-sm text-red-400 flex w-full flex-col items-center">
         {message}
