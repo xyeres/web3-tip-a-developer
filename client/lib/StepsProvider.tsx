@@ -1,6 +1,6 @@
 import { createContext, Dispatch, SetStateAction, useState } from "react";
 import { Steps } from "./enums";
-import { STEPLIST, StepListItem } from "./stepList";
+import { StepListItem, STEPLIST } from "./StepList";
 
 type StepsStrings = keyof typeof Steps;
 
@@ -25,7 +25,7 @@ const initialState = {
   getNextStep: () => initialStepListItem,
   getPrevStep: () => initialStepListItem,
   getCurrentStep: () => initialStepListItem,
-  stepMessage: "Login with MetaMask to send tips*",
+  stepMessage: "",
   setStepMessage: () => { },
   isFirstStep: true,
   isLastStep: false,
@@ -46,7 +46,7 @@ function StepsProvider({ children }: any) {
   }
 
   function getNextStep(): StepListItem | undefined {
-    let _nextIndex = (currentStepIndex + 1) % STEPLIST.length;
+    var _nextIndex = (currentStepIndex + 1) % STEPLIST.length;
 
     // Don't allow user to round robin to first element
     if (_nextIndex === 0) return;
@@ -73,7 +73,7 @@ function StepsProvider({ children }: any) {
   }
 
   function getStep(_key: StepsStrings): StepListItem | undefined {
-    const _result = STEPLIST.find((e, index) => {
+    var _result = STEPLIST.find((e, index) => {
       setCurrentStepIndex(index);
       return e.key === _key;
     });

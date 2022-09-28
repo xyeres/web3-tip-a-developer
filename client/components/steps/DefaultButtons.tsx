@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { DIRECTION } from "../../lib/enums";
-import { StepListItem } from "../../lib/stepList";
+import { StepListItem } from "../../lib/StepList";
 import { StepsContext } from "../../lib/StepsProvider";
 import StepButton from "./StepButton";
 

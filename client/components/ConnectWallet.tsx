@@ -1,20 +1,13 @@
 import { ethers } from "ethers";
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import Link from "next/link";
+import React, { useCallback, useEffect, useState } from "react";
 import useMetamask from "../hooks/useMetamask";
-import { StepsContext } from "../lib/StepsProvider";
 import ConnectWalletBtn from "./ConnectWalletBtn";
 
-const Web3Start = () => {
-  // Context
-  const stepsContext = useContext(StepsContext);
-
+const ConnectWallet = () => {
+  const BTN_LABEL = "Connect with MetaMask"
   // Hooks
-  const { connect, metaState } = useMetamask();
+  const { metaState, connect } = useMetamask();
 
   // State
   const [error, setError] = useState<Error | any>();
@@ -62,24 +55,40 @@ const Web3Start = () => {
   }
 
   return (
-    <div className="flex flex-col items-center w-2/3 md:w-1/2 lg:w-1/3">
-      <>
-        {!metaState.isConnected
-          ? metaState.isAvailable && (
-            <ConnectWalletBtn
-              isLoading={isWalletLoading}
-              title="Connect with MetaMask"
-              connectWallet={handleConnectMetaMask}
-            />
-          )
-          : stepsContext.getCurrentStep().render()}
+    <div className="flex items-center w-full flex-col">
+      {metaState.isAvailable ? (
+        <ConnectWalletBtn
+          isLoading={isWalletLoading}
+          title={BTN_LABEL}
+          connectWallet={handleConnectMetaMask}
+        />
+      ) : (
+        <React.Fragment>
+          <ConnectWalletBtn
+            connectWallet={() => null}
+            isLoading={false}
+            disabled
+            title={BTN_LABEL}
+          />
+          <div className="mt-6 text-sm">
+            <p>
+              You&apos;ll need to have Metamask installed to continue with
+              this web3 interaction. But wait, what is a MetaMask you say?{" "}
+              <Link href="https://metamask.io/">
+                <a className="underline text-orange-500">
+                  Learn about it here
+                </a>
+              </Link>
+            </p>
 
-        {error?.message && (
-          <p className="mt-3 text-red-700">Error: {error.message}</p>
-        )}
-      </>
+          </div>
+          {error?.message && (
+            <p className="mt-3 text-red-700">Error: {error.message}</p>
+          )}
+        </React.Fragment>
+      )}
     </div>
   );
 };
 
-export default Web3Start;
+export default ConnectWallet;

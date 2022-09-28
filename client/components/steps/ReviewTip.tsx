@@ -1,6 +1,6 @@
 import { Contract, ethers } from "ethers";
 import { ProviderRpcError } from "hardhat/types";
-import { useContext, useEffect, useReducer, useState } from "react";
+import React, { useContext, useEffect, useReducer } from "react";
 import useMetamask from "../../hooks/useMetamask";
 import useStepMessage from "../../hooks/useStepMessage";
 import { CONTRACT_ABI, CONTRACT_ADDRESS } from "../../lib/constants";
@@ -8,10 +8,11 @@ import { StepsContext } from "../../lib/StepsProvider";
 import { TipContext } from "../../lib/TipProvider";
 import { parseErrorMessage } from "../../utils/parseErrorMessage";
 import ChainCheck from "../ChainCheck";
+import ConnectWallet from "../ConnectWallet";
 import {
   sendTipReducer,
   TX_ACTION_TYPES,
-  TX_INITIAL_STATE,
+  TX_INITIAL_STATE
 } from "./sendTipReducer";
 import StepButton, { StepButtonProps } from "./StepButton";
 import TXLoading from "./transaction/TXLoading";
@@ -43,6 +44,7 @@ const ReviewTip = () => {
         type: TX_ACTION_TYPES.SEND_START,
         payload: "Waiting for user to sign transaction...",
       });
+      
       console.log("Sending tip...");
 
       const { ethereum } = window;
@@ -127,27 +129,33 @@ const ReviewTip = () => {
     <div className="text-left mt-4 text-[0.85rem] gap-2 flex w-full flex-col items-start justify-between">
       {
         <>
-          <div className="flex self-stretch justify-between">
+          <div className="flex self-stretch bg-neutral-900 p-3 justify-between items-center ">
             <p>Name:</p>
             <p>{tip.user}</p>
           </div>
-          <div className="flex self-stretch gap-7 justify-between">
+          <div className="flex self-stretch bg-neutral-900 p-3 gap-7 items-center justify-between">
             <p>Message:</p>
             <p className="break-all text-right">{tip.message}</p>
           </div>
-          <div className="mb-5 flex self-stretch justify-between">
+          <div className="mb-5 flex self-stretch bg-neutral-900 p-3 items-center justify-between">
             <p>Tip amount:</p>
             <p>{parseInt(tip.amount).toFixed(2)} $MATIC</p>
           </div>
-          {isAcceptableChain ? (
-            <CustomButton
-              title="Looks good, sign transaction!"
-              onClick={handleConfirmTransaction}
-            />
+          {!metaState.isConnected ? (
+            <ConnectWallet />
           ) : (
-            <ChainCheck />
+            <React.Fragment>
+              {isAcceptableChain ? (
+                <CustomButton
+                  title="Looks good, sign transaction!"
+                  onClick={handleConfirmTransaction}
+                />
+              ) : (
+                <ChainCheck />
+              )}{" "}
+              <StepButton title="Prev" onClick={getPrevStep} />
+            </React.Fragment>
           )}
-          <StepButton title="Prev" onClick={getPrevStep} />
         </>
       }
     </div>

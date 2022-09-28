@@ -42,7 +42,7 @@ const PickTip = () => {
           />
         ))}
       </div>
-
+      <p className="text-xs text-neutral-500">(Requires MetaMask)</p>
     </div>
   );
 };

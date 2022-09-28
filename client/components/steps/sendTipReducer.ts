@@ -37,7 +37,7 @@ export function sendTipReducer(
       };
     case TX_ACTION_TYPES.SEND_SUCCESS:
       return {
-        loading: false,
+        loading: true,
         error: null,
         message: action.payload,
       };

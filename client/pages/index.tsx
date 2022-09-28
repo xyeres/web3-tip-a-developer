@@ -2,16 +2,12 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
-import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
-import ConnectWalletBtn from "../components/ConnectWalletBtn";
 import type { Memo } from "../components/Memos";
 import Memos from "../components/Memos";
 import Pill from "../components/Pill";
-import Web3Start from "../components/Web3Start";
-import useMetamask from "../hooks/useMetamask";
-import useStepMessage from "../hooks/useStepMessage";
-import { getTipContract } from "../lib/getTipContract";
+import CurrentStep from "../components/CurrentStep";
+import { getTipContract } from "../utils/getTipContract";
 import github from "../public/imgs/github.svg";
 import linkedin from "../public/imgs/linkedin.svg";
 import twitter from "../public/imgs/twitter.svg";
@@ -42,8 +38,6 @@ const Profile: NextPage = () => {
   ];
 
   // Hooks
-  const { metaState } = useMetamask();
-  const { stepMessage } = useStepMessage();
   const tipADeveloper = getTipContract();
 
   // Component state
@@ -62,9 +56,9 @@ const Profile: NextPage = () => {
         return memoWithDate;
       });
 
-      memos = memos.slice(-6)
+      memos = memos.slice(-6);
 
-      memos.sort((a, b) => b.timestamp - a.timestamp)
+      memos.sort((a, b) => b.timestamp - a.timestamp);
 
       // Set only last 3 memos
       setMemos(memos);
@@ -87,11 +81,11 @@ const Profile: NextPage = () => {
   }
 
   useEffect(() => {
-    console.log('event listener on')
+    console.log("event listener on");
     tipADeveloper.on("NewMemo", handleOnNewMemo);
     return () => {
       if (tipADeveloper) {
-        console.log('event listener off')
+        console.log("event listener off");
         tipADeveloper.off("NewMemo", handleOnNewMemo);
       }
     };
@@ -101,7 +95,7 @@ const Profile: NextPage = () => {
     <>
       <Head>
         <title>Michael Carr | Tip A Developer</title>
-        <meta name="description" content="Michael Carr Contact Profile" />
+        <meta name="description" content="Michael Carr profile on Tip a Developer" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="blob min-h-[90vh]">
@@ -157,31 +151,7 @@ const Profile: NextPage = () => {
 
         <section className="relative mx-auto h-full my-0 mt-28 text-center items-center justify-center flex flex-col ">
           <h2 className="text-[1.75rem] font-semibold">Want to cheers too?</h2>
-          <p className="text-[#AAAAAA]">{stepMessage}</p>
-
-          {metaState.isAvailable ? (
-            <Web3Start />
-          ) : (
-            <div className="flex items-center flex-col">
-              <ConnectWalletBtn
-                connectWallet={() => null}
-                isLoading={false}
-                disabled
-                title="Connect MetaMask"
-              />
-              <div className="mt-3 text-xs">
-                <p>Looks like you don&apos;t have Metamask installed :(</p>
-                <p className="mt-1">
-                  But wait, what is a MetaMask you say?{" "}
-                  <Link href="https://metamask.io/">
-                    <a className="underline text-orange-500">
-                      Learn about it here
-                    </a>
-                  </Link>
-                </p>
-              </div>
-            </div>
-          )}
+          <CurrentStep />
         </section>
       </div>
 
