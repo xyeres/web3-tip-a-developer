@@ -35,14 +35,14 @@ const Message = () => {
       >
         <div className="flex flex-col w-full items-start gap-2">
           <label
-            className="text-gray-200 uppercase text-xs font-extrabold"
+            className="text-gray-900 uppercase text-xs font-extrabold"
             htmlFor="name"
           >
             Name:
           </label>
           <input
             required
-            className="bg-neutral-800 text-gray-200 p-2 pl-3 w-full focus:ring ring-purple-500 outline-none"
+            className="bg-neutral-100 text-gray-600 p-2 pl-3 w-full focus:ring ring-purple-500 outline-none"
             value={tip.user}
             placeholder="Your name is cool"
             id="name"
@@ -53,14 +53,14 @@ const Message = () => {
         </div>
         <div className="mt-4 mb-5 w-full flex flex-col items-start gap-2">
           <label
-            className="text-gray-200 uppercase text-xs font-extrabold"
+            className="text-gray-900 uppercase text-xs font-extrabold"
             htmlFor="message"
           >
             Message:
           </label>
           <textarea
             required
-            className="bg-neutral-800 text-gray-200 w-full p-2 pl-3 focus:ring ring-purple-500 outline-none"
+            className="bg-neutral-100 text-gray-600 w-full p-2 pl-3 focus:ring ring-purple-500 outline-none"
             maxLength={120}
             placeholder="A little note... you know you want to (it's required, lol)"
             value={tip.message}

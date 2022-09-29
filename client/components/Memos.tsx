@@ -28,7 +28,7 @@ const Memos = (props: Props) => {
           <div
             tabIndex={0}
             key={memo.timestamp.toString()}
-            className="hover:opacity-100 focus:ring-4 outline-none ring-neutral-700 hover:bg-neutral-800 bg-[#121212] transition-all duration-150 opacity-80 mt-[43px] mb-4 ml-10 p-6 flex flex-col"
+            className="hover:opacity-100 focus:ring-4 outline-none ring-blue-400 hover:ring-blue-300 hover:ring-4 mc-shadow bg-white transition-all duration-150 opacity-75 mt-[43px] mb-4 ml-10 p-6 flex flex-col"
           >
             <p className="text-xl font-extralight">{memo.message}</p>
             <span className="self-end mt-3 text-[.675rem]">

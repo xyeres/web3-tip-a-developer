@@ -13,15 +13,16 @@ const PriceChoice = (props: Props) => {
     <button
       onClick={props.onClick}
       tabIndex={0}
-      className={`cursor-pointer relative w-[110px] h-[120px] hover:translate-y-[3px] focus:translate-y-[3px] hard-shadow bg-neutral-800 hover:border-[] transition-all flex flex-col items-center justify-center gap-1}
-      focus:ring-4 outline-none my-2 rounded-xl ring-neutral-700
-      `}
+      className="relative w-[115px] h-[120px]  active:translate-y-[3px] bg-neutral-200 hover:shadow-xl transition-all flex flex-col items-center justify-center
+      focus:ring-4 hover:ring-4 outline-none my-2 rounded-xl ring-purple-700 header-bg"
     >
       <div className="flex flex-row items-center justify-center gap-1">
         <Image src={matic} width={32} height={32} alt="$MATIC Polygon" />
-        <span className="text-[1.5rem] font-bold">{props.amount}</span>
+        <span className="text-[1.5rem] text-gray-100 font-bold">
+          {props.amount}
+        </span>
       </div>
-      <span className="pt-5 text-xs text-gray-400">
+      <span className="pt-5 text-xs text-gray-200">
         ABOUT {props.conversion}
       </span>
     </button>

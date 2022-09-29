@@ -20,7 +20,7 @@ const ConnectWalletBtn = ({
     <button
       disabled={disabled}
       onClick={connectWallet}
-      className="disabled:cursor-not-allowed disabled:grayscale mt-[23px] font-bold flex flex-row items-center gap-[19px] bg-[#222222] hover:bg-[#2f2f2f] py-3 px-5 rounded-[10px] border-b-[3px] active:translate-y-[3px] hover:translate-y-[1px] hover:mt-[24px] hover:border-b-[2px] border-white transition-all active:border-b-0 active:mb-[2px]"
+      className="disabled:cursor-not-allowed disabled:grayscale mt-[23px] font-bold flex flex-row items-center gap-[19px] bg-gray-100 hover:bg-gray-200 py-3 px-5 rounded-[10px] border-b-[3px] active:translate-y-[3px] hover:translate-y-[1px] hover:mt-[24px] hover:border-b-[2px] border-gray-400 transition-all active:border-b-0 active:mb-[2px]"
     >
       {isLoading ? (
         <Spinner />

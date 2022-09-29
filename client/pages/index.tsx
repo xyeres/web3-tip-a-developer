@@ -101,26 +101,25 @@ const Profile: NextPage = () => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="blob min-h-[90vh]">
-        <div className="header-bg min-h-[62px] md:min-h-[52px] bgAnimation"></div>
-        <main className="max-w-lg mx-auto my-0 mt-[60px] md:mt-[100px] flex flex-col md:flex-row gap-8 items-center">
+      <div className="min-h-[90vh]">
+        <main className="header-bg-minimal max-w-lg min-w-full min-h-[100vh] md:min-h-0 py-24 md:py-48 justify-center text-gray-100 mx-auto my-0 flex flex-col md:flex-row gap-8 items-center">
           <Image
             className="rounded-full"
-            alt="michael carr"
+            alt="Michael Carr, front end developer"
             src="/imgs/profile.jpg"
-            width={180}
-            height={180}
+            width={190}
+            height={190}
           />
           <div className="flex flex-col items-center md:block text-center md:text-left">
-            <h1 className="text-[2rem] font-semibold">Michael Carr</h1>
-            <h3 className="mx-1 font-extralight text-[.95rem]">
-              Front end developer building web3
-            </h3>
-            <h2 className="mt-5 mx-1 text-sm max-w-[390px]">
-              Got a project you want to chat about? Let&apos;s talk. Reach out
-              with one of the following:
+            <h1 className="text-[2.1rem] font-semibold">Michael Carr</h1>
+            <h2 className="ml-[1px] font-extralight text-[1.1rem]">
+              Front end developer
             </h2>
-            <div className="mt-4 md:mt-2 flex flex-row gap-2 flex-wrap justify-center md:justify-start">
+            <p className="mt-5 mx-1 text-sm max-w-[390px]">
+              Got a project you want to chat about? <br />Reach out
+              with one of the following:
+            </p>
+            <div className="mt-4 md:mt-4 flex flex-row gap-2 flex-wrap justify-center md:justify-start">
               <Pill
                 platform="github"
                 link="https://github.com/xyeres"
@@ -141,15 +140,16 @@ const Profile: NextPage = () => {
               />
             </div>
           </div>
+          <p className="text-gray-700 text-xl font-extralight animate-bounce absolute bottom-10 md:hidden">Scroll</p>
         </main>
 
-        <section className="mx-auto mt-28 w-full my-0 justify-center gap-8 flex flex-col flex-wrap">
-          <p className="text-center font-light text-xl text-gray-300">
+        <section className="mx-auto w-full my-0 justify-center flex flex-col flex-wrap">
+          <p className="text-center my-16 font-light text-3xl text-gray-300">
             Projects
           </p>
           <div className="flex flex-row mx-auto w-full my-0 justify-center gap-8">
             <div className="relative flex-shrink flex-grow-0">
-              <div className="bg-blue-900 p-4 h-[130px] mb-4 flex flex-col">
+              <div className="bg-gray-100 p-4 h-[130px] mb-4 flex flex-col">
                 <p className="font-extralight text-2xl mt-auto">Streamy</p>
                 <p className="font-extralight text-sm">United Pursuit Records</p>
               </div>
@@ -181,8 +181,8 @@ const Profile: NextPage = () => {
         </section>
       </div>
 
-      <footer className="min-h-[30vh] footer-bg">
-        <p className="text-xs pt-14 px-4 text-center text-[#8a8a8a]">
+      <footer className="min-h-[20vh] flex items-end justify-center">
+        <p className="text-xs px-4 mb-4 text-center text-[#8a8a8a]">
           *By sending crypto to me using this form, you agree that this is a
           free-will donation with no promised return in goods or services. No
           refunds.
