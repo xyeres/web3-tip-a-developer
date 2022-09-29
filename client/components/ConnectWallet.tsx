@@ -57,11 +57,16 @@ const ConnectWallet = () => {
   return (
     <div className="flex items-center w-full flex-col">
       {metaState.isAvailable ? (
-        <ConnectWalletBtn
-          isLoading={isWalletLoading}
-          title={BTN_LABEL}
-          connectWallet={handleConnectMetaMask}
-        />
+        <React.Fragment>
+          <ConnectWalletBtn
+            isLoading={isWalletLoading}
+            title={BTN_LABEL}
+            connectWallet={handleConnectMetaMask}
+          />
+          {error?.message && (
+            <p className="mt-3 text-red-600">Error: {error.message}</p>
+          )}
+        </React.Fragment>
       ) : (
         <React.Fragment>
           <ConnectWalletBtn
@@ -82,9 +87,7 @@ const ConnectWallet = () => {
             </p>
 
           </div>
-          {error?.message && (
-            <p className="mt-3 text-red-700">Error: {error.message}</p>
-          )}
+
         </React.Fragment>
       )}
     </div>
