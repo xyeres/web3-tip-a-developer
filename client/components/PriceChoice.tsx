@@ -10,7 +10,7 @@ type Props = {
 
 const PriceChoice = (props: Props) => {
   return (
-    <div
+    <button
       onClick={props.onClick}
       tabIndex={0}
       className={`cursor-pointer relative w-[110px] h-[120px] hover:translate-y-[3px] focus:translate-y-[3px] hard-shadow bg-neutral-800 hover:border-[] transition-all flex flex-col items-center justify-center gap-1}
@@ -24,7 +24,7 @@ const PriceChoice = (props: Props) => {
       <span className="pt-5 text-xs text-gray-400">
         ABOUT {props.conversion}
       </span>
-    </div>
+    </button>
   );
 };
 
