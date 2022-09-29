@@ -95,7 +95,10 @@ const Profile: NextPage = () => {
     <>
       <Head>
         <title>Michael Carr | Tip A Developer</title>
-        <meta name="description" content="Michael Carr profile on Tip a Developer" />
+        <meta
+          name="description"
+          content="Michael Carr profile on Tip a Developer"
+        />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="blob min-h-[90vh]">
@@ -139,6 +142,29 @@ const Profile: NextPage = () => {
             </div>
           </div>
         </main>
+
+        <section className="mx-auto mt-28 w-full my-0 justify-center gap-8 flex flex-col flex-wrap">
+          <p className="text-center font-light text-xl text-gray-300">
+            Projects
+          </p>
+          <div className="flex flex-row mx-auto w-full my-0 justify-center gap-8">
+            <div className="relative flex-shrink flex-grow-0">
+              <div className="bg-blue-900 p-4 h-[130px] mb-4 flex flex-col">
+                <p className="font-extralight text-2xl mt-auto">Streamy</p>
+                <p className="font-extralight text-sm">United Pursuit Records</p>
+              </div>
+              {/* <Image src={'/imgs/streamy.png'} layout="fill" alt="bl" /> */}
+            </div>
+
+            <div className="relative">
+              <div className="bg-neutral-800 h-[130px] mb-4"></div>
+            </div>
+
+            <div className="relative">
+              <div className="bg-neutral-800 h-[130px] mb-4"></div>
+            </div>
+          </div>
+        </section>
 
         <section className="mx-auto my-0 mt-28">
           <p className="text-center font-light text-xl text-gray-400">
