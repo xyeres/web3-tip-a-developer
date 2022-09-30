@@ -1,11 +1,24 @@
-# Tip A Developer
-### A web3 dApp that allows users to tip their favorite developer friends with crypto!
+# Tip A Developer dApp
+### A web3 dApp that allows users to tip their favorite developer with crypto!
+I built this as a web3 demo to show off how a developer could create a profile to easily connect with other devs. It then allows MetaMask users to sign and send a crypto tips over the $MATIC Polygon network through a Smart Contract I wrote in Solidity.
 
-[View live site here](https://tipadeveloper-xyeres.vercel.app/)
+[View live site here](https://tipadeveloper.vercel.app/)
 
-[![](./screenshots/metamask.gif)](https://tipadeveloper-xyeres.vercel.app/)
+### Stack:
+- Solidity Smart Contracts
+- Next.js with React and TypeScript
+- Ethers.js
+- MetaMask API
 
-### Smart Contract
+[![](./screenshots/screenshot.png)](https://tipadeveloper.vercel.app/)
+
+
+### web3 interaction demo:
+Here is what it looks like signing a tip transaction using MetaMask
+
+[![](./screenshots/metamask.gif)](https://tipadeveloper.vercel.app/)
+
+### Solidity Smart Contract
 Built on Polygon, the smart contract allows user interactions (through wallets such as MetaMask) like tipping, withdrawal of tips, and transfer of contract ownership.
 
 The solidity contract is comprised of 3 primary functions: 
