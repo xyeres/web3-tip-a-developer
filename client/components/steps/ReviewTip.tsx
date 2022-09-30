@@ -112,7 +112,7 @@ const ReviewTip = () => {
       <div className="mt-5 text-sm text-red-400 flex w-full flex-col items-center">
         {message}
         <button
-          className="p-2 mt-3 text-gray-50 text-[.9rem] hover:bg-gray-500 active:bg-gray-600 bg-gray-600 w-full focus:ring ring-gray-100 outline-none"
+          className="p-2 mt-3 text-gray-50 text-[.9rem] hover:bg-gray-500 active:bg-gray-600 bg-gray-600 w-full focus:ring ring-gray-300 outline-none"
           onClick={handleErrorDismiss}
         >
           Back

@@ -38,10 +38,10 @@ body {
 
   .footer-bg {
     background-image: linear-gradient(
-      to bottom,
-      rgba(0, 0, 0, 1),
-      rgba(255, 255, 255, 0)
-    ),
+        to bottom,
+        rgba(0, 0, 0, 1),
+        rgba(255, 255, 255, 0)
+      ),
       url("/imgs/worlds-top.jpg");
     background-size: cover;
     background-position: 10% 0;
@@ -49,10 +49,10 @@ body {
 
   .header-bg {
     background-image: linear-gradient(
-      to top right,
-      rgba(0, 0, 0, 1),
-      rgba(255, 255, 255, 0)
-    ),
+        to top right,
+        rgba(0, 0, 0, 1),
+        rgba(255, 255, 255, 0)
+      ),
       url("/imgs/worlds-top.jpg");
     background-size: cover;
     background-position: 0% 0;
@@ -61,10 +61,31 @@ body {
 
   .header-bg-minimal {
     background-color: black;
+    background-image: url("/imgs/wave.jpeg");
+    background-size: cover;
+    background-position: 0% 0;
+    background-repeat: no-repeat;
+  }
+
+  .footer-bg-minimal {
+    background-color: black;
+    background-image: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 1),
+        rgba(255, 255, 255, 0)
+      ),
+      url("/imgs/wave-alt.jpeg");
+    background-size: 130%;
+    background-position: 0% 0;
+    background-repeat: no-repeat;
+  }
+
+  .header-bg-minimal-gradient {
+    background-color: black;
     background-image: linear-gradient(
       to top,
       rgba(0, 0, 0, 1),
-      rgba(255, 255, 255, .11)
+      rgba(255, 255, 255, 0.11)
     );
     background-size: cover;
     background-position: 0% 0;

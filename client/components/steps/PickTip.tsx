@@ -7,7 +7,7 @@ import PriceChoice from "../PriceChoice";
 const PickTip = () => {
   // Set display message
   const { setStepMessage } = useStepMessage()
-  useEffect(() => setStepMessage("Pick tip amount"), [setStepMessage])
+  useEffect(() => setStepMessage("Pick crypto tip amount*"), [setStepMessage])
 
   // Context
   const { getNextStep } = useContext(StepsContext)
