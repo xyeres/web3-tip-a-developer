@@ -89,7 +89,7 @@ describe("Protected", function testProtected() {
 ```
 
 ### The Client
-The client is built using `Nextjs`, custom `React` hooks and `ethers.js`.
+The client is built using `Nextjs`, custom `React` hooks and `ethers.js`, type checked by `TypeScript`
 
 #### Client features of note:
 - The memo marquee data is drawn directly from the blockchain
@@ -97,6 +97,9 @@ The client is built using `Nextjs`, custom `React` hooks and `ethers.js`.
 - If MetaMask is *not* installed, the client will see a nicely rendered grayscale button informing them to get MetaMask or learn more about it
 
 ### Challenges
-One of the greatest challenges with web3 is perhaps adoption. Creating apps that do not *require* a user to have certain knowlege or experience (i.e. MetaMask installed and ready to go) is imperative. If we want to create accessible apps then we must generally lower the barrior of engagement to gain adoption. Perhaps many of our web3 apps do not need to be *fully* decentralized in favor of creating more well known user experiences. 
+One of the greatest challenges with web3 is perhaps adoption. Creating apps that do not *require* a user to have certain knowledge or experience (i.e. MetaMask installed and ready to go) is imperative. If we want to create accessible apps then we must generally lower the barrier of engagement to gain adoption. Perhaps many of our web3 apps do not need to be *fully* decentralized in favor of creating more familiar user experiences. 
+
+In this project I intentionally wrestled with the idea of adoption by trying several different approaches to the web3 interaction part of the profile. For example, in the early iteration I immediately showed the user a `Connect with MetaMask` button before they were even able to see the tipping process. Later I found this to be too exclusive to the web3-versed user and instead opted for a way to let the user interact with the app maximally before presenting any sort of barrier of entry. 
+
 ### Future development
-This could be the basis of an online creative community powered by the generosity of fans and supporters who give to their favorite developer's to encourage continued project development. The site could be setup as an on-demand service that allows any developer to create a profile, deploy their own smart contract and then share their site URL with supporters. 
+This could be the basis of an online creative community powered by the generosity of followers and supporters who give tips to encourage their favorite developers to continue their project development. The site could be setup as an on-demand service that allows any developer to create a profile, deploy their own smart contract and then share their site URL with supporters. 
