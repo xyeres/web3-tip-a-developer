@@ -50,6 +50,11 @@ const Profile: NextPage = () => {
     },
   ];
 
+  useEffect(() => {
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  }, []);
+
   // Hooks
   const tipADeveloper = getTipContract();
 
@@ -94,11 +99,9 @@ const Profile: NextPage = () => {
   }
 
   useEffect(() => {
-    console.log("event listener on");
     tipADeveloper.on("NewMemo", handleOnNewMemo);
     return () => {
       if (tipADeveloper) {
-        console.log("event listener off");
         tipADeveloper.off("NewMemo", handleOnNewMemo);
       }
     };
@@ -159,7 +162,9 @@ const Profile: NextPage = () => {
                 Creatively solving UI design problems with modern tools such as
                 Next.js, React, Ethers.js and Solidity Smart Contracts.
               </p>
-              <p className="mt-4 text-sm font-bold">What projects are you working on currently? Let&apos;s chat!</p>
+              <p className="mt-4 text-sm font-bold">
+                What projects are you working on currently? Let&apos;s chat!
+              </p>
               <div className="mt-4 md:mt-4 flex flex-row gap-2 flex-wrap justify-center     md:justify-start">
                 <Tween
                   to={{
@@ -250,8 +255,8 @@ const Profile: NextPage = () => {
                     </p>
                   </div>
                   <p className="font-extralight mt-2">
-                    Anyone can fund their next project through decentralized web3
-                    crowdfunding
+                    Anyone can fund their next project through decentralized
+                    web3 crowdfunding
                   </p>
                 </div>
                 <div className="text-gray-500">
@@ -300,7 +305,7 @@ const Profile: NextPage = () => {
                 <div className="flex flex-col mt-5 lg:mt-auto">
                   <a
                     href="https://www.soundsplits.com"
-                    className="text-center font-bold hover:bg-blue-700 bg-blue-500 text-white px-4 py-2 rounded-full text-xs"
+                    className="text-center font-bold hover:bg-blue-700 bg-blue-500 outline-none focus:ring-4 ring-blue-200 text-white px-4 py-2 rounded-full text-xs"
                   >
                     View
                   </a>
@@ -327,7 +332,7 @@ const Profile: NextPage = () => {
                 <div className="flex flex-col pt-5 mt-auto">
                   <a
                     href="https://listen.unitedpursuit.com"
-                    className="hover:bg-yellow-700 font-bold text-center bg-yellow-500 text-white px-4 py-2 rounded-full text-xs"
+                    className="hover:bg-yellow-700 outline-none focus:ring-4 ring-yellow-300 font-bold text-center bg-yellow-500 text-white px-4 py-2 rounded-full text-xs"
                   >
                     View
                   </a>
@@ -352,32 +357,42 @@ const Profile: NextPage = () => {
       </div>
 
       <footer className="footer-bg-minimal relative mt-32 bg-cover min-h-[36vh] flex flex-row bg-black justify-center">
-
         <div className="text-xs mt-8 flex flex-col px-4 justify-between text-center text-gray-500">
-          <Tween from={{ opacity: 0 }} to={{
-            opacity: 1,
-            scrollTrigger: {
-              trigger: ".footer-bg-minimal",
-              start: "150px bottom",
-              end: "bottom end",
-            },
-          }} duration={.65} target={0}>
+          <Tween
+            from={{ opacity: 0 }}
+            to={{
+              opacity: 1,
+              scrollTrigger: {
+                trigger: ".footer-bg-minimal",
+                start: "150px bottom",
+                end: "bottom end",
+              },
+            }}
+            duration={0.65}
+            target={0}
+          >
             <p>
               *By sending crypto to me using this form, you agree that this is a
-              free-will donation with no promised return in goods or services. No
-              refunds.
+              free-will donation with no promised return in goods or services.
+              No refunds.
             </p>
           </Tween>
-          <Tween from={{ opacity: 0 }} to={{
-            opacity: 1,
-            scrollTrigger: {
-              trigger: ".footer-bg-minimal",
-              start: "91% bottom",
-              end: "bottom end",
-            },
-          }} duration={.75} target={1}>
-            <p className="text-[.6rem] text-white mb-10">&copy;2022 Michael Carr</p>
-
+          <Tween
+            from={{ opacity: 0 }}
+            to={{
+              opacity: 1,
+              scrollTrigger: {
+                trigger: ".footer-bg-minimal",
+                start: "91% bottom",
+                end: "bottom end",
+              },
+            }}
+            duration={0.75}
+            target={1}
+          >
+            <p className="text-[.6rem] text-white mb-10">
+              &copy;2022 Michael Carr
+            </p>
           </Tween>
         </div>
         {/* <p className="text-gray-200 max-w-xs self-center font-light text-md">I am a Front End Developer focusing on building creative solutions for web and mobile. I have experience building multi-tiered SaaS and Single Page Apps in a React, Next.js stack.</p> */}
