@@ -158,12 +158,13 @@ const Profile: NextPage = () => {
               <h2 className="ml-[1px] capitalize font-light text-[1.1rem]">
                 Front end developer
               </h2>
-              <p className="mt-5 mx-1 text-sm max-w-[390px]">
+              <p className="mt-5 mx-4 md:mx-1 text-sm font-light max-w-[390px]">
                 Creatively solving UI design problems with modern tools such as
                 Next.js, React, Ethers.js and Solidity Smart Contracts.
               </p>
-              <p className="mt-4 text-sm font-bold">
-                What projects are you working on currently? Let&apos;s chat!
+              <p className="mt-4 mx-4 md:mx-0 text-sm">
+                What projects are you working on currently?
+                  <br />Let&apos;s chat!
               </p>
               <div className="mt-4 md:mt-4 flex flex-row gap-2 flex-wrap justify-center     md:justify-start">
                 <Tween
