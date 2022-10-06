@@ -2,7 +2,7 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { Memo } from "../components/Memos";
 import Memos from "../components/Memos";
 import Pill from "../components/Pill";
@@ -25,6 +25,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 import ImageGallery from 'react-image-gallery';
 import "react-image-gallery/styles/css/image-gallery.css";
+import DesignCard from "../components/projects/DesignCard";
 
 const images = [
   {
@@ -85,6 +86,7 @@ const Profile: NextPage = () => {
   // Component state
   const [memos, setMemos] = useState(memosInitialState);
   const [open, setOpen] = useState(false);
+  const projectRef = useRef<HTMLDivElement | undefined>(undefined)
 
   const onOpenModal = () => setOpen(true);
   const onCloseModal = () => setOpen(false);
@@ -263,6 +265,7 @@ const Profile: NextPage = () => {
               Projects I&apos;m actively building &amp; contributing to
             </p>
           </div>
+
           <div className="flex flex-row flex-wrap mx-auto w-full my-0 justify-center gap-8">
             <CardList />
           </div>
@@ -270,12 +273,23 @@ const Profile: NextPage = () => {
         <section className="flex flex-col items-center justify-center">
           <h2 className="text-xl pt-14">UI Design</h2>
           <p className="text-gray-500 pb-6">
-            Examples of my design work
+            User interface and design showcase
           </p>
-          <div className="flex flex-row items-center justify-center my-4">
-            <button
-              className="hover:bg-purple-300 outline-none focus:ring-4 ring-purple-200 font-bold text-center bg-purple-200 text-white px-4 py-2 rounded-full text-xs"
-              onClick={onOpenModal}>View Project 1</button>
+          <div className="flex flex-wrap flex-row items-start justify-center">
+            <div className="rounded-2xl border-gray-400 mx-2 px-5">
+              <DesignCard position="absolute top-9 right-16" bgSrc="/imgs/ss-thumb.png" layerSrc="/imgs/ss-thumb-layer.png" onClick={onOpenModal} />
+              <div className="pb-4 px-4">
+                <p className="text-lg font-light text-gray-500">Sound Splits</p>
+                <p className="text-sm text-gray-400">SaaS Royalty accounting app redesign</p>
+              </div>
+            </div>
+            <div className="rounded-2xl border-gray-400 mx-2 px-5">
+              <DesignCard position="absolute top-9 right-[33%]" bgSrc="/imgs/hunter-thumb.png" layerSrc="/imgs/hunter-thumb-layer.png" onClick={onOpenModal} />
+              <div className="pb-4 px-4">
+                <p className="text-lg font-light text-gray-500">Hunter Mag.</p>
+                <p className="text-sm text-gray-400">Hunter Magazine user interface design</p>
+              </div>
+            </div>
             <Modal
               classNames={{
                 modal: "min-w-[92vw] rounded-lg min-h-[90vh]",
