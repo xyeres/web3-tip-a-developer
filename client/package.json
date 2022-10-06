@@ -12,7 +12,9 @@
     "@metamask/detect-provider": "^1.2.0",
     "@types/gsap": "^3.0.0",
     "@types/lodash": "^4.14.185",
+    "@types/react-image-gallery": "^1.0.5",
     "@types/styled-components": "^5.1.26",
+    "atropos": "^1.0.2",
     "ethers": "^5.7.1",
     "gsap": "^3.11.2",
     "hardhat": "^2.11.1",
@@ -21,7 +23,9 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-gsap": "^3.2.1",
+    "react-image-gallery": "^1.2.11",
     "react-marquee-slider": "^1.1.5",
+    "react-responsive-modal": "^6.2.0",
     "styled-components": "^5.3.5"
   },
   "devDependencies": {
