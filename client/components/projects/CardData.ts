@@ -40,7 +40,7 @@ const cardData: Card[] = [
     classNames: {
       stack: "border-blue-300",
       container:
-        "bg-gradient-to-b from-[#fbffff] border-blue-200 ring-blue-100",
+        "hover:bg-gradient-to-b from-[#fbffff] border-blue-200 ring-blue-100",
     },
     title: "Sound Splits",
     logoOnly: true,
@@ -58,7 +58,7 @@ const cardData: Card[] = [
     classNames: {
       stack: "border-yellow-300",
       container:
-        "bg-gradient-to-b border-yellow-300 ring-yellow-200",
+        "hover:bg-gradient-to-b from-yellow-50 border-yellow-300 ring-yellow-200",
     },
     title: "Streamy",
     logoOnly: false,
