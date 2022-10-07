@@ -195,7 +195,7 @@ const Profile: NextPage = () => {
           </p>
 
           <p className="text-[.6rem] text-white mb-10">
-            &copy;2022 Michael Carr
+            &copy;2022 Michael Carr, except for textures from Unsplash
           </p>
         </div>
       </footer>
