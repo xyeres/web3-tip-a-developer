@@ -120,7 +120,7 @@ const Profile: NextPage = () => {
         <h2 className="text-xl pt-14">UI Design</h2>
         <p className="text-gray-500 pb-6">User interface and design showcase</p>
         <div className="flex flex-wrap flex-row items-start justify-center">
-          <div className="rounded-2xl border-gray-400 mx-2 px-5">
+          <div className="mx-2 px-0 md:mx-2 md:px-5">
             <DesignCard
               position="absolute top-9 right-16"
               bgSrc="/imgs/ss-thumb.png"
@@ -132,7 +132,7 @@ const Profile: NextPage = () => {
               <p className="text-sm text-gray-400">Landing page redesign</p>
             </div>
           </div>
-          <div className="rounded-2xl border-gray-400 mx-2 px-5">
+          <div className="mt-6 md:mt-0 mx-2 px-0 md:mx-2 md:px-5">
             <DesignCard
               position="absolute top-9 right-[33%]"
               bgSrc="/imgs/hunter-thumb.png"

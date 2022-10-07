@@ -58,7 +58,7 @@ const cardData: Card[] = [
     classNames: {
       stack: "border-yellow-300",
       container:
-        "bg-gradient-to-b from-yellow-50 border-yellow-300 ring-yellow-200",
+        "bg-gradient-to-b border-yellow-300 ring-yellow-200",
     },
     title: "Streamy",
     logoOnly: false,
