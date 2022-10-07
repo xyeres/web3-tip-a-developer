@@ -1,5 +1,6 @@
+import { useState, useCallback, useEffect } from "react";
 import Marquee from "react-marquee-slider";
-import styled from "styled-components";
+import { getTipContract } from "../utils/getTipContract";
 
 export type Memo = {
   address: string;
@@ -9,11 +10,79 @@ export type Memo = {
   date: string;
 };
 
-type Props = {
-  memos: Memo[];
-};
+const memosInitialState: Memo[] = [
+  {
+    address: "",
+    timestamp: 1663783113800,
+    name: "Tommy",
+    message: "Another great website you did for us, thanks!",
+    date: "8/20/22",
+  },
+  {
+    address: "",
+    timestamp: 1663783113400,
+    name: "Matthew",
+    message: "What a standup on Friday! lol",
+    date: "8/27/22",
+  },
+  {
+    address: "",
+    timestamp: 1663783113300,
+    name: "Ashley",
+    message: "What a standup on Friday! lol",
+    date: "9/10/22",
+  },
+];
 
-const Memos = (props: Props) => {
+const Memos = () => {
+
+  // Hooks
+  const tipADeveloper = getTipContract();
+
+  // Component state
+  const [memos, setMemos] = useState(memosInitialState);
+  const getMemos = useCallback(async () => {
+    try {
+      let memos: Memo[] = await tipADeveloper.getMemos();
+
+      // Add formated date to each memo
+      memos = memos.map((memo) => {
+        let memoWithDate = {
+          ...memo,
+          date: new Date(memo.timestamp * 1000).toLocaleDateString(),
+        };
+        return memoWithDate;
+      });
+
+      memos = memos.slice(-6);
+      memos.sort((a, b) => b.timestamp - a.timestamp);
+      setMemos(memos);
+      
+    } catch (error) {
+      console.log(error);
+    }
+  }, [tipADeveloper]);
+
+  /* useEffects: */
+
+  useEffect(() => {
+    getMemos();
+  }, []);
+
+  // new memo event handler
+  function handleOnNewMemo() {
+    getMemos();
+  }
+
+  useEffect(() => {
+    tipADeveloper.on("NewMemo", handleOnNewMemo);
+    return () => {
+      if (tipADeveloper) {
+        tipADeveloper.off("NewMemo", handleOnNewMemo);
+      }
+    };
+  }, []);
+
   return (
     <div>
       <Marquee
@@ -24,7 +93,7 @@ const Memos = (props: Props) => {
         direction="rtl"
         resetAfterTries={200}
       >
-        {props.memos.map((memo: Memo) => (
+        {memos.map((memo: Memo) => (
           <div
             tabIndex={0}
             key={memo.timestamp.toString()}
