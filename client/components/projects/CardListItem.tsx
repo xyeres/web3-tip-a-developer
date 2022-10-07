@@ -8,7 +8,7 @@ const CardListItem = (props: Card) => {
   useEffect(() => {
     const items = props.stack.map((el, i) => (
       <li
-        className={`px-2 py-1 rounded-md opacity-75 ${props.classNames.stack}`}
+        className={`px-2 py-1 border rounded-full opacity-75 ${props.classNames.stack}`}
         key={i}
       >
         {el}
