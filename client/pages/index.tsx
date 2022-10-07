@@ -48,71 +48,59 @@ const Profile: NextPage = () => {
         id="header"
         className="header-bg-minimal max-w-lg min-w-full min-h-[100vh] md:min-h-0 py-24 md:py-48 justify-center text-gray-100 mx-auto my-0 flex flex-col md:flex-row gap-8 items-center"
       >
-        <Tween
-          to={{
-            opacity: 0,
-            scrollTrigger: {
-              trigger: "#header",
-              start: "70px top",
-              end: "500px 120px",
-              scrub: 1,
-            },
-          }}
-        >
-          <span className="profile-image">
-            <Image
-              className="rounded-full"
-              alt="Michael Carr, front end developer"
-              src="/imgs/profile.jpg"
-              width={190}
-              height={190}
-            />
-          </span>
+        <span className="profile-image">
+          <Image
+            className="rounded-full"
+            alt="Michael Carr, front end developer"
+            src="/imgs/profile.jpg"
+            width={190}
+            height={190}
+          />
+        </span>
 
-          <div className="text-info flex flex-col items-center md:block text-center md:text-left">
-            <h1 className="text-[2.1rem] font-semibold">Michael Carr</h1>
-            <h2 className="ml-[1px] capitalize font-light text-[1.1rem]">
-              Front end developer
-            </h2>
-            <p className="mt-5 mx-4 md:mx-1 text-sm font-light max-w-[390px]">
-              Creatively solving UI design problems with modern tools such as
-              Next.js, React, Ethers.js and Solidity Smart Contracts.
-            </p>
-            <p className="mt-4 mx-4 md:mx-0 text-sm">
-              What projects are you working on currently?
-              <br />
-              Let&apos;s chat!
-            </p>
-            <div className="mt-4 md:mt-4 flex flex-row gap-2 flex-wrap justify-center     md:justify-start">
-              <span className="mt-3">
-                <Pill
-                  platform="github"
-                  link="https://github.com/xyeres"
-                  icon={github}
-                  title="xyeres"
-                />
-              </span>
+        <div className="text-info flex flex-col items-center md:block text-center md:text-left">
+          <h1 className="text-[2.1rem] font-semibold">Michael Carr</h1>
+          <h2 className="ml-[1px] capitalize font-light text-[1.1rem]">
+            Front end developer
+          </h2>
+          <p className="mt-5 mx-4 md:mx-1 text-sm font-light max-w-[390px]">
+            Creatively solving UI design problems with modern tools such as
+            Next.js, React, Ethers.js and Solidity Smart Contracts.
+          </p>
+          <p className="mt-4 mx-4 md:mx-0 text-sm">
+            What projects are you working on currently?
+            <br />
+            Let&apos;s chat!
+          </p>
+          <div className="mt-4 md:mt-4 flex flex-row gap-2 flex-wrap justify-center     md:justify-start">
+            <span className="mt-3">
+              <Pill
+                platform="github"
+                link="https://github.com/xyeres"
+                icon={github}
+                title="xyeres"
+              />
+            </span>
 
-              <span className="mt-3">
-                <Pill
-                  platform="linkedin"
-                  link="https://www.linkedin.com/in/mxcarr/"
-                  icon={linkedin}
-                  title="mxcarr"
-                />
-              </span>
+            <span className="mt-3">
+              <Pill
+                platform="linkedin"
+                link="https://www.linkedin.com/in/mxcarr/"
+                icon={linkedin}
+                title="mxcarr"
+              />
+            </span>
 
-              <span className="mt-3">
-                <Pill
-                  platform="twitter"
-                  link="https://twitter.com/xyeres"
-                  icon={twitter}
-                  title="xyeres"
-                />
-              </span>
-            </div>
+            <span className="mt-3">
+              <Pill
+                platform="twitter"
+                link="https://twitter.com/xyeres"
+                icon={twitter}
+                title="xyeres"
+              />
+            </span>
           </div>
-        </Tween>
+        </div>
       </main>
 
       <section className="projects bg-white py-10 z-50 mx-auto px-7 w-full my-0 justify-center flex flex-col flex-wrap">
