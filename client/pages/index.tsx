@@ -1,7 +1,7 @@
 // /* eslint-disable react-hooks/exhaustive-deps */
 import type { NextPage } from "next";
 import Head from "next/head";
-import Image from "next/image";
+import Image from "next/future/image";
 import { useState } from "react";
 import Memos from "../components/Memos";
 import Pill from "../components/Pill";
@@ -23,6 +23,7 @@ gsap.registerPlugin(ScrollTrigger);
 // Modal
 import "react-responsive-modal/styles.css";
 import { Modal } from "react-responsive-modal";
+import Atropos from "atropos/react";
 
 const Profile: NextPage = () => {
   const [openHunter, setOpenHunter] = useState(false);
@@ -49,13 +50,15 @@ const Profile: NextPage = () => {
         className="header-bg-minimal max-w-lg min-w-full min-h-[100vh] md:min-h-0 py-24 md:py-48 justify-center text-gray-100 mx-auto my-0 flex flex-col md:flex-row gap-8 items-center"
       >
         <span className="profile-image">
-          <Image
-            className="rounded-full"
-            alt="Michael Carr, front end developer"
-            src="/imgs/profile.jpg"
-            width={190}
-            height={190}
-          />
+          <Atropos shadow={false} highlight={false} activeOffset={70}>
+            <Image
+              className="rounded-full"
+              alt="Michael Carr, front end developer"
+              src="/imgs/profile.jpg"
+              width={190}
+              height={190}
+            />
+          </Atropos>
         </span>
 
         <div className="text-info flex flex-col items-center md:block text-center md:text-left">

@@ -25,12 +25,38 @@ const SplitsProj = () => {
             Figma
           </span>
         </p>
-
+        <Image
+          src="/imgs/projects/soundsplits/desktop.jpg"
+          className="shadow-xl mx-auto"
+          width={1309}
+          height={1381}
+          alt="sound splits project screenshot"
+        />
         <p className="pb-16 mt-10 pt-10">
           Sound Splits is a royalty accounting SaaS built for the music
           industry. I co-founded the company when I experienced first-hand the
           need for better accounting tools while running an independent record
           label.
+        </p>
+        <Image
+          src="/imgs/projects/soundsplits/gallery.jpg"
+          className="shadow-xl mx-auto"
+          width={1465}
+          height={1555}
+          alt="screenshot of sound splits gallery"
+        />
+        <p className="pb-16 mt-10 pt-10 text-center">
+          Simple pictoral design
+        </p>
+        <Image
+          src="/imgs/projects/soundsplits/how-it-works.jpg"
+          className="shadow-xl mx-auto"
+          width={1459}
+          height={1599}
+          alt="screenshot of sound splits home page"
+        />
+        <p className="pb-16 mt-10 pt-10 text-center">
+          Full mobile design rendering
         </p>
         <Image
           src="/imgs/projects/soundsplits/mobile.jpg"
