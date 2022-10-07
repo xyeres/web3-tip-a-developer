@@ -2,7 +2,7 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import type { Memo } from "../components/Memos";
 import Memos from "../components/Memos";
 import Pill from "../components/Pill";
@@ -23,23 +23,22 @@ import "react-responsive-modal/styles.css";
 import { Modal } from "react-responsive-modal";
 gsap.registerPlugin(ScrollTrigger);
 
-import ImageGallery from 'react-image-gallery';
+import ImageGallery from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";
 import DesignCard from "../components/projects/DesignCard";
 
 const images = [
   {
-    original: 'https://picsum.photos/id/1018/1000/600/',
-    thumbnail: 'https://picsum.photos/id/1018/250/150/',
-    thumbnailClass: ""
+    original: "/imgs/projects/hunter/hunter-1.png",
+    thumbnail: "/imgs/projects/hunter/hunter-1.png",
   },
   {
-    original: 'https://picsum.photos/id/1015/1000/600/',
-    thumbnail: 'https://picsum.photos/id/1015/250/150/',
+    original: "/imgs/projects/hunter/hunter-2.png",
+    thumbnail: "/imgs/projects/hunter/hunter-2.png",
   },
   {
-    original: 'https://picsum.photos/id/1019/1000/600/',
-    thumbnail: 'https://picsum.photos/id/1019/250/150/',
+    original: "/imgs/projects/hunter/hunter-3.png",
+    thumbnail: "/imgs/projects/hunter/hunter-3.png",
   },
 ];
 
@@ -86,7 +85,6 @@ const Profile: NextPage = () => {
   // Component state
   const [memos, setMemos] = useState(memosInitialState);
   const [open, setOpen] = useState(false);
-  const projectRef = useRef<HTMLDivElement | undefined>(undefined)
 
   const onOpenModal = () => setOpen(true);
   const onCloseModal = () => setOpen(false);
@@ -262,7 +260,7 @@ const Profile: NextPage = () => {
           <div className="text-center my-16">
             <h1 className="text-3xl">Projects</h1>
             <p className="text-gray-500 mt-2">
-              Projects I&apos;m actively building &amp; contributing to
+              Projects I&apos;m actively building &amp; maintaining
             </p>
           </div>
 
@@ -277,47 +275,79 @@ const Profile: NextPage = () => {
           </p>
           <div className="flex flex-wrap flex-row items-start justify-center">
             <div className="rounded-2xl border-gray-400 mx-2 px-5">
-              <DesignCard position="absolute top-9 right-16" bgSrc="/imgs/ss-thumb.png" layerSrc="/imgs/ss-thumb-layer.png" onClick={onOpenModal} />
+              <DesignCard
+                position="absolute top-9 right-16"
+                bgSrc="/imgs/ss-thumb.png"
+                layerSrc="/imgs/ss-thumb-layer.png"
+                onClick={onOpenModal}
+              />
               <div className="pb-4 px-4">
                 <p className="text-lg font-light text-gray-500">Sound Splits</p>
-                <p className="text-sm text-gray-400">SaaS Royalty accounting app redesign</p>
+                <p className="text-sm text-gray-400">
+                  Royalty accounting SaaS application redesign
+                </p>
               </div>
             </div>
             <div className="rounded-2xl border-gray-400 mx-2 px-5">
-              <DesignCard position="absolute top-9 right-[33%]" bgSrc="/imgs/hunter-thumb.png" layerSrc="/imgs/hunter-thumb-layer.png" onClick={onOpenModal} />
+              <DesignCard
+                position="absolute top-9 right-[33%]"
+                bgSrc="/imgs/hunter-thumb.png"
+                layerSrc="/imgs/hunter-thumb-layer.png"
+                onClick={onOpenModal}
+              />
               <div className="pb-4 px-4">
                 <p className="text-lg font-light text-gray-500">Hunter Mag.</p>
-                <p className="text-sm text-gray-400">Hunter Magazine user interface design</p>
+                <p className="text-sm text-gray-400">
+                  Hunter Magazine user interface design
+                </p>
               </div>
             </div>
             <Modal
               classNames={{
-                modal: "min-w-[92vw] rounded-lg min-h-[90vh]",
+                modal: "min-w-[80vw] rounded-lg min-h-[98vh]",
               }}
               open={open}
               onClose={onCloseModal}
               center
             >
               <div className="grid pt-7 w-full h-full place-items-center">
-                <ImageGallery slideDuration={180} showNav={false} showPlayButton={false} items={images} />
-                {/* <Image
-                  src="/imgs/proj-home.jpg"
-                  width={620}
-                  height={1401}
+                <ImageGallery
+                  slideDuration={180}
+                  showNav={false}
+                  showPlayButton={false}
+                  items={images}
+                />
+
+                <p className="py-20 lg:py-40 text-gray-400 max-w-3xl text-2xl font-light px-6 lg:px-40">
+                  HUNTER is a lifestyle magazine showcasing the world&apos;s
+                  best places to stay. I did this one as a concept site
+                  for a client.
+                </p>
+                <Image
+                  src="/imgs/projects/hunter/hunter-home.png"
+                  width={756}
+                  height={1709}
                   alt="project screenshot"
-                /> */}
-                <p className="py-10 max-w-sm">Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                  Fuga voluptate odio consectetur, accusantium minima optio,
-                  est blanditiis incidunt repellat aut sequi dolorum dolor in
-                  nam nobis. Vel placeat dicta inventore. Dolorem sunt,
-                  quaerat ducimus hic ullam ab laudantium omnis a consectetur
-                  facilis similique nisi earum quasi sapiente eius, voluptate
-                  debitis expedita sequi architecto eligendi cupiditate
-                  quisquam ratione temporibus doloribus. Quasi. Corporis
-                  facilis quo vitae in deserunt tempore dolor, temporibus quas
-                  harum rerum tempora excepturi sed soluta accusamus et
-                  recusandae animi necessitatibus dignissimos! Iure accusamus
-                  placeat hic dolore ex omnis vero!</p>
+                />
+                <p className="text-gray-400 max-w-3xl text-2xl font-light my-20 py-10 px-6 lg:px-40">
+                  The concept continues with a booking system that connects
+                  users to exclusive hotels and homes around the world....
+                </p>
+                <Image
+                  src="/imgs/projects/hunter/property.png"
+                  width={756}
+                  height={1145}
+                  alt="project screenshot"
+                />
+                <p className="text-gray-400 max-w-3xl text-2xl font-light my-20 py-10 lg:px-40">
+                  And a text-heavy example
+                </p>
+                <Image
+                  src="/imgs/projects/hunter/article.png"
+                  width={756}
+                  height={1737}
+                  alt="project screenshot"
+                />
               </div>
             </Modal>
           </div>
@@ -336,7 +366,6 @@ const Profile: NextPage = () => {
           },
         }}
       >
-
         <section className="mx-auto my-0 mt-20">
           <div className="text-center">
             <h1 className="text-3xl">Cheers</h1>
@@ -393,7 +422,6 @@ const Profile: NextPage = () => {
         </div>
         {/* <p className="text-gray-200 max-w-xs self-center font-light text-md">I am a Front End Developer focusing on building creative solutions for web and mobile. I have experience building multi-tiered SaaS and Single Page Apps in a React, Next.js stacks.</p> */}
       </footer>
-
     </>
   );
 };
