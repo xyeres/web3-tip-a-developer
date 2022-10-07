@@ -21,7 +21,7 @@ const cardData: Card[] = [
     imgWidth: 40,
     imgHeight: 40,
     classNames: {
-      stack: "bg-fuchsia-100",
+      stack: "border-fuchsia-300",
       container: "bg-[#fef7ff] ring-fuchsia-100 border-fuchsia-200",
     },
     title: "Constellation Labs",
@@ -38,7 +38,7 @@ const cardData: Card[] = [
     imgWidth: 200,
     imgHeight: 46,
     classNames: {
-      stack: "bg-blue-100",
+      stack: "border-blue-300",
       container:
         "bg-gradient-to-b from-[#fbffff] border-blue-200 ring-blue-100",
     },
@@ -56,7 +56,7 @@ const cardData: Card[] = [
     imgWidth: 40,
     imgHeight: 40,
     classNames: {
-      stack: "bg-yellow-100",
+      stack: "border-yellow-300",
       container:
         "bg-gradient-to-b from-yellow-50 border-yellow-300 ring-yellow-200",
     },

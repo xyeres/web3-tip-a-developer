@@ -17,30 +17,16 @@ import CardList from "../components/projects/CardList";
 import { Tween } from "react-gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import { gsap } from "gsap";
+gsap.registerPlugin(ScrollTrigger);
 
 // Modal
 import "react-responsive-modal/styles.css";
 import { Modal } from "react-responsive-modal";
-gsap.registerPlugin(ScrollTrigger);
 
-import ImageGallery from "react-image-gallery";
-import "react-image-gallery/styles/css/image-gallery.css";
+
 import DesignCard from "../components/projects/DesignCard";
+import HunterProj from "../components/projects/HunterProj";
 
-const images = [
-  {
-    original: "/imgs/projects/hunter/hunter-1.png",
-    thumbnail: "/imgs/projects/hunter/hunter-1.png",
-  },
-  {
-    original: "/imgs/projects/hunter/hunter-2.png",
-    thumbnail: "/imgs/projects/hunter/hunter-2.png",
-  },
-  {
-    original: "/imgs/projects/hunter/hunter-3.png",
-    thumbnail: "/imgs/projects/hunter/hunter-3.png",
-  },
-];
 
 const Profile: NextPage = () => {
   var pillConfig = {
@@ -284,7 +270,7 @@ const Profile: NextPage = () => {
               <div className="pb-4 px-4">
                 <p className="text-lg font-light text-gray-500">Sound Splits</p>
                 <p className="text-sm text-gray-400">
-                  Royalty accounting SaaS application redesign
+                  Landing page redesign
                 </p>
               </div>
             </div>
@@ -296,9 +282,9 @@ const Profile: NextPage = () => {
                 onClick={onOpenModal}
               />
               <div className="pb-4 px-4">
-                <p className="text-lg font-light text-gray-500">Hunter Mag.</p>
+                <p className="text-lg font-light text-gray-500">Hunter Magazine</p>
                 <p className="text-sm text-gray-400">
-                  Hunter Magazine user interface design
+                  Concept site design
                 </p>
               </div>
             </div>
@@ -310,45 +296,7 @@ const Profile: NextPage = () => {
               onClose={onCloseModal}
               center
             >
-              <div className="grid pt-7 w-full h-full place-items-center">
-                <ImageGallery
-                  slideDuration={180}
-                  showNav={false}
-                  showPlayButton={false}
-                  items={images}
-                />
-
-                <p className="py-20 lg:py-40 text-gray-400 max-w-3xl text-2xl font-light px-6 lg:px-40">
-                  HUNTER is a lifestyle magazine showcasing the world&apos;s
-                  best places to stay. I did this one as a concept site
-                  for a client.
-                </p>
-                <Image
-                  src="/imgs/projects/hunter/hunter-home.png"
-                  width={756}
-                  height={1709}
-                  alt="project screenshot"
-                />
-                <p className="text-gray-400 max-w-3xl text-2xl font-light my-20 py-10 px-6 lg:px-40">
-                  The concept continues with a booking system that connects
-                  users to exclusive hotels and homes around the world....
-                </p>
-                <Image
-                  src="/imgs/projects/hunter/property.png"
-                  width={756}
-                  height={1145}
-                  alt="project screenshot"
-                />
-                <p className="text-gray-400 max-w-3xl text-2xl font-light my-20 py-10 lg:px-40">
-                  And a text-heavy example
-                </p>
-                <Image
-                  src="/imgs/projects/hunter/article.png"
-                  width={756}
-                  height={1737}
-                  alt="project screenshot"
-                />
-              </div>
+              <HunterProj />
             </Modal>
           </div>
         </section>
