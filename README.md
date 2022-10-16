@@ -1,6 +1,7 @@
 # Tip A Developer dApp
 ### A web3 dApp that allows users to tip their favorite developer with crypto!
-I built this as a web3 demo to show off how a developer could create a profile to easily connect with other devs. It then allows MetaMask users to sign and send a crypto tips over the $MATIC Polygon network through a Smart Contract I wrote in Solidity.
+
+A demonstration to show off my current projects along with a web3 interaction. It allows users with MetaMask to sign and send a crypto tips over the $MATIC Polygon network through a Smart Contract I wrote in Solidity. It could be further developed into a site where other developers create their landing page, receieve tips and share more about the projects they are currently building.
 
 [View live site here](https://tipadeveloper.vercel.app/)
 
@@ -102,4 +103,4 @@ One of the greatest challenges with web3 is perhaps adoption. Creating apps that
 In this project I intentionally wrestled with the idea of adoption by trying several different approaches to the web3 interaction part of the profile. For example, in the early iteration I immediately showed the user a `Connect with MetaMask` button before they were even able to see the tipping process. Later I found this to be too exclusive to the web3-versed user and instead opted for a way to let the user interact with the app maximally before presenting any sort of barrier of entry. 
 
 ### Future development
-This could be the basis of an online creative community powered by the generosity of followers and supporters who give tips to encourage their favorite developers to continue their project development. The site could be setup as an on-demand service that allows any developer to create a profile, deploy their own smart contract and then share their site URL with supporters. 
+This could be the basis of an online creative community powered by the generosity of followers and supporters who give tips to encourage their favorite developers and allow them to continue their project development. The site could be setup as an on-demand service that allows any developer to create a profile, deploy their own smart contract and then share their profile URL with supporters. 
